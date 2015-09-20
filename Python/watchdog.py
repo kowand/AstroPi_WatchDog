@@ -17,6 +17,7 @@ import sys, os
 import astro_pi
 from astro_pi import AstroPi
 from time import sleep, asctime
+import picamera
 
 ## SETS ASTROPI MODULES AS FRIENDLY NAME ##
 
@@ -2093,6 +2094,22 @@ class CPUTemp:
         self.tempfile.close()
 
         
+def snapshot_cam():
+    list_ex = ['sports'] ## TURNS OFF AUTOMATIC EXPOSURE AND SETS IT TO 'sports' ##
+    list_awb =['horizon'] ## TURNS OFF AUTOMATIC WHITE BALANCE AND SETS IT TO 'horizon' ##
+
+    photo_ev = 0 ## SET IMAGE EXPOSURE TO ZERO ##
+
+    time.sleep(2.0) ## GIVES THE CAMERA TIME TO WARM UP ##
+
+    with picamera.PiCamera() as camera:
+        # Turn the camera's LED off
+        camera.led = False
+        
+        # Set camera resolution for small file size
+        camera.resolution = (768, 432)
+
+        
 ## MAIN PROGRAM LOOP ##
   
 try:  
@@ -2118,12 +2135,47 @@ try:
             global psi_f
             global psi_reading_f
             global psi_alarm_f
+            global snapshot_t
+            global snapshot_h
+            global snapshot_p
                    
         
             ## SET VALUES FOR LOGGING INFORMATION ##
    
             if sec_count == 15:          ## ONLY WRITES THE LOGGING INFORMATION EVERY 30 SECONDS
+            
+            
+            # TAKE SNAPSHOT IF THE SENSE_HAT IS IN AN ERROR STATE - TEMPERATURE / HUMIDITY / PRESSURE   ## CHANGED 13/09/2015
+                
+                if snapshot_t == 1:
+                
+                    print "\nTemperature Snapshot Taken"
+                    
+                    snapshot_cam()
+                    
+                    with picamera.PiCamera() as camera:
+                        # Capture Image with file name to match log file
+                        camera.capture('images/'+same_time+' image_temp.jpg')
+                        
+                elif snapshot_h == 1:
+                    print "\nHumidity Snapshot Taken"
+                    
+                    snapshot_cam()
+                    
+                    with picamera.PiCamera() as camera:
+                        # Capture Image with file name to match log file
+                        camera.capture('images/'+same_time+' image_hum.jpg')
+                        
+                elif snapshot_p == 1:
+                    print "\nPressure Snapshot Taken"
+                    
+                    snapshot_cam()
+                    
+                    with picamera.PiCamera() as camera:
+                        # Capture Image with file name to match log file
+                        camera.capture('images/'+same_time+' image_psi.jpg')
 
+                        
                 print("Logged {}".format(count))  #KEEPS ASTRONAUT (Tim) UP TO DATE WITH READINGS RECORDED
                 file.write("\"{}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\"\n".format(asctime(),display_f,temp_f,tmp_reading_f,tmp_alarm_f,hum_f,hum_reading_f,hum_alarm_f,psi_f,psi_reading_f,psi_alarm_f,pitch,roll,yaw))
                 sec_count = 0 
@@ -2194,6 +2246,16 @@ try:
                 tmp_reading_f = -1
             elif tmp_alarm == 0:
                 tmp_reading_f = 0 
+                
+                
+        # TAKE A SNAPSHOT (IMAGE) IF THE TEMPERATURE IS IN ALARM STATE (BLACK BOX STYLE)
+    
+            if tmp_reading_f == 1:
+                snapshot_t = 1
+            elif tmp_reading_f == -1:
+                snapshot_t = 1
+            elif tmp_alarm == 0:
+                snapshot_t = 0
 
                     
             ## LOG IF THE HUMIDITY ALARM READING AND IF IT HAS BEEN MUTED (BLACK BOX STYLE)  ##
@@ -2209,6 +2271,16 @@ try:
                 hum_reading_f = -1
             elif hum_alarm == 0:
                 hum_reading_f = 0
+                
+        
+        # TAKE A SNAPSHOT (IMAGE) IF THE HUMIDITY IS IN ALARM STATE (BLACK BOX STYLE)
+    
+            if hum_reading_f == 1:
+                snapshot_h = 1
+            if hum_reading_f == -1:
+                snapshot_h = 1
+            elif hum_alarm == 0:
+                snapshot_h = 0        
     
     
             ## LOG IF THE PRESSURE ALARM READING AND IF IT HAS BEEN MUTED (BLACK BOX STYLE)
@@ -2224,6 +2296,16 @@ try:
                 psi_reading_f = -1
             elif psi_alarm == 0:
                 psi_reading_f = 0
+                
+                
+        # TAKE A SNAPSHOT (IMAGE) IF THE PRESSURE IS IN ALARM STATE (BLACK BOX STYLE)
+    
+            if psi_reading_f == 1:
+                snapshot_p = 1
+            if psi_reading_f == -1:
+                snapshot_p = 1
+            elif psi_alarm == 0:
+                snapshot_p = 0        
                 
 
             ## CONVERTS TEMPERATURE, HUMIDITY, PRESSURE READINGS TO A STRING ## 
