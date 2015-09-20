@@ -12,11 +12,11 @@
 ## IMPORT MODULES REQUIRED FOR PROGRAM ##
 import RPi.GPIO as GPIO
 import time, logging
-from datetime import datetime
+from time import sleep, asctime
+import datetime
 import sys, os
 import astro_pi
 from astro_pi import AstroPi
-from time import sleep, asctime
 import picamera
 
 ## SETS ASTROPI MODULES AS FRIENDLY NAME ##
@@ -45,7 +45,10 @@ running = True
 
 ## CREATE TIMESTAMP AS FRIENDLY NAME ##
 
-tmstmp = time.strftime("%Y%m%d-%H%M%S")
+#tmstmp = time.strftime("%Y%m%d-%H%M%S") # REMOVED TO ALLOW ALL TIMESTAMPS TO MATCH ACROSS PROGRAM
+tmstmp = datetime.datetime.now().strftime("%d %b %y %H:%M:%S")  # USING DATETIME INPLACE OF ASCTIME TO RESOLVE EXCEL FORMATTING ISSUES
+
+# tmstmp_len = tmstmp[4:]   # REMOVED AS NO LONGER REQUIRED DUE TO COREECT DATE/TIME FORMATTING ABOVE
     
     
 ## ASSIGNING LEVELS TO LED'S AND COLOURS ##
@@ -2140,12 +2143,21 @@ try:
             global snapshot_p
                    
         
-            ## SET VALUES FOR LOGGING INFORMATION ##
+                # SET VALUES FOR LOGGING INFORMATION
    
-            if sec_count == 15:          ## ONLY WRITES THE LOGGING INFORMATION EVERY 30 SECONDS
+            if sec_count == 13:          ## ONLY WRITES THE LOGGING INFORMATION EVERY 30 SECONDS(APPROX.) 
             
             
-            # TAKE SNAPSHOT IF THE SENSE_HAT IS IN AN ERROR STATE - TEMPERATURE / HUMIDITY / PRESSURE   ## CHANGED 13/09/2015
+                ## ENSURE THAT SNAPSHOT AND LOG INPUT HAVE THE SAME TIME
+                
+                #same_time = asctime()
+                same_time = datetime.datetime.now().strftime("%d %b %y %H:%M:%S")  
+   
+        # SAME_TIME SWAPPED FROM ASCTIME() TO ALLOW FORMATTING WITHIN EXCEL IS CORRECT
+                # RECORDED AS dd/mm/yy hh:mm:ss (DAY/MONTH/YEAR HOURS:MINUTES:SECONDS)
+            
+            
+            # TAKE SNAPSHOT IF THE ASTROPI IS IN AN ERROR STATE - TEMPERATURE / HUMIDITY / PRESSURE   ## CHANGED 13/09/2015
                 
                 if snapshot_t == 1:
                 
