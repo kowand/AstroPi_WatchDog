@@ -1,15 +1,175 @@
 ## AUTHOR: Kieran Owen Wand (14yrs)
-## ASSISTANT: Christopher John Butcher (DAD, 35yrs)
+## ASSISTANT: Christopher John Butcher (DAD, 35yrs), Tsena Maria Wand (MUM, 34yrs), Kristian Peter Butcher (BROTHER, 9yrs)
+
 
 ## CREATED JUNE 2015
 
-## CREDITS
-#   - ASTROPI FORUM MEMBERS, HELP AND SUPPORT FOR SCRIPTS AND FAULT FINDING
-#   - RASPBERRY PI FORUM MEMBERS, HELP AND SUPPORT FOR SCRIPTS AND FAULT FINDING
-#   - Tsena Wand (MUM), ASSESSING THE EASE OF USE FOR THE READING DISPLAYS AND WARNING STATES
+
+# 1 #   CREDITS                                                     [165 - 168]
+# 2 #   IMPORT MODULES                                              [171 - 180]
+# 3 #   SETTING UP PROGRAM                                          [183 - 206]
+        #    SETS SENSE_HAT MODULES AS FRIENDLY NAME                  [185 - 187]   ## CHANGED 13/09/2015
+        #    SETTING UP RASPBERRYPI FOR FLIGHT BUTTONS TO USE GPIO PINS         [189 - 192]
+        #    ASSIGNING FRIENDLY NAMES FOR GPIO PINS                 [195 - 202]
+        #    FORCING PROGRAM TO RUN PROGRAM WITHIN WHILE LOOP       [204 - 206]
+# 4 #   CREATE TIMESTAMP                                            [209 - 214] {UPDATED - AUG 2015}
+# 5 #   ASSIGNING LEVELS TO LEDS AND COLOURS                        [217 - 226]
+        #    ADJUSTABLE LED LIGHT LEVELS                            [219 - 221]
+        #    ASSIGNING LEVELS TO COLOURS                            [223 - 226]
+# 6 #   DEFAULT VALUES                                              [229 - 248]
+        #    ASSIGNING DEFAULTS TO TEMPERATURE + HUMIDITY OR PRESSURE PAGES     [231 - 234]
+        #    ASSIGNING DEFAULT VALUES TO ALARM TRIGGERS             [237 - 241]
+        #    ASSIGNING DEFAULTS TO WARNING PAGES (MUTE / SHOW)      [244 - 248]
+# 7 #   CREATES A LOG FILE                                          [251 - 257]
+# 8 #   TEMPERATURE LED MATRIX INCLUDING WARNINGS                   [260 - 718]
+        #    TEMPERATURE NUMBERS MATRIX BELOW                       [262 - 646]
+        #    NUMBER 0_top_left  - TEMPERATURE                       [267 - 283]
+        #    NUMBER 1_top_left  - TEMPERATURE                       [286 - 302]
+        #    NUMBER 2_top_left  - TEMPERATURE                       [305 - 321]
+        #    NUMBER 3_top_left  - TEMPERATURE                       [324 - 340]
+        #    NUMBER 4_top_left  - TEMPERATURE                       [343 - 359]
+        #    NUMBER 5_top_left  - TEMPERATURE                       [362 - 378]
+        #    NUMBER 6_top_left  - TEMPERATURE                       [381 - 397]
+        #    NUMBER 7_top_left  - TEMPERATURE                       [400 - 416]
+        #    NUMBER 8_top_left  - TEMPERATURE                       [419 - 435]
+        #    NUMBER 9_top_left  - TEMPERATURE                       [438 - 454]
+        #    NUMBER 0_top_right  - TEMPERATURE                      [459 - 475]
+        #    NUMBER 1_top_right  - TEMPERATURE                      [478 - 494]
+        #    NUMBER 2_top_right  - TEMPERATURE                      [497 - 513]
+        #    NUMBER 3_top_right  - TEMPERATURE                      [516 - 532]
+        #    NUMBER 4_top_right  - TEMPERATURE                      [535 - 551]
+        #    NUMBER 5_top_right  - TEMPERATURE                      [554 - 570]
+        #    NUMBER 6_top_right  - TEMPERATURE                      [573 - 589]
+        #    NUMBER 7_top_right  - TEMPERATURE                      [592 - 608]
+        #    NUMBER 8_top_right  - TEMPERATURE                      [611 - 627]
+        #    NUMBER 9_top_right  - TEMPERATURE                      [630 - 646]
+        #    TEMPERATURE ERROR STATES                               [648 - 718]
+        #    ERROR STATE WARNING FOR - HIGH TEMPERATURE             [651 - 683]
+        #    ERROR STATE WARNING FOR - LOW TEMPERATURE              [681 - 718]
+# 9 #   HUMIDITY LED MATRIX INCLUDING WARNINGS                      [721 - 1179]
+        #    HUMIDITY NUMBERS MATRIX BELOW                          [723 - 1107]
+        #    NUMBER 0_bot_left  - HUMIDITY                          [727 - 744]
+        #    NUMBER 1_bot_left  - HUMIDITY                          [746 - 763]
+        #    NUMBER 2_bot_left  - HUMIDITY                          [765 - 782]
+        #    NUMBER 3_bot_left  - HUMIDITY                          [784 - 801]
+        #    NUMBER 4_bot_left  - HUMIDITY                          [803 - 820]
+        #    NUMBER 5_bot_left  - HUMIDITY                          [822 - 839]
+        #    NUMBER 6_bot_left  - HUMIDITY                          [841 - 858]
+        #    NUMBER 7_bot_left  - HUMIDITY                          [860 - 877]
+        #    NUMBER 8_bot_left  - HUMIDITY                          [879 - 896]
+        #    NUMBER 9_bot_left  - HUMIDITY                          [898 - 915]
+        #    NUMBER 0_bot_right  - HUMIDITY                         [919 - 936]
+        #    NUMBER 1_bot_right  - HUMIDITY                         [938 - 955]
+        #    NUMBER 2_bot_right  - HUMIDITY                         [957 - 974]
+        #    NUMBER 3_bot_right  - HUMIDITY                         [976 - 993]
+        #    NUMBER 4_bot_right  - HUMIDITY                         [995 - 1012]
+        #    NUMBER 5_bot_right  - HUMIDITY                         [1014 - 1031]
+        #    NUMBER 6_bot_right  - HUMIDITY                         [1033 - 1050]
+        #    NUMBER 7_bot_right  - HUMIDITY                         [1052 - 1069]
+        #    NUMBER 8_bot_right  - HUMIDITY                         [1071 - 1088]
+        #    NUMBER 9_bot_right  - HUMIDITY                         [1090 - 1107]
+        #    HUMIDITY ERROR STATES                                  [1109 - 1179]
+        #    ERROR STATE WARNING FOR - HIGH HUMIDITY                [1112 - 1144]
+        #    ERROR STATE WARNING FOR - LOW HUMIDITY                 [1146 - 1179]
+# 10 #  PRESSURE LED MATRIX INCLUDING WARNINGS                      [1182 - 2088]
+        #    PRESSURE NUMBERS MATRIX BELOW                          [1182 - 1952]
+        #    NUMBER 0_top_left  - PRESSURE                          [1188 - 1205]
+        #    NUMBER 1_top_left  - PRESSURE                          [1207 - 1224]
+        #    NUMBER 2_top_left  - PRESSURE                          [1226 - 1243]
+        #    NUMBER 3_top_left  - PRESSURE                          [1245 - 1262]
+        #    NUMBER 4_top_left  - PRESSURE                          [1264 - 1281]
+        #    NUMBER 5_top_left  - PRESSURE                          [1283 - 1300]
+        #    NUMBER 6_top_left  - PRESSURE                          [1302 - 1319]
+        #    NUMBER 7_top_left  - PRESSURE                          [1321 - 1338]
+        #    NUMBER 8_top_left  - PRESSURE                          [1340 - 1357]
+        #    NUMBER 9_top_left  - PRESSURE                          [1359 - 1376]
+        #    NUMBER 0_top_right  - PRESSURE                         [1380 - 1397]
+        #    NUMBER 1_top_right  - PRESSURE                         [1399 - 1416]
+        #    NUMBER 2_top_right  - PRESSURE                         [1418 - 1435]
+        #    NUMBER 3_top_right  - PRESSURE                         [1437 - 1454]
+        #    NUMBER 4_top_right  - PRESSURE                         [1456 - 1473]
+        #    NUMBER 5_top_right  - PRESSURE                         [1475 - 1492]
+        #    NUMBER 6_top_ right  - PRESSURE                        [1494 - 1511]
+        #    NUMBER 7_top_right  - PRESSURE                         [1513 - 1530]
+        #    NUMBER 8_top_right  - PRESSURE                         [1532 - 1550]
+        #    NUMBER 9_top_right  - PRESSURE                         [1551 - 1568]
+        #    NUMBER 0_bot_left  - PRESSURE                          [1572 - 1589]
+        #    NUMBER 1_bot_left  - PRESSURE                          [1591 - 1608]
+        #    NUMBER 2_bot_left  - PRESSURE                          [1610 - 1627]
+        #    NUMBER 3_bot_left  - PRESSURE                          [1629 - 1646]
+        #    NUMBER 4_bot_left  - PRESSURE                          [1648 - 1665]
+        #    NUMBER 5_bot_left  - PRESSURE                          [1667 - 1684]
+        #    NUMBER 6_bot_left  - PRESSURE                          [1686 - 1703]
+        #    NUMBER 7_bot_left  - PRESSURE                          [1705 - 1722]
+        #    NUMBER 8_bot_left  - PRESSURE                          [1724 - 1741]
+        #    NUMBER 9_bot_left  - PRESSURE                          [1743 - 1760]
+        #    NUMBER 0_bot_right  - PRESSURE                         [1764 - 1781]
+        #    NUMBER 1_bot_right  - PRESSURE                         [1783 - 1800]
+        #    NUMBER 2_bot_right  - PRESSURE                         [1802 - 1819]
+        #    NUMBER 3_bot_right  - PRESSURE                         [1821 - 1838]
+        #    NUMBER 4_bot_right  - PRESSURE                         [1840 - 1857]
+        #    NUMBER 5_bot_right  - PRESSURE                         [1859 - 1876]
+        #    NUMBER 6_bot_right  - PRESSURE                         [1878 - 1895]
+        #    NUMBER 7_bot_right  - PRESSURE                         [1897 - 1914]
+        #    NUMBER 8_bot_right  - PRESSURE                         [1916 - 1933]
+        #    NUMBER 9_bot_right  - PRESSURE                         [1935 - 1952]
+        #    PRESSURE ERROR STATES                                  [1954 - 2088]
+        #    ERROR STATE WARNING FOR - HIGH PRESSURE                [1956 - 2021]
+        #    ERROR STATE WARNING FOR - LOW PRESSURE                 [2023 - 2088]
+# 11 #  SETTING UP FLIGHT BUTTONS FOR USE AND ASSIGNING COMMANDS    [2091 - 2158]
+        #    LOOKING FOR BUTTON PRESSES FROM FLIGHT BUTTONS         [2093 - 2158]
+        #    UP BUTTON (BRIGHTNESS INCREASES)                       [2105 - 2107]
+        #    DOWN BUTTON (BRIGHTNESS DECREASES)                     [2109 - 2111]
+        #    LEFT BUTTON (TEMPERATURE & HUMIDITY PAGE ON)           [2113 - 2127]
+        #    RIGHT BUTTON (PRESSURE PAGE ON)                        [2129 - 2140]
+        #    A BUTTON (MUTES ALARMS)                                [2142 - 2147]
+        #    B BUTTON (UN-MUTES ALARMS)                             [2149 - 2154]
+# 12 #  RESETTING PREVIOUS READINGS TO START CLEAN                  [2161 - 2178]
+        #    SET PREVIOUS TEMPERATURE, HUMIDITY & PRESSURE VALUES TO ZERO           [2163 - 2178]
+# 13 #  NEW SENSE_HAT CLASS FILE TO ENSURE ORIENTATION READING IS CORRECT             [2181 - 2240] {NOT COMPATIBLE WITH RASPBERRYPI B+ - AUG 2015}   ## CHANGED 13/09/2015
+# 14 #  NEW CLASS FILE TO ALLOW CPU_TEMPERATURE TO BE RECALLEDAS NEEDED             [2243 - 2277]
+# 15 #  CAMERA SYSTEM FOR SNAPSHOTS                                 [2280 - 2295]   {UPDATED - NEW ADD-ON TO PROGRAM - AUG 2015}
+# 16 #  MAIN PROGRAM LOOP                                           [2298 - 2665]
+        #    SETUP INITIAL MODULES FOR PROGRAM LOOP                 [2302 - 2310]
+        #    ALLOWS THE LOG SECTION TO RECALL INFORMATION FROM SECTIONS             [2313 - 2325]
+        #    SET VALUES FOR LOGGING INFO                            [2330 - 2332] {UPDATED - AUG 2015}
+        #    ENSURES THAT SNAPSHOT AND LOG INPUT HAVE THE SAME TIME [2335 - 2337] {UPDATED - AUG 2015}
+        #    REMOVE DAY LABEL FROM ASCTIME TO ALLOW WINDOWS TO SORT IMAGES AND LOG CORRECTLY        [2340 - 2341]
+        #    TAKE SNAPSHOT IF THE ASTROPI IS IN AN ERROR STATE - TEMPERATURE / HUMIDITY / PRESSURE  [2344 - 2372]   {UPDATED - NEW ADD-ON TO PROGRAM - AUG 2015}
+        #    LOG ALL INFORMATION REQUIRED FOR ASTROPI               [2375 - 2383]
+        #    COUNTER TO RE-ENABLE ALARMS FOR THE TEMPERATURE, HUMIDITY, PRESSURE READINGS           [2336 - 2390]
+        #    RE-ENABLE ALARMS FOR THE TEMPERATURE, HUMIDITY AND PRESSURE READINGS   [2393 - 2399]
+        #    CALCULATIONS FOR TEMPERATURE TO COMPENSATE FOR CPU_TEMP AFFECTING TEMPERATURE READINGS [2402 - 2411]
+        #    GET TEMPERATURE, HUMIDITY, PRESSURE READINGS FROM ASTROPI SENSORS      [2414 - 2424]
+        #    LOG IF THE DISPLAY HAS BEEN MUTED (BLACK BOX STYLE)    [2427 - 2437]
+        #    LOG IF THE TEMPERATURE ALARM READING AND IF IT HAS BEEN MUTED (BLACK BOX STYLE)        [2440 - 2452]
+        #    TAKE A SNAPSHOT (IMAGE) IF THE TEMPERATURE IS IN ALARM STATE (BLACK BOX STYLE)         [2455 - 2462]   {UPDATED - NEW ADD-ON TO PROGRAM - AUG 2015}
+        #    LOG IF THE HUMIDITY ALARM READING AND IF IT HAS BEEN MUTED (BLACK BOX STYLE)           [2465 - 2477]
+        #    TAKE A SNAPSHOT (IMAGE) IF THE HUMIDITY IS IN ALARM STATE (BLACK BOX STYLE)            [2480 - 2487]   {UPDATED - NEW ADD-ON TO PROGRAM - AUG 2015}
+        #    LOG IF THE PRESSURE ALARM READING AND IF IT HAS BEEN MUTED (BLACK BOX STYLE)           [2450 - 2502]
+        #    TAKE A SNAPSHOT (IMAGE) IF THE PRESSURE IS IN ALARM STATE (BLACK BOX STYLE)            [2505 - 2512]   {UPDATED - NEW ADD-ON TO PROGRAM - AUG 2015}
+        #    CONVERTS TEMPERATURE, HUMIDITY, PRESSURE READINGS TO A STRING          [2515 - 2525]
+        #    ROTATE THE LED MATRIX DISPLAY (IF REQUIRED)            [2528 - 2530]
+        #    WRITES VALUES ONTO THE LED MATRIX FOR THE TEMPERATUREAND THE HUMIDITYIDITY             [3533 - 2544]
+        #    TEMPERATURE- ERROR STATE CHECKING                      [2547 - 2577]
+        #    HUMIDITY - ERROR STATE CHECKING                        [2580 - 2605]
+        #    ALLOW ASTRONAUT (TIM) TO READ THE PREVIOUS TEMP & HUMIDITY READINGS ON THE LED MATRIX  [2608 - 2613]
+        #    WRITE BOTH TOP_LINE & BOT_LINE - PRESSURE (4 DIGITS)   [2616 - 2623]
+        #    PRESSURE - ERROR STATE CHECKING                        [2624 - 2653]
+        #    ALLOW ASTRONAUT (TIM) TO READ THE PREVIOUS PRESSURE READINGS ON LED MATRIX             [2658 - 2663]
+        #    RESETS THE LOGGING COUNTER & START THE LOOP AGAIN      [2666 - 2666]
+# 17 #    PROGRAMMING TO CLEANLY EXIT THE PYTHON PROGRAM AND STOP RECORDING READINGS (IF REQUIRED)  [2669 - 2683]
+        #    CLEARS THE LED MATRIX ON ASTROPI                       [2673 - 2685]
+
+        
+# 1 #    CREDITS 
+        #   - ASTROPI FORUM MEMBERS, HELP AND SUPPORT FOR SCRIPTS AND FAULT FINDING
+        #   - RASPBERRY PI FORUM MEMBERS, HELP AND SUPPORT FOR SCRIPTS AND FAULT FINDING
+        #   - Tsena Wand (MUM), ASSESSING THE EASE OF USE FOR THE READING DISPLAYS AND WARNING STATES
 
 
-## IMPORT MODULES REQUIRED FOR PROGRAM ##
+# 2 #    IMPORT MODULES REQUIRED FOR PROGRAM
+
 import RPi.GPIO as GPIO
 import time, logging
 from time import sleep, asctime
@@ -19,17 +179,19 @@ import astro_pi
 from astro_pi import AstroPi
 import picamera
 
-## SETS ASTROPI MODULES AS FRIENDLY NAME ##
+# 3 #    SETTING UP PROGRAM
+
+        # SETS ASTROPI MODULES AS FRIENDLY NAME
 
 ap = astro_pi.AstroPi()
 
-# SETTING UP RASPBERRYPI FOR FLIGHT BUTTONS TO USE GPIO PINS
+        # SETTING UP RASPBERRYPI FOR FLIGHT BUTTONS TO USE GPIO PINS
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 
 
-# ASSIGNING FRIENDLY NAMES FOR GPIO PINS
+        # ASSIGNING FRIENDLY NAMES FOR GPIO PINS
 
 UP = 26
 DOWN = 13
@@ -38,12 +200,12 @@ RIGHT = 19
 A = 21
 B = 16
 
-# FORCING PROGRAM TO RUN WITHIN WHILE LOOP
+        # FORCING PROGRAM TO RUN WITHIN WHILE LOOP
 
 running = True
 
 
-## CREATE TIMESTAMP AS FRIENDLY NAME ##
+# 4 #    CREATE TIMESTAMP AS FRIENDLY NAME
 
 #tmstmp = time.strftime("%Y%m%d-%H%M%S") # REMOVED TO ALLOW ALL TIMESTAMPS TO MATCH ACROSS PROGRAM
 tmstmp = datetime.datetime.now().strftime("%d %b %y %H:%M:%S")  # USING DATETIME INPLACE OF ASCTIME TO RESOLVE EXCEL FORMATTING ISSUES
@@ -51,62 +213,56 @@ tmstmp = datetime.datetime.now().strftime("%d %b %y %H:%M:%S")  # USING DATETIME
 # tmstmp_len = tmstmp[4:]   # REMOVED AS NO LONGER REQUIRED DUE TO COREECT DATE/TIME FORMATTING ABOVE
     
     
-## ASSIGNING LEVELS TO LED'S AND COLOURS ##
+# 5 #    ASSIGNING LEVELS TO LED'S AND COLOURS
 
-# ADJUSTABLE LED LIGHT LEVELS
+        # ADJUSTABLE LED LIGHT LEVELS
 
 led_level = 150
 
-# ASSIGNING LEVELS TO COLOURS
+        # ASSIGNING LEVELS TO COLOURS
 
 red = 255                           # TEMPERATURE LED LIGHT LEVEL
 blue = 255                          # PRESSURE LED LIGHT LEVEL
 
 
-## ASSIGNING DEFAULTS TO TEMP + HUM OR PRESSURE PAGES ##
+# 6 #    DEFAULT VALUES
+
+        # ASSIGNING DEFAULTS TO TEMP + HUM OR PRESSURE PAGES
 
 temp_hum_on = 0
 psi_on = 0
 
 
-## ASSIGNING DEFAULTS VALUES TO ALARM TRIGGERS ##
+        # ASSIGNING DEFAULTS VALUES TO ALARM TRIGGERS
 
 tmp_alarm = 0
 hum_alarm = 0
 psi_alarm = 0
-id_num = 0
 
 
-## ASSIGNING DEFAULTS TO WARNINIG PAGES (MUTE / SHOW) ##
+        # ASSIGNING DEFAULTS TO WARNING PAGES (MUTE / SHOW) 
 
 tmp_mute = 0
 hum_mute = 0
 psi_mute = 0
 
 
-## ASSIGNING DEFAULT TO DISPLAY OFF TRIGGER ##
-
-display_mute = 0
-
-## CREATES A LOG FILE WITH THE TITLE "log/{timestamp:%Y-%m-%d-%H-%M}watchdog.csv" ##
-## THIS ALSO ADDS A TIMESTAMP TO THE START OF THE FILE NAME CREATED ##
+# 7 #    CREATES A LOG FILE WITH THE TITLE "log/{timestamp:%Y-%m-%d-%H-%M}watchdog.csv" 
+        # THIS ALSO ADDS A TIMESTAMP TO THE START OF THE FILE NAME CREATED 
 
 count = 0
 file = open('log/'+(str(tmstmp))+' watchdog-log.csv', 'w')
-file.write("\"Time\",\"Display\",\"Temperature\",\"Temp_Reading\",\"Temp_Alarm\",\"Humidity\",\"Hum_Reading\",\"Hum_Alarm\",\"Pressure\",\"PSI_Reading\",\"PSI_Alarm\",\"Pitch\",\"Roll\",\"Yaw\"\n")
-
-
-## EXAMPLE FOR WRITING INFORMATION ONTO LED MATRIX PIXELS:
-
-    #ap.set_pixel(x, y, red, green, blue)
+file.write("\"Time\",\"Display\",\"Temperature\",\"Temp_Reading\",\"Temp_Alarm\",\"Temp_Snapshot\",\"Humidity\",\"Hum_Reading\",\"Hum_Alarm\",\"Hum_Snapshot\",\"Pressure\",\"PSI_Reading\",\"PSI_Alarm\",\"PSI_Snapshot\",\"Pitch\",\"Roll\",\"Yaw\"\n")
     
 
-## TEMPERATURE NUMBERS MATRIX BELOW ##
+# 8 #    TEMP LED MATRIX INCLUDING WARNINGS
+
+        # TEMPERATURE NUMBERS MATRIX BELOW 
 
 def temp_num_matrix_1(num):
 
   if num == '0':
-# number 0_top_left - TEMPERATURE
+        # number 0_top_left - TEMPERATURE
     ap.set_pixel(0, 0, led_level, 0, 0)   
     ap.set_pixel(0, 1, led_level, 0, 0)   
     ap.set_pixel(0, 2, led_level, 0, 0)   
@@ -125,7 +281,7 @@ def temp_num_matrix_1(num):
     ap.set_pixel(3, 3, 0, 0, 0)
 
   if num == '1':
-    # number 1_top_left - TEMPERATURE
+        # number 1_top_left - TEMPERATURE
     ap.set_pixel(0, 0, 0, 0, 0)   
     ap.set_pixel(0, 1, led_level, 0, 0)   
     ap.set_pixel(0, 2, 0, 0, 0)   
@@ -144,7 +300,7 @@ def temp_num_matrix_1(num):
     ap.set_pixel(3, 3, 0, 0, 0)
 
   if num == '2':
-# number 2_top_left - TEMPERATURE
+        # number 2_top_left - TEMPERATURE
     ap.set_pixel(0, 0, led_level, 0, 0)   
     ap.set_pixel(0, 1, 0, 0, 0)   
     ap.set_pixel(0, 2, 0, 0, 0)   
@@ -163,7 +319,7 @@ def temp_num_matrix_1(num):
     ap.set_pixel(3, 3, 0, 0, 0)
 
   if num == '3':
-# number 3_top_left - TEMPERATURE
+        # number 3_top_left - TEMPERATURE
     ap.set_pixel(0, 0, led_level, 0, 0)   
     ap.set_pixel(0, 1, 0, 0, 0)   
     ap.set_pixel(0, 2, 0, 0, 0)   
@@ -182,7 +338,7 @@ def temp_num_matrix_1(num):
     ap.set_pixel(3, 3, 0, 0, 0)
 
   if num == '4':
-# number 4_top_left - TEMPERATURE
+        # number 4_top_left - TEMPERATURE
     ap.set_pixel(0, 0, led_level, 0, 0)   
     ap.set_pixel(0, 1, led_level, 0, 0)   
     ap.set_pixel(0, 2, led_level, 0, 0)   
@@ -201,7 +357,7 @@ def temp_num_matrix_1(num):
     ap.set_pixel(3, 3, 0, 0, 0)
 
   if num == '5':
-# number 5_top_left - TEMPERATURE
+        # number 5_top_left - TEMPERATURE
     ap.set_pixel(0, 0, led_level, 0, 0)   
     ap.set_pixel(0, 1, led_level, 0, 0)   
     ap.set_pixel(0, 2, 0, 0, 0)   
@@ -220,7 +376,7 @@ def temp_num_matrix_1(num):
     ap.set_pixel(3, 3, 0, 0, 0)
 
   if num == '6':
-# number 6_top_left - TEMPERATURE
+        # number 6_top_left - TEMPERATURE
     ap.set_pixel(0, 0, led_level, 0, 0)   
     ap.set_pixel(0, 1, led_level, 0, 0)   
     ap.set_pixel(0, 2, led_level, 0, 0)   
@@ -239,7 +395,7 @@ def temp_num_matrix_1(num):
     ap.set_pixel(3, 3, 0, 0, 0)
 
   if num == '7':
-# number 7_top_left - TEMPERATURE
+        # number 7_top_left - TEMPERATURE
     ap.set_pixel(0, 0, led_level, 0, 0)   
     ap.set_pixel(0, 1, led_level, 0, 0)   
     ap.set_pixel(0, 2, 0, 0, 0)   
@@ -258,7 +414,7 @@ def temp_num_matrix_1(num):
     ap.set_pixel(3, 3, 0, 0, 0)
   
   if num == '8':
-# number 8_top_left - TEMPERATURE
+        # number 8_top_left - TEMPERATURE
     ap.set_pixel(0, 0, led_level, 0, 0)   
     ap.set_pixel(0, 1, led_level, 0, 0)   
     ap.set_pixel(0, 2, led_level, 0, 0)   
@@ -277,7 +433,7 @@ def temp_num_matrix_1(num):
     ap.set_pixel(3, 3, 0, 0, 0)
 
   if num == '9':
-# number 9_top_left - TEMPERATURE
+        # number 9_top_left - TEMPERATURE
     ap.set_pixel(0, 0, led_level, 0, 0)   
     ap.set_pixel(0, 1, led_level, 0, 0)   
     ap.set_pixel(0, 2, led_level, 0, 0)   
@@ -298,7 +454,7 @@ def temp_num_matrix_1(num):
 def temp_num_matrix_2(num):
     
   if num == '0':
-# number 0_top_right - TEMPERATURE
+        # number 0_top_right - TEMPERATURE
     ap.set_pixel(4, 0, led_level, 0, 0)   
     ap.set_pixel(4, 1, led_level, 0, 0)   
     ap.set_pixel(4, 2, led_level, 0, 0)   
@@ -317,7 +473,7 @@ def temp_num_matrix_2(num):
     ap.set_pixel(7, 3, 0, 0, 0)
 
   if num == '1':
-    # number 1_top_right - TEMPERATURE
+        # number 1_top_right - TEMPERATURE
     ap.set_pixel(4, 0, 0, 0, 0)   
     ap.set_pixel(4, 1, led_level, 0, 0)   
     ap.set_pixel(4, 2, 0, 0, 0)   
@@ -336,7 +492,7 @@ def temp_num_matrix_2(num):
     ap.set_pixel(7, 3, 0, 0, 0)
 
   if num == '2':
-# number 2_top_right - TEMPERATURE
+        # number 2_top_right - TEMPERATURE
     ap.set_pixel(4, 0, led_level, 0, 0)   
     ap.set_pixel(4, 1, 0, 0, 0)   
     ap.set_pixel(4, 2, 0, 0, 0)   
@@ -355,7 +511,7 @@ def temp_num_matrix_2(num):
     ap.set_pixel(7, 3, 0, 0, 0)
 
   if num == '3':
-# number 3_top_right - TEMPERATURE
+        # number 3_top_right - TEMPERATURE
     ap.set_pixel(4, 0, led_level, 0, 0)   
     ap.set_pixel(4, 1, 0, 0, 0)   
     ap.set_pixel(4, 2, 0, 0, 0)   
@@ -374,7 +530,7 @@ def temp_num_matrix_2(num):
     ap.set_pixel(7, 3, 0, 0, 0)
 
   if num == '4':
-# number 4_top_right - TEMPERATURE
+        # number 4_top_right - TEMPERATURE
     ap.set_pixel(4, 0, led_level, 0, 0)   
     ap.set_pixel(4, 1, led_level, 0, 0)   
     ap.set_pixel(4, 2, led_level, 0, 0)   
@@ -393,7 +549,7 @@ def temp_num_matrix_2(num):
     ap.set_pixel(7, 3, 0, 0, 0)
 
   if num == '5':
-# number 5_top_right - TEMPERATURE
+        # number 5_top_right - TEMPERATURE
     ap.set_pixel(4, 0, led_level, 0, 0)   
     ap.set_pixel(4, 1, led_level, 0, 0)   
     ap.set_pixel(4, 2, 0, 0, 0)   
@@ -412,7 +568,7 @@ def temp_num_matrix_2(num):
     ap.set_pixel(7, 3, 0, 0, 0)
 
   if num == '6':
-# number 6_top_right - TEMPERATURE
+        # number 6_top_right - TEMPERATURE
     ap.set_pixel(4, 0, led_level, 0, 0)   
     ap.set_pixel(4, 1, led_level, 0, 0)   
     ap.set_pixel(4, 2, led_level, 0, 0)   
@@ -431,7 +587,7 @@ def temp_num_matrix_2(num):
     ap.set_pixel(7, 3, 0, 0, 0)
 
   if num == '7':
-# number 7_top_right - TEMPERATURE
+        # number 7_top_right - TEMPERATURE
     ap.set_pixel(4, 0, led_level, 0, 0)   
     ap.set_pixel(4, 1, led_level, 0, 0)   
     ap.set_pixel(4, 2, 0, 0, 0)   
@@ -450,7 +606,7 @@ def temp_num_matrix_2(num):
     ap.set_pixel(7, 3, 0, 0, 0)
 
   if num == '8':
-# number 8_top_right - TEMPERATURE
+        # number 8_top_right - TEMPERATURE
     ap.set_pixel(4, 0, led_level, 0, 0)   
     ap.set_pixel(4, 1, led_level, 0, 0)   
     ap.set_pixel(4, 2, led_level, 0, 0)   
@@ -469,7 +625,7 @@ def temp_num_matrix_2(num):
     ap.set_pixel(7, 3, 0, 0, 0)
 
   if num == '9':
-# number 9_top_right - TEMPERATURE
+        # number 9_top_right - TEMPERATURE
     ap.set_pixel(4, 0, led_level, 0, 0)   
     ap.set_pixel(4, 1, led_level, 0, 0)   
     ap.set_pixel(4, 2, led_level, 0, 0)   
@@ -486,9 +642,11 @@ def temp_num_matrix_2(num):
     ap.set_pixel(7, 1, 0, 0, 0)   
     ap.set_pixel(7, 2, 0, 0, 0)   
     ap.set_pixel(7, 3, 0, 0, 0)
+    
+        # TEMPERATURE ERROR STATES BELOW 
 
 def temp_num_error_high():
-# error state warning for - HIGH TEMPERATURE
+        # error state warning for - HIGH TEMPERATURE
     ap.set_pixel(0, 0, red, 0, 0)   
     ap.set_pixel(0, 1, red, 0, 0)   
     ap.set_pixel(0, 2, red, 0, 0)   
@@ -523,7 +681,7 @@ def temp_num_error_high():
     ap.set_pixel(7, 3, red, 0, 0)
     
 def temp_num_error_low():
-# error state warning for - LOW TEMPERATURE
+        # error state warning for - LOW TEMPERATURE
     ap.set_pixel(0, 0, 0, 0, blue)   
     ap.set_pixel(0, 1, 0, 0, blue)   
     ap.set_pixel(0, 2, 0, 0, blue)   
@@ -558,12 +716,14 @@ def temp_num_error_low():
     ap.set_pixel(7, 3, 0, 0, blue)
  
  
-## HUMIDITY NUMBERS MATRIX BELOW ##    
+# 9 #    HUMIDITY LED MATRIX INCLUDING WARNINGS
+ 
+        # HUMIDITY NUMBERS MATRIX BELOW    
 
 def hum_num_matrix_1(num):
 
   if num == '0':
-# number 0_bot_left - HUMIDITY
+        # number 0_bot_left - HUMIDITY
     ap.set_pixel(0, 4, 0, led_level, 0)   
     ap.set_pixel(0, 5, 0, led_level, 0)   
     ap.set_pixel(0, 6, 0, led_level, 0)   
@@ -582,7 +742,7 @@ def hum_num_matrix_1(num):
     ap.set_pixel(3, 7, 0, 0, 0)
 
   if num == '1':
-    # number 1_bot_left - HUMIDITY
+        # number 1_bot_left - HUMIDITY
     ap.set_pixel(0, 4, 0, 0, 0)   
     ap.set_pixel(0, 5, 0, led_level, 0)   
     ap.set_pixel(0, 6, 0, 0, 0)   
@@ -601,7 +761,7 @@ def hum_num_matrix_1(num):
     ap.set_pixel(3, 7, 0, 0, 0)
 
   if num == '2':
-# number 2_bot_left - HUMIDITY
+        # number 2_bot_left - HUMIDITY
     ap.set_pixel(0, 4, 0, led_level, 0)   
     ap.set_pixel(0, 5, 0, 0, 0)   
     ap.set_pixel(0, 6, 0, 0, 0)   
@@ -620,7 +780,7 @@ def hum_num_matrix_1(num):
     ap.set_pixel(3, 7, 0, 0, 0)
 
   if num == '3':
-# number 3_bot_left - HUMIDITY
+        # number 3_bot_left - HUMIDITY
     ap.set_pixel(0, 4, 0, led_level, 0)   
     ap.set_pixel(0, 5, 0, 0, 0)   
     ap.set_pixel(0, 6, 0, 0, 0)   
@@ -639,7 +799,7 @@ def hum_num_matrix_1(num):
     ap.set_pixel(3, 7, 0, 0, 0)
 
   if num == '4':
-# number 4_bot_left - HUMIDITY
+        # number 4_bot_left - HUMIDITY
     ap.set_pixel(0, 4, 0, led_level, 0)   
     ap.set_pixel(0, 5, 0, led_level, 0)   
     ap.set_pixel(0, 6, 0, led_level, 0)   
@@ -658,7 +818,7 @@ def hum_num_matrix_1(num):
     ap.set_pixel(3, 7, 0, 0, 0)
 
   if num == '5':
-# number 5_bot_left - HUMIDITY
+        # number 5_bot_left - HUMIDITY
     ap.set_pixel(0, 4, 0, led_level, 0)   
     ap.set_pixel(0, 5, 0, led_level, 0)   
     ap.set_pixel(0, 6, 0, 0, 0)   
@@ -677,7 +837,7 @@ def hum_num_matrix_1(num):
     ap.set_pixel(3, 7, 0, 0, 0)
 
   if num == '6':
-# number 6_bot_left - HUMIDITY
+        # number 6_bot_left - HUMIDITY
     ap.set_pixel(0, 4, 0, led_level, 0)   
     ap.set_pixel(0, 5, 0, led_level, 0)   
     ap.set_pixel(0, 6, 0, led_level, 0)   
@@ -696,7 +856,7 @@ def hum_num_matrix_1(num):
     ap.set_pixel(3, 7, 0, 0, 0)
 
   if num == '7':
-# number 7_bot_left - HUMIDITY
+        # number 7_bot_left - HUMIDITY
     ap.set_pixel(0, 4, 0, led_level, 0)   
     ap.set_pixel(0, 5, 0, led_level, 0)   
     ap.set_pixel(0, 6, 0, 0, 0)   
@@ -715,7 +875,7 @@ def hum_num_matrix_1(num):
     ap.set_pixel(3, 7, 0, 0, 0)
 
   if num == '8':
-# number 8_bot_left - HUMIDITY
+        # number 8_bot_left - HUMIDITY
     ap.set_pixel(0, 4, 0, led_level, 0)   
     ap.set_pixel(0, 5, 0, led_level, 0)   
     ap.set_pixel(0, 6, 0, led_level, 0)   
@@ -734,7 +894,7 @@ def hum_num_matrix_1(num):
     ap.set_pixel(3, 7, 0, 0, 0)
 
   if num == '9':
-# number 9_bot_left - HUMIDITY
+        # number 9_bot_left - HUMIDITY
     ap.set_pixel(0, 4, 0, led_level, 0)   
     ap.set_pixel(0, 5, 0, led_level, 0)   
     ap.set_pixel(0, 6, 0, led_level, 0)   
@@ -755,7 +915,7 @@ def hum_num_matrix_1(num):
 def hum_num_matrix_2(num):
 
   if num == '0':
-# number 0_bottom_left - HUMIDITY
+        # number 0_bottom_left - HUMIDITY
     ap.set_pixel(4, 4, 0, led_level, 0)   
     ap.set_pixel(4, 5, 0, led_level, 0)   
     ap.set_pixel(4, 6, 0, led_level, 0)   
@@ -774,7 +934,7 @@ def hum_num_matrix_2(num):
     ap.set_pixel(7, 7, 0, 0, 0)
     
   if num == '1':
-# number 1_bottom_left - HUMIDITY
+        # number 1_bottom_left - HUMIDITY
     ap.set_pixel(4, 4, 0, 0, 0)   
     ap.set_pixel(4, 5, 0, led_level, 0)   
     ap.set_pixel(4, 6, 0, 0, 0)   
@@ -793,7 +953,7 @@ def hum_num_matrix_2(num):
     ap.set_pixel(7, 7, 0, 0, 0)
     
   if num == '2':
-# number 2_bot_left - HUMIDITY
+        # number 2_bot_left - HUMIDITY
     ap.set_pixel(4, 4, 0, led_level, 0)   
     ap.set_pixel(4, 5, 0, 0, 0)   
     ap.set_pixel(4, 6, 0, 0, 0)   
@@ -812,7 +972,7 @@ def hum_num_matrix_2(num):
     ap.set_pixel(7, 7, 0, 0, 0)
 
   if num == '3':
-# number 3_bot_left - HUMIDITY
+        # number 3_bot_left - HUMIDITY
     ap.set_pixel(4, 4, 0, led_level, 0)   
     ap.set_pixel(4, 5, 0, 0, 0)   
     ap.set_pixel(4, 6, 0, 0, 0)   
@@ -831,7 +991,7 @@ def hum_num_matrix_2(num):
     ap.set_pixel(7, 7, 0, 0, 0)
 
   if num == '4':
-# number 4_bot_left - HUMIDITY
+        # number 4_bot_left - HUMIDITY
     ap.set_pixel(4, 4, 0, led_level, 0)   
     ap.set_pixel(4, 5, 0, led_level, 0)   
     ap.set_pixel(4, 6, 0, led_level, 0)   
@@ -850,7 +1010,7 @@ def hum_num_matrix_2(num):
     ap.set_pixel(7, 7, 0, 0, 0)
 
   if num == '5':
-# number 5_bot_left - HUMIDITY
+        # number 5_bot_left - HUMIDITY
     ap.set_pixel(4, 4, 0, led_level, 0)   
     ap.set_pixel(4, 5, 0, led_level, 0)   
     ap.set_pixel(4, 6, 0, 0, 0)   
@@ -869,7 +1029,7 @@ def hum_num_matrix_2(num):
     ap.set_pixel(7, 7, 0, 0, 0)
 
   if num == '6':
-# number 6_bot_left - HUMIDITY
+        # number 6_bot_left - HUMIDITY
     ap.set_pixel(4, 4, 0, led_level, 0)   
     ap.set_pixel(4, 5, 0, led_level, 0)   
     ap.set_pixel(4, 6, 0, led_level, 0)   
@@ -888,7 +1048,7 @@ def hum_num_matrix_2(num):
     ap.set_pixel(7, 7, 0, 0, 0)
 
   if num == '7':
-# number 7_bot_left - HUMIDITY
+        # number 7_bot_left - HUMIDITY
     ap.set_pixel(4, 4, 0, led_level, 0)   
     ap.set_pixel(4, 5, 0, led_level, 0)   
     ap.set_pixel(4, 6, 0, 0, 0)   
@@ -907,7 +1067,7 @@ def hum_num_matrix_2(num):
     ap.set_pixel(7, 7, 0, 0, 0)
 
   if num == '8':
-# number 8_bot_left - HUMIDITY
+        # number 8_bot_left - HUMIDITY
     ap.set_pixel(4, 4, 0, led_level, 0)   
     ap.set_pixel(4, 5, 0, led_level, 0)   
     ap.set_pixel(4, 6, 0, led_level, 0)   
@@ -926,7 +1086,7 @@ def hum_num_matrix_2(num):
     ap.set_pixel(7, 7, 0, 0, 0)
 
   if num == '9':
-# number 9_bot_left - HUMIDITY
+        # number 9_bot_left - HUMIDITY
     ap.set_pixel(4, 4, 0, led_level, 0)   
     ap.set_pixel(4, 5, 0, led_level, 0)   
     ap.set_pixel(4, 6, 0, led_level, 0)   
@@ -944,8 +1104,10 @@ def hum_num_matrix_2(num):
     ap.set_pixel(7, 6, 0, 0, 0)   
     ap.set_pixel(7, 7, 0, 0, 0)
 	
+        # HUMIDITY ERROR STATES 
+	
 def hum_num_error_high():
-# error state warning for - HIGH HUMIDITY
+        # error state warning for - HIGH HUMIDITY
     ap.set_pixel(0, 4, red, 0, 0)   
     ap.set_pixel(0, 5, red, 0, 0)   
     ap.set_pixel(0, 6, red, 0, 0)   
@@ -980,7 +1142,7 @@ def hum_num_error_high():
     ap.set_pixel(7, 7, red, 0, 0)
    	
 def hum_num_error_low():
-# error state warning for - LOW HUMIDITY
+        # error state warning for - LOW HUMIDITY
     ap.set_pixel(0, 4, 0, 0, blue)   
     ap.set_pixel(0, 5, 0, 0, blue)   
     ap.set_pixel(0, 6, 0, 0, blue)   
@@ -1015,12 +1177,14 @@ def hum_num_error_low():
     ap.set_pixel(7, 7, 0, 0, blue)
 
     
-## PRESSURE NUMBERS MATRIX BELOW # 
+# 10 #    PSI LED MATRIX INCLUDING WARNINGS
+    
+        # PRESSURE NUMBERS MATRIX BELOW 
 
 def psi_num_matrix_1(num):
 
   if num == '0':
-# number 0_top_left - PRESSURE
+        # number 0_top_left - PRESSURE
     ap.set_pixel(0, 0, 0, 0, led_level)   
     ap.set_pixel(0, 1, 0, 0, led_level)   
     ap.set_pixel(0, 2, 0, 0, led_level)   
@@ -1039,7 +1203,7 @@ def psi_num_matrix_1(num):
     ap.set_pixel(3, 3, 0, 0, 0)
 
   if num == '1':
-# number 1_top_left - PRESSURE
+        # number 1_top_left - PRESSURE
     ap.set_pixel(0, 0, 0, 0, 0)   
     ap.set_pixel(0, 1, 0, 0, led_level)   
     ap.set_pixel(0, 2, 0, 0, 0)   
@@ -1058,7 +1222,7 @@ def psi_num_matrix_1(num):
     ap.set_pixel(3, 3, 0, 0, 0)
 
   if num == '2':
-# number 2_top_left - PRESSURE
+        # number 2_top_left - PRESSURE
     ap.set_pixel(0, 0, 0, 0, led_level)   
     ap.set_pixel(0, 1, 0, 0, 0)   
     ap.set_pixel(0, 2, 0, 0, 0)   
@@ -1077,7 +1241,7 @@ def psi_num_matrix_1(num):
     ap.set_pixel(3, 3, 0, 0, 0)
 
   if num == '3':
-# number 3_top_left - PRESSURE
+        # number 3_top_left - PRESSURE
     ap.set_pixel(0, 0, 0, 0, led_level)   
     ap.set_pixel(0, 1, 0, 0, 0)   
     ap.set_pixel(0, 2, 0, 0, 0)   
@@ -1096,7 +1260,7 @@ def psi_num_matrix_1(num):
     ap.set_pixel(3, 3, 0, 0, 0)
 
   if num == '4':
-# number 4_top_left - PRESSURE
+        # number 4_top_left - PRESSURE
     ap.set_pixel(0, 0, 0, 0, led_level)   
     ap.set_pixel(0, 1, 0, 0, led_level)   
     ap.set_pixel(0, 2, 0, 0, led_level)   
@@ -1115,7 +1279,7 @@ def psi_num_matrix_1(num):
     ap.set_pixel(3, 3, 0, 0, 0)
 
   if num == '5':
-# number 5_top_left - PRESSURE
+        # number 5_top_left - PRESSURE
     ap.set_pixel(0, 0, 0, 0, led_level)   
     ap.set_pixel(0, 1, 0, 0, led_level)   
     ap.set_pixel(0, 2, 0, 0, 0)   
@@ -1134,7 +1298,7 @@ def psi_num_matrix_1(num):
     ap.set_pixel(3, 3, 0, 0, 0)
 
   if num == '6':
-# number 6_top_left - PRESSURE
+        # number 6_top_left - PRESSURE
     ap.set_pixel(0, 0, 0, 0, led_level)   
     ap.set_pixel(0, 1, 0, 0, led_level)   
     ap.set_pixel(0, 2, 0, 0, led_level)   
@@ -1153,7 +1317,7 @@ def psi_num_matrix_1(num):
     ap.set_pixel(3, 3, 0, 0, 0)
 
   if num == '7':
-# number 7_top_left - PRESSURE
+        # number 7_top_left - PRESSURE
     ap.set_pixel(0, 0, 0, 0, led_level)   
     ap.set_pixel(0, 1, 0, 0, led_level)   
     ap.set_pixel(0, 2, 0, 0, 0)   
@@ -1172,7 +1336,7 @@ def psi_num_matrix_1(num):
     ap.set_pixel(3, 3, 0, 0, 0)
 
   if num == '8':
-# number 8_top_left - PRESSURE
+        # number 8_top_left - PRESSURE
     ap.set_pixel(0, 0, 0, 0, led_level)   
     ap.set_pixel(0, 1, 0, 0, led_level)   
     ap.set_pixel(0, 2, 0, 0, led_level)   
@@ -1191,7 +1355,7 @@ def psi_num_matrix_1(num):
     ap.set_pixel(3, 3, 0, 0, 0)
 
   if num == '9':
-# number 9_top_left - PRESSURE
+        # number 9_top_left - PRESSURE
     ap.set_pixel(0, 0, 0, 0, led_level)   
     ap.set_pixel(0, 1, 0, 0, led_level)   
     ap.set_pixel(0, 2, 0, 0, led_level)   
@@ -1212,7 +1376,7 @@ def psi_num_matrix_1(num):
 def psi_num_matrix_2(num):
 
   if num == '0':
-# number 0_top_right - PRESSURE
+        # number 0_top_right - PRESSURE
     ap.set_pixel(4, 0, 0, 0, led_level)   
     ap.set_pixel(4, 1, 0, 0, led_level)   
     ap.set_pixel(4, 2, 0, 0, led_level)   
@@ -1231,7 +1395,7 @@ def psi_num_matrix_2(num):
     ap.set_pixel(7, 3, 0, 0, 0)
 
   if num == '1':
-    # number 1_top_right - PRESSURE
+        # number 1_top_right - PRESSURE
     ap.set_pixel(4, 0, 0, 0, 0)   
     ap.set_pixel(4, 1, 0, 0, led_level)   
     ap.set_pixel(4, 2, 0, 0, 0)   
@@ -1250,7 +1414,7 @@ def psi_num_matrix_2(num):
     ap.set_pixel(7, 3, 0, 0, 0)
 
   if num == '2':
-# number 2_top_right - PRESSURE
+        # number 2_top_right - PRESSURE
     ap.set_pixel(4, 0, 0, 0, led_level)   
     ap.set_pixel(4, 1, 0, 0, 0)   
     ap.set_pixel(4, 2, 0, 0, 0)   
@@ -1269,7 +1433,7 @@ def psi_num_matrix_2(num):
     ap.set_pixel(7, 3, 0, 0, 0)
 
   if num == '3':
-# number 3_top_right - PRESSURE
+        # number 3_top_right - PRESSURE
     ap.set_pixel(4, 0, 0, 0, led_level)   
     ap.set_pixel(4, 1, 0, 0, 0)   
     ap.set_pixel(4, 2, 0, 0, 0)   
@@ -1288,7 +1452,7 @@ def psi_num_matrix_2(num):
     ap.set_pixel(7, 3, 0, 0, 0)
 
   if num == '4':
-# number 4_top_right - PRESSURE
+        # number 4_top_right - PRESSURE
     ap.set_pixel(4, 0, 0, 0, led_level)   
     ap.set_pixel(4, 1, 0, 0, led_level)   
     ap.set_pixel(4, 2, 0, 0, led_level)   
@@ -1307,7 +1471,7 @@ def psi_num_matrix_2(num):
     ap.set_pixel(7, 3, 0, 0, 0)
 
   if num == '5':
-# number 5_top_right - PRESSURE
+        # number 5_top_right - PRESSURE
     ap.set_pixel(4, 0, 0, 0, led_level)   
     ap.set_pixel(4, 1, 0, 0, led_level)   
     ap.set_pixel(4, 2, 0, 0, 0)   
@@ -1326,7 +1490,7 @@ def psi_num_matrix_2(num):
     ap.set_pixel(7, 3, 0, 0, 0)
 
   if num == '6':
-# number 6_top_right - PRESSURE
+        # number 6_top_right - PRESSURE
     ap.set_pixel(4, 0, 0, 0, led_level)   
     ap.set_pixel(4, 1, 0, 0, led_level)   
     ap.set_pixel(4, 2, 0, 0, led_level)   
@@ -1345,7 +1509,7 @@ def psi_num_matrix_2(num):
     ap.set_pixel(7, 3, 0, 0, 0)
 
   if num == '7':
-# number 7_top_right - PRESSURE
+        # number 7_top_right - PRESSURE
     ap.set_pixel(4, 0, 0, 0, led_level)   
     ap.set_pixel(4, 1, 0, 0, led_level)   
     ap.set_pixel(4, 2, 0, 0, 0)   
@@ -1364,7 +1528,7 @@ def psi_num_matrix_2(num):
     ap.set_pixel(7, 3, 0, 0, 0)
 
   if num == '8':
-# number 8_top_right - PRESSURE
+        # number 8_top_right - PRESSURE
     ap.set_pixel(4, 0, 0, 0, led_level)   
     ap.set_pixel(4, 1, 0, 0, led_level)   
     ap.set_pixel(4, 2, 0, 0, led_level)   
@@ -1383,7 +1547,7 @@ def psi_num_matrix_2(num):
     ap.set_pixel(7, 3, 0, 0, 0)
 
   if num == '9':
-# number 9_top_right - PRESSURE
+        # number 9_top_right - PRESSURE
     ap.set_pixel(4, 0, 0, 0, led_level)   
     ap.set_pixel(4, 1, 0, 0, led_level)   
     ap.set_pixel(4, 2, 0, 0, led_level)   
@@ -1404,7 +1568,7 @@ def psi_num_matrix_2(num):
 def psi_num_matrix_3(num):
 
   if num == '0':
-# number 0_bot_left - PRESSURE
+        # number 0_bot_left - PRESSURE
     ap.set_pixel(0, 4, 0, 0, led_level)   
     ap.set_pixel(0, 5, 0, 0, led_level)   
     ap.set_pixel(0, 6, 0, 0, led_level)   
@@ -1423,7 +1587,7 @@ def psi_num_matrix_3(num):
     ap.set_pixel(3, 7, 0, 0, 0)
 
   if num == '1':
-    # number 1_bot_left - PRESSURE
+        # number 1_bot_left - PRESSURE
     ap.set_pixel(0, 4, 0, 0, 0)   
     ap.set_pixel(0, 5, 0, 0, led_level)   
     ap.set_pixel(0, 6, 0, 0, 0)   
@@ -1442,7 +1606,7 @@ def psi_num_matrix_3(num):
     ap.set_pixel(3, 7, 0, 0, 0)
 
   if num == '2':
-# number 2_bot_left - PRESSURE
+        # number 2_bot_left - PRESSURE
     ap.set_pixel(0, 4, 0, 0, led_level)   
     ap.set_pixel(0, 5, 0, 0, 0)   
     ap.set_pixel(0, 6, 0, 0, 0)   
@@ -1461,7 +1625,7 @@ def psi_num_matrix_3(num):
     ap.set_pixel(3, 7, 0, 0, 0)
 
   if num == '3':
-# number 3_bot_left - PRESSURE
+        # number 3_bot_left - PRESSURE
     ap.set_pixel(0, 4, 0, 0, led_level)   
     ap.set_pixel(0, 5, 0, 0, 0)   
     ap.set_pixel(0, 6, 0, 0, 0)   
@@ -1480,7 +1644,7 @@ def psi_num_matrix_3(num):
     ap.set_pixel(3, 7, 0, 0, 0)
 
   if num == '4':
-# number 4_bot_left - PRESSURE
+        # number 4_bot_left - PRESSURE
     ap.set_pixel(0, 4, 0, 0, led_level)   
     ap.set_pixel(0, 5, 0, 0, led_level)   
     ap.set_pixel(0, 6, 0, 0, led_level)   
@@ -1499,7 +1663,7 @@ def psi_num_matrix_3(num):
     ap.set_pixel(3, 7, 0, 0, 0)
 
   if num == '5':
-# number 5_bot_left - PRESSURE
+        # number 5_bot_left - PRESSURE
     ap.set_pixel(0, 4, 0, 0, led_level)   
     ap.set_pixel(0, 5, 0, 0, led_level)   
     ap.set_pixel(0, 6, 0, 0, 0)   
@@ -1518,7 +1682,7 @@ def psi_num_matrix_3(num):
     ap.set_pixel(3, 7, 0, 0, 0)
 
   if num == '6':
-# number 6_bot_left - PRESSURE
+        # number 6_bot_left - PRESSURE
     ap.set_pixel(0, 4, 0, 0, led_level)   
     ap.set_pixel(0, 5, 0, 0, led_level)   
     ap.set_pixel(0, 6, 0, 0, led_level)   
@@ -1537,7 +1701,7 @@ def psi_num_matrix_3(num):
     ap.set_pixel(3, 7, 0, 0, 0)
 
   if num == '7':
-# number 7_bot_left - PRESSURE
+        # number 7_bot_left - PRESSURE
     ap.set_pixel(0, 4, 0, 0, led_level)   
     ap.set_pixel(0, 5, 0, 0, led_level)   
     ap.set_pixel(0, 6, 0, 0, 0)   
@@ -1556,7 +1720,7 @@ def psi_num_matrix_3(num):
     ap.set_pixel(3, 7, 0, 0, 0)
 
   if num == '8':
-# number 8_bot_left - PRESSURE
+        # number 8_bot_left - PRESSURE
     ap.set_pixel(0, 4, 0, 0, led_level)   
     ap.set_pixel(0, 5, 0, 0, led_level)   
     ap.set_pixel(0, 6, 0, 0, led_level)   
@@ -1575,7 +1739,7 @@ def psi_num_matrix_3(num):
     ap.set_pixel(3, 7, 0, 0, 0)
 
   if num == '9':
-# number 9_bot_left - PRESSURE
+        # number 9_bot_left - PRESSURE
     ap.set_pixel(0, 4, 0, 0, led_level)   
     ap.set_pixel(0, 5, 0, 0, led_level)   
     ap.set_pixel(0, 6, 0, 0, led_level)   
@@ -1596,7 +1760,7 @@ def psi_num_matrix_3(num):
 def psi_num_matrix_4(num):
 
   if num == '0':
-# number 0_bottom_right - PRESSURE
+        # number 0_bottom_right - PRESSURE
     ap.set_pixel(4, 4, 0, 0, led_level)   
     ap.set_pixel(4, 5, 0, 0, led_level)   
     ap.set_pixel(4, 6, 0, 0, led_level)   
@@ -1615,7 +1779,7 @@ def psi_num_matrix_4(num):
     ap.set_pixel(7, 7, 0, 0, 0)
 
   if num == '1':
-    # number 1_bottom_right - PRESSURE
+        # number 1_bottom_right - PRESSURE
     ap.set_pixel(4, 4, 0, 0, 0)   
     ap.set_pixel(4, 5, 0, 0, led_level)   
     ap.set_pixel(4, 6, 0, 0, 0)   
@@ -1634,7 +1798,7 @@ def psi_num_matrix_4(num):
     ap.set_pixel(7, 7, 0, 0, 0)
 
   if num == '2':
-# number 2_bot_right - PRESSURE
+        # number 2_bot_right - PRESSURE
     ap.set_pixel(4, 4, 0, 0, led_level)   
     ap.set_pixel(4, 5, 0, 0, 0)   
     ap.set_pixel(4, 6, 0, 0, 0)   
@@ -1653,7 +1817,7 @@ def psi_num_matrix_4(num):
     ap.set_pixel(7, 7, 0, 0, 0)
 
   if num == '3':
-# number 3_bot_right - PRESSURE
+        # number 3_bot_right - PRESSURE
     ap.set_pixel(4, 4, 0, 0, led_level)   
     ap.set_pixel(4, 5, 0, 0, 0)   
     ap.set_pixel(4, 6, 0, 0, 0)   
@@ -1672,7 +1836,7 @@ def psi_num_matrix_4(num):
     ap.set_pixel(7, 7, 0, 0, 0)
 
   if num == '4':
-# number 4_bot_right - PRESSURE
+        # number 4_bot_right - PRESSURE
     ap.set_pixel(4, 4, 0, 0, led_level)   
     ap.set_pixel(4, 5, 0, 0, led_level)   
     ap.set_pixel(4, 6, 0, 0, led_level)   
@@ -1691,7 +1855,7 @@ def psi_num_matrix_4(num):
     ap.set_pixel(7, 7, 0, 0, 0)
 
   if num == '5':
-# number 5_bot_right - PRESSURE
+        # number 5_bot_right - PRESSURE
     ap.set_pixel(4, 4, 0, 0, led_level)   
     ap.set_pixel(4, 5, 0, 0, led_level)   
     ap.set_pixel(4, 6, 0, 0, 0)   
@@ -1710,7 +1874,7 @@ def psi_num_matrix_4(num):
     ap.set_pixel(7, 7, 0, 0, 0)
 
   if num == '6':
-# number 6_bot_right - PRESSURE
+        # number 6_bot_right - PRESSURE
     ap.set_pixel(4, 4, 0, 0, led_level)   
     ap.set_pixel(4, 5, 0, 0, led_level)   
     ap.set_pixel(4, 6, 0, 0, led_level)   
@@ -1729,7 +1893,7 @@ def psi_num_matrix_4(num):
     ap.set_pixel(7, 7, 0, 0, 0)
 
   if num == '7':
-# number 7_bot_right - PRESSURE
+        # number 7_bot_right - PRESSURE
     ap.set_pixel(4, 4, 0, 0, led_level)   
     ap.set_pixel(4, 5, 0, 0, led_level)   
     ap.set_pixel(4, 6, 0, 0, 0)   
@@ -1748,7 +1912,7 @@ def psi_num_matrix_4(num):
     ap.set_pixel(7, 7, 0, 0, 0)
 
   if num == '8':
-# number 8_bot_right - PRESSURE
+        # number 8_bot_right - PRESSURE
     ap.set_pixel(4, 4, 0, 0, led_level)   
     ap.set_pixel(4, 5, 0, 0, led_level)   
     ap.set_pixel(4, 6, 0, 0, led_level)   
@@ -1767,7 +1931,7 @@ def psi_num_matrix_4(num):
     ap.set_pixel(7, 7, 0, 0, 0)
 
   if num == '9':
-# number 9_bot_right - PRESSURE
+        # number 9_bot_right - PRESSURE
     ap.set_pixel(4, 4, 0, 0, led_level)   
     ap.set_pixel(4, 5, 0, 0, led_level)   
     ap.set_pixel(4, 6, 0, 0, led_level)   
@@ -1785,8 +1949,10 @@ def psi_num_matrix_4(num):
     ap.set_pixel(7, 6, 0, 0, 0)   
     ap.set_pixel(7, 7, 0, 0, 0)
 	
+        # PRESSURE ERROR STATES 
+	
 def psi_num_error_high():
-# error state warning for - HIGH PRESSURE
+        # error state warning for - HIGH PRESSURE
     ap.set_pixel(0, 0, red, 0, 0)   
     ap.set_pixel(0, 1, red, 0, 0)   
     ap.set_pixel(0, 2, red, 0, 0)   
@@ -1853,7 +2019,7 @@ def psi_num_error_high():
     ap.set_pixel(7, 7, red, 0, 0)
 	
 def psi_num_error_low():
-# error state warning for - LOW PRESSURE
+        # error state warning for - LOW PRESSURE
     ap.set_pixel(0, 0, 0, 0, blue)   
     ap.set_pixel(0, 1, 0, 0, blue)   
     ap.set_pixel(0, 2, 0, 0, blue)   
@@ -1920,7 +2086,9 @@ def psi_num_error_low():
     ap.set_pixel(7, 7, 0, 0, blue)
 
    
-## SETTING UP FLIGHT BUTTONS FOR USE AND ASSIGNING COMMANDS
+# 11 #    SETTING UP FLIGHT BUTTONS FOR USE AND ASSIGNING COMMANDS
+
+        # LOOKING FOR BUTTON PRESSES FROM FLIGHT BUTTONS
    
 def button_pressed(button):             ## CONTINUOUSLY MONITORS FOR BUTTON EVENTS
     global running
@@ -1932,12 +2100,15 @@ def button_pressed(button):             ## CONTINUOUSLY MONITORS FOR BUTTON EVEN
     global hum_mute
     global alarm_count
     
+        # UP BUTTON (BRIGHTNESS INCREASE)     
     if button == UP and led_level < 250:    ## ADJUST LED MATRIX BRIGHTNESS - UP
         led_level = led_level + 10
 
+        # DOWN BUTTON (BRIGHTNESS DECRASE)        
     if button == DOWN and led_level > 40:   ## ADJUST LED MATRIX BRIGHTNESS - DOWN
         led_level = led_level - 10
 
+        # LEFT BUTTON (TEMPERATURE & HUMIDITY PAGE ON)
     if button == LEFT:                  ## FORCE TEMPERATURE AND HUMIDITY PAGE ON (5s)
         temp_hum_on = 1                 
         
@@ -1952,7 +2123,8 @@ def button_pressed(button):             ## CONTINUOUSLY MONITORS FOR BUTTON EVEN
         
         tmp_mute = 0                    ## SHOWS THE WARNING FOR TEMPERATURE
         hum_mute = 0                    ## SHOWS THE WARNING FOR HUMIDITY
-        
+     
+        # RIGHT BUTTON (PRESSURE PAGE ON) 
     if button == RIGHT:                 ## FORCE PRESSURE PAGE ON (5s)
         psi_on = 1                      
         
@@ -1965,12 +2137,14 @@ def button_pressed(button):             ## CONTINUOUSLY MONITORS FOR BUTTON EVEN
         
         psi_on = 0                      ## FORCE PRESSURE PAGE OFF
         
+        # A BUTTON (MUTES ALARMS)
     if button == A:                     ## ALLOWS ASTRONAUT (Tim) TO MUTE ALARMS
         alarm_count = 0                 # RESETS 'alarm_count' TO ZERO TO START COUNTDOWN
         tmp_mute = 1                    # MUTES THE WARNING FOR TEMPERATURE
         hum_mute = 1                    # MUTES THE WARNING FOR HUMIDITY
         psi_mute = 1                    # MUTES THE WARNING FOR PRESSURE
-        
+     
+        # B BUTTON (UN-MUTES ALARMS)     
     if button == B:
         alarm_count = 0                 # RESETS 'alarm_count' TO ZERO TO START COUNTDOWN
         tmp_mute = 0                    # SHOWS THE WARNING FOR TEMPERATURE
@@ -1982,7 +2156,9 @@ for pin in [UP, DOWN, LEFT, RIGHT, A, B]:## SETUP GPIP PIN VALUES
     GPIO.add_event_detect(pin, GPIO.FALLING, callback=button_pressed, bouncetime=500)
    
    
-## SET PREVIOUS TEMPERATURE, HUMIDITY, & PRESSURE VALUES TO ZERO  ##
+# 12 #    RESETTING PREVIOUS READINGS TO START CLEAN
+   
+        # SET PREVIOUS TEMPERATURE, HUMIDITY, & PRESSURE VALUES TO ZERO
 
 temp_prev = 0                           # PREVIOUS TEMPERATURE READING
 temp_int = 0                            # CURRENT TEMPERATURE READING
@@ -1999,7 +2175,8 @@ sec_count = 0                           # CURRENT TRIGGER READING FOR RECORDING 
 alarm_count = 0                         # TRIGGER FOR RE-ENABLING ALARM AFTER A SET PERIOD OF TIME
 alarm_timer = 0
 
-## NEW ASTROPI CLASS FILE TO ENSURE ORIENTATION READING IS DISPLAYED CORRECTLY ##
+
+# 13 #    NEW ASTROPI CLASS FILE TO ENSURE ORIENTATION READING IS DISPLAYED CORRECTLY
 
 ap = AstroPi()
 
@@ -2060,7 +2237,7 @@ class AstroPiContinuous(AstroPi):       # NEW CLASS FILE WRITEN BY 'LetHopeItsSn
         self.stop()
 
         
-## NEW CLASS FILE TO ALLOW CPU_TEMP TO BE RECALLED AS NEEDED ##
+# 14 #    NEW CLASS FILE TO ALLOW CPU_TEMP TO BE RECALLED AS NEEDED
         
 class CPUTemp:
     def __init__(self, tempfilename = "/sys/class/thermal/thermal_zone0/temp"):
@@ -2096,7 +2273,9 @@ class CPUTemp:
     def close(self):
         self.tempfile.close()
 
-        
+ 
+ # 15 #    CAMERA SYSTEM FOR SNAPSHOTS
+ 
 def snapshot_cam():
     list_ex = ['sports'] ## TURNS OFF AUTOMATIC EXPOSURE AND SETS IT TO 'sports' ##
     list_awb =['horizon'] ## TURNS OFF AUTOMATIC WHITE BALANCE AND SETS IT TO 'horizon' ##
@@ -2113,7 +2292,7 @@ def snapshot_cam():
         camera.resolution = (768, 432)
 
         
-## MAIN PROGRAM LOOP ##
+# 16 #    MAIN PROGRAM LOOP
   
 try:  
   while running:                        ## ENSURES THAT THE SCRIPT IS ALWAYS RUNNING IN A LOOP
@@ -2157,7 +2336,7 @@ try:
                 # RECORDED AS dd/mm/yy hh:mm:ss (DAY/MONTH/YEAR HOURS:MINUTES:SECONDS)
             
             
-            # TAKE SNAPSHOT IF THE ASTROPI IS IN AN ERROR STATE - TEMPERATURE / HUMIDITY / PRESSURE   ## CHANGED 13/09/2015
+        # TAKE SNAPSHOT IF THE ASTROPI IS IN AN ERROR STATE - TEMPERATURE / HUMIDITY / PRESSURE   ## CHANGED 13/09/2015
                 
                 if snapshot_t == 1:
                 
@@ -2188,6 +2367,8 @@ try:
                         camera.capture('images/'+same_time+' image_psi.jpg')
 
                         
+        # LOG ALL INFORMATION REQUIRED FOR ASTROPI
+        
                 print("Logged {}".format(count))  #KEEPS ASTRONAUT (Tim) UP TO DATE WITH READINGS RECORDED
                 file.write("\"{}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\"\n".format(asctime(),display_f,temp_f,tmp_reading_f,tmp_alarm_f,hum_f,hum_reading_f,hum_alarm_f,psi_f,psi_reading_f,psi_alarm_f,pitch,roll,yaw))
                 sec_count = 0 
@@ -2195,20 +2376,23 @@ try:
                 alarm_timer = alarm_timer + 1     # ADDS 1 TO THE 'alarm_timer' TRIGGER
 
                 
-            ## RE-ENABLE ALARMS FOR THE TEMPERATURE, HUMIDITY AND PRESSURE READINGS 
+        # COUNTER TO RE-ENABLE ALARMS FOR THE TEMPERATURE, HUMIDITY AND PRESSURE READINGS 
+                
+            if alarm_timer >= 2:        # ALARM_TIMER SET TO '2' 
+                alarm_count+=1          # ONCE 'alarm_timer' EQUALS 5, ADDS ONE TO 'alarm_count',
+                alarm_timer = 0         # THIS ENSURES THE TIMERS ARE CLEARED ON A BUTTON PRESS
+
+                
+        # RE-ENABLE ALARMS FOR THE TEMPERATURE, HUMIDITY AND PRESSURE READINGS 
             
-            if alarm_count == 35:        ## WAITS FOR 30mins (APPROX.) BEFORE RE-ENABLING ALARMS
-                tmp_mute = 0
+            if alarm_count >= 29:       # ALARM_COUNT SET TO '29' TO RESET THE ALARMS AFTER 30mins (APPROX.) BEFORE RE-ENABLING 
+                tmp_mute = 0            
                 hum_mute = 0
                 psi_mute = 0
                 alarm_count = 0          # RESETS 'alarm_count' TO ZERO TO START COUNTDOWN AGAIN
-                
-            elif alarm_timer >= 5:
-                alarm_count+=1           # ONCE 'alarm_timer' EQUALS 5, ADDS ONE TO 'alarm_count',
-                alarm_timer = 0          # THIS ENSURES THE TIMERS ARE CLEARED ON A BUTTON PRESS
             
             
-            ## CALCULATIONS FOR TEMPERATURE TO COMPENSATE FOR CPU_TEMP AFFECTING TEMPERATURE READINGS
+        # CALCULATIONS FOR TEMPERATURE TO COMPENSATE FOR CPU_TEMP AFFECTING TEMPERATURE READINGS
             
             t = ap.get_temperature()
             p = ap.get_temperature_from_pressure()
@@ -2216,11 +2400,11 @@ try:
             with CPUTemp() as cpu_temp:
                 c = cpu_temp.get_temperature()
     
-            temp_calc = ((t+p+h)/3) - (c/4)
+            temp_calc = ((t+p+h)/3) - (c/5)
     
   
-            ## GET TEMPERATURE, HUMIDITY, & PRESSURE READINGS FROM ASTROPI SENSORS ##
-            ## also CREATES INTERGAR FOR LOGGING INFORMATION CORRECTLY ON A TABLE ##
+        ## GET TEMPERATURE, HUMIDITY, & PRESSURE READINGS FROM ASTROPI SENSORS ##
+        ## also CREATES INTERGAR FOR LOGGING INFORMATION CORRECTLY ON A TABLE ##
  
             temp_f = temp_calc              ## STORES TEMPERATURE READING WITHIN temp_f
             temp_int = int(temp_f)          ## CREATES INTERGAR FROM TEMPERATURE READING
@@ -2232,7 +2416,7 @@ try:
             psi = str(psi_int).zfill(4)     # CONVERT PRESSURE READING TO STRING ## - FIXED TO SOLVE <1000 PRESSURE LOCKUPS (fixed by Dave Honess 24th Aug 2015)
         
     
-            ## LOG IF THE DISPLAY HAS BEEN MUTED (BLACK BOX STYLE) ##
+        ## LOG IF THE DISPLAY HAS BEEN MUTED (BLACK BOX STYLE) ##
     
             if led_level < 50:              # DOUBLE CHECK LED LIGHT LEVELS TO CONFIRM DISPLAY ACTIVE
                 display_mute = 1
@@ -2245,7 +2429,7 @@ try:
                 display_f = 1
     
     
-            ## LOG IF THE TEMPERATURE ALARM READING AND IF IT HAS BEEN MUTED (BLACK BOX STYLE) ##
+        ## LOG IF THE TEMPERATURE ALARM READING AND IF IT HAS BEEN MUTED (BLACK BOX STYLE) ##
     
             if tmp_mute == 1:               # TRANSLATES THE ALARM MUTE INTO ON AND OFF FOR LOG FILE
                 tmp_alarm_f = 0
@@ -2270,7 +2454,7 @@ try:
                 snapshot_t = 0
 
                     
-            ## LOG IF THE HUMIDITY ALARM READING AND IF IT HAS BEEN MUTED (BLACK BOX STYLE)  ##
+        ## LOG IF THE HUMIDITY ALARM READING AND IF IT HAS BEEN MUTED (BLACK BOX STYLE)  ##
     
             if hum_mute == 1:               # TRANSLATES THE ALARM MUTE INTO ON AND OFF FOR LOG FILE
                 hum_alarm_f = 0
@@ -2295,7 +2479,7 @@ try:
                 snapshot_h = 0        
     
     
-            ## LOG IF THE PRESSURE ALARM READING AND IF IT HAS BEEN MUTED (BLACK BOX STYLE)
+        ## LOG IF THE PRESSURE ALARM READING AND IF IT HAS BEEN MUTED (BLACK BOX STYLE)
     
             if psi_mute == 1:               # TRANSLATES THE ALARM MUTE INTO ON AND OFF FOR LOG FILE
                 psi_alarm_f = 0
@@ -2320,8 +2504,8 @@ try:
                 snapshot_p = 0        
                 
 
-            ## CONVERTS TEMPERATURE, HUMIDITY, PRESSURE READINGS TO A STRING ## 
-            ## also OVERWRITES AND STORES SENSOR READINGS WITHIN PREVIOUS READINGS ##
+        ## CONVERTS TEMPERATURE, HUMIDITY, PRESSURE READINGS TO A STRING ## 
+        ## also OVERWRITES AND STORES SENSOR READINGS WITHIN PREVIOUS READINGS ##
 
             temp_prev = temp_int            # STORE READING IN temp_prev
             temp =  str(temp_int)           # CONVERT TEMPERATURE READING TO STRING ##
@@ -2333,14 +2517,12 @@ try:
             psi =  str(psi_int)             # CONVERT PRESSURE READING TO STRING ##
  
  
- 
- 
-            ## ROTATE THE LED MATRIX DISPLAY (if required) ##
+         # ROTATE THE LED MATRIX DISPLAY
     
             ap.set_rotation(270)           ## ROTATION ENABLED TO WORK WITH ASTROPI NASA CASE
  
  
-            ## WRITES VALUES ONTO THE LED MATRIX FOR THE TEMPERATURE, HUMIDITY, & PRESSURE ##
+        # WRITES VALUES ONTO THE LED MATRIX FOR THE TEMPERATURE AND HUMIDITY 
         
             ## WRITES TO TOP_LINE ONLY - TEMPERATURE (2 DIGITS)##
     
@@ -2354,7 +2536,7 @@ try:
             hum_num_matrix_2(hum[1])            # SECOND DIGIT - HUMIDITY
  
     
-            ## TEMPERATURE - ERROR STATE CHECKING ##    
+         # TEMPERATURE - ERROR STATE CHECKING   
     
             if temp_hum_on == 1:                # IF TEMP+HUMIDITY PAGE ACTIVE DISPLAY PREVIOUS READING FOR 5s
                 time.sleep(5.0)
@@ -2387,7 +2569,7 @@ try:
                     tmp_alarm = 0
         
     
-            ## HUMIDITY - ERROR STATE CHECKING ## 
+        # HUMIDITY - ERROR STATE CHECKING
     
             if hum_mute == 0:                   # ONLY WORKOUT ALARM STATES FOR READINGS WITHIN HUMIDITY IF NOT MUTED
                 if hum_int - 5 > hum_prev:      # IF RISE OF 5 BETWEEN READING - ALARM STATE
@@ -2415,7 +2597,7 @@ try:
                     hum_alarm = 0
 
         
-            ## ALLOW ASTRONAUT (Tim) TO READ THE PREVIOUS TEMPERATURE & HUMIDITY READINGS ON LED MATRIX ##
+        # ALLOW ASTRONAUT (Tim) TO READ THE PREVIOUS TEMPERATURE & HUMIDITY READINGS ON THE LED MATRIX 
     
             if t_h_wait == 1:
                 time.sleep(0.5)
@@ -2423,7 +2605,7 @@ try:
                 time.sleep(0.5)
 
 
-            ## WRITE TO BOTH TOP_LINE & BOTTOM_LINE - PRESSURE (4 DIGITS) ##
+        # WRITE TO BOTH TOP_LINE & BOTTOM_LINE - PRESSURE (4 DIGITS)
     
             psi_num_matrix_1(psi[0])            # FIRST DIGIT - PRESSURE
             psi_num_matrix_2(psi[1])            # SECOND DIGIT - PRESSURE
@@ -2431,7 +2613,7 @@ try:
             psi_num_matrix_4(psi[3])            # FOURTH DIGIT - PRESSURE
 
     
-            ## PRESSURE - ERROR STATE CHECKING ##
+        # PRESSURE - ERROR STATE CHECKING 
     
             if psi_on == 1:                     # IF PRESSURE PAGE ACTIVE DISPLAY PREVIOUS READING FOR 5s
                 time.sleep(5.0)
@@ -2464,7 +2646,7 @@ try:
                     psi_alarm = 0
     
     
-            ## ALLOW ASTRONAUT (Tim) TO READ THE PREVIOUS PRESSURE READING ON LED MATRIX ##
+        # ALLOW ASTRONAUT (Tim) TO READ THE PREVIOUS PRESSURE READING ON THE LED MATRIX 
     
             if psi_wait == 1:
                 time.sleep(0.5)
@@ -2472,12 +2654,12 @@ try:
                 time.sleep(0.5)
 
         
-            ## RESETS THE LOGGING COUNTER & START LOOP AGAIN ##
+        # RESETS THE LOGGING COUNTER & START LOOP AGAIN 
 
             sec_count+=1                    ## ADD 1 TO SEC_COUNT FOR LOGGING
     
 	
-## PROGRAMMIG TO CLEANLY EXIT THE PYTHON PROGRAM AND STOP RECORDING READINGS (if required) ##
+# 17 #    PROGRAMMING TO CLEANLY EXIT THE PYTHON PROGRAM AND STOP RECORDING READINGS (if required)
     
 finally:
 
