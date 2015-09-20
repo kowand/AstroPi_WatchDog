@@ -2165,7 +2165,7 @@ try:
             hum_int = int(hum_f)            ## CREATES INTERGAR FROM HUMIDITY READING
  
             psi_f = ap.get_pressure()       ## STORES TEMPERATURE READING WITHIN psi_f
-            psi_int = int(psi_f)            ##CREATES INTERGAR FROM PRESSURE READING
+            psi = str(psi_int).zfill(4)     # CONVERT PRESSURE READING TO STRING ## - FIXED TO SOLVE <1000 PRESSURE LOCKUPS (fixed by Dave Honess 24th Aug 2015)
         
     
             ## LOG IF THE DISPLAY HAS BEEN MUTED (BLACK BOX STYLE) ##
