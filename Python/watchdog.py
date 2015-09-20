@@ -2344,29 +2344,30 @@ try:
             elif psi_on == 0:
                 time.sleep(0.5)                 # IF NOT ONLY WAIT FOR 0.5s
         
-            if psi_int - 5 > psi_prev:          # ONLY WORKOUT ALARM STATES FOR READINGS WITHIN PRESSURE IF NOT MUTED
-                psi_num_error_high()            # IF RISE OF 5 BETWEEN READING - ALARM STATE
-                psi_wait = 1
-                psi_alarm = 2
+            if psi_mute == 0:                       # ADDED TO FIX MUTING ISSUES
+                if psi_int - 5 > psi_prev:          # ONLY WORKOUT ALARM STATES FOR READINGS WITHIN PRESSURE IF NOT MUTED
+                    psi_num_error_high()            # IF RISE OF 5 BETWEEN READING - ALARM STATE
+                    psi_wait = 1
+                    psi_alarm = 2
         
-            elif psi_int + 5 < psi_prev:        # IF FALL OF 5 BETWEEN READING - ALARM STATE
-                psi_num_error_low()
-                psi_wait = 1
-                psi_alarm = 1
+                elif psi_int + 5 < psi_prev:        # IF FALL OF 5 BETWEEN READING - ALARM STATE
+                    psi_num_error_low()
+                    psi_wait = 1
+                    psi_alarm = 1
         
-            elif psi_int > 1040:                ## MUST BE CHECKED AGAINST ISS REQUIREMENTS
-                psi_num_error_high()
-                psi_wait = 1
-                psi_alarm = 2
+                elif psi_int > 1040:                ## MUST BE CHECKED AGAINST ISS REQUIREMENTS
+                    psi_num_error_high()
+                    psi_wait = 1
+                    psi_alarm = 2
         
-            elif psi_int < 1000:                ## MUST BE CHECKED AGAINST ISS REQUIREMENTS
-                psi_num_error_low()
-                psi_wait = 1
-                psi_alarm = 1
+                elif psi_int < 1000:                ## MUST BE CHECKED AGAINST ISS REQUIREMENTS
+                    psi_num_error_low()
+                    psi_wait = 1
+                    psi_alarm = 1
         
-            else:        
-                psi_wait = 1
-                psi_alarm = 0
+                else:        
+                    psi_wait = 1
+                    psi_alarm = 0
     
     
             ## ALLOW ASTRONAUT (Tim) TO READ THE PREVIOUS PRESSURE READING ON LED MATRIX ##
