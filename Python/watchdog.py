@@ -161,7 +161,7 @@
 # 17 #    PROGRAMMING TO CLEANLY EXIT THE PYTHON PROGRAM AND STOP RECORDING READINGS (IF REQUIRED)  [2669 - 2683]
         #    CLEARS THE LED MATRIX ON ASTROPI                       [2673 - 2685]
 
-        
+
 # 1 #    CREDITS 
         #   - ASTROPI FORUM MEMBERS, HELP AND SUPPORT FOR SCRIPTS AND FAULT FINDING
         #   - RASPBERRY PI FORUM MEMBERS, HELP AND SUPPORT FOR SCRIPTS AND FAULT FINDING
@@ -175,32 +175,34 @@ import time, logging
 from time import sleep, asctime
 import datetime
 import sys, os
-import astro_pi
-from astro_pi import AstroPi
+from sense_hat import SenseHat   ## CHANGED 13/09/2015
 import picamera
+
+
 
 # 3 #    SETTING UP PROGRAM
 
-        # SETS ASTROPI MODULES AS FRIENDLY NAME
+        # SETS SENSE_HAT MODULES AS FRIENDLY NAME   ## CHANGED 13/09/2015
 
-ap = astro_pi.AstroPi()
+#ap = astro_pi.AstroPi()
+sense = SenseHat()   ## CHANGED 13/09/2015
 
-        # SETTING UP RASPBERRYPI FOR FLIGHT BUTTONS TO USE GPIO PINS
+        # SETTING UP RASPBERRYPI FOR FLIGHT BUTTONS TO USE GPIO PINS 
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 
 
-        # ASSIGNING FRIENDLY NAMES FOR GPIO PINS
+        # ASSIGNING FRIENDLY NAMES FOR GPIO PINS 
 
 UP = 26
 DOWN = 13
 LEFT = 20
 RIGHT = 19
-A = 21
-B = 16
+A = 16
+B = 21
 
-        # FORCING PROGRAM TO RUN WITHIN WHILE LOOP
+        # FORCING PROGRAM TO RUN WITHIN WHILE LOOP 
 
 running = True
 
@@ -210,30 +212,30 @@ running = True
 #tmstmp = time.strftime("%Y%m%d-%H%M%S") # REMOVED TO ALLOW ALL TIMESTAMPS TO MATCH ACROSS PROGRAM
 tmstmp = datetime.datetime.now().strftime("%d %b %y %H:%M:%S")  # USING DATETIME INPLACE OF ASCTIME TO RESOLVE EXCEL FORMATTING ISSUES
 
-# tmstmp_len = tmstmp[4:]   # REMOVED AS NO LONGER REQUIRED DUE TO COREECT DATE/TIME FORMATTING ABOVE
+# tmstmp_len = tmstmp[4:]   # REMOVED AS NO LONGER REQUIRED DUE TO COREECT DATE/TIME FORMATTING ABOVE   
     
-    
+ 
 # 5 #    ASSIGNING LEVELS TO LED'S AND COLOURS
 
         # ADJUSTABLE LED LIGHT LEVELS
 
-led_level = 150
+led_level = 150     # ASSIGNING DEFAULT PROGRAM START LED MATRIX LIGHT LEVELS
 
         # ASSIGNING LEVELS TO COLOURS
 
-red = 255                           # TEMPERATURE LED LIGHT LEVEL
-blue = 255                          # PRESSURE LED LIGHT LEVEL
+red = 255                           # HIGH ERROR STATE LED LIGHT LEVEL
+blue = 255                          # LOW ERROR STATE LED LIGHT LEVEL
 
 
 # 6 #    DEFAULT VALUES
 
-        # ASSIGNING DEFAULTS TO TEMP + HUM OR PRESSURE PAGES
+        # ASSIGNING DEFAULTS TO TEMP + HUM OR PRESSURE PAGES 
 
 temp_hum_on = 0
 psi_on = 0
 
 
-        # ASSIGNING DEFAULTS VALUES TO ALARM TRIGGERS
+        # ASSIGNING DEFAULTS VALUES TO ALARM TRIGGERS 
 
 tmp_alarm = 0
 hum_alarm = 0
@@ -261,1850 +263,1851 @@ file.write("\"Time\",\"Display\",\"Temperature\",\"Temp_Reading\",\"Temp_Alarm\"
 
 def temp_num_matrix_1(num):
 
-  if num == '0':
+  if num == '0':    ## CHANGED 13/09/2015
         # number 0_top_left - TEMPERATURE
-    ap.set_pixel(0, 0, led_level, 0, 0)   
-    ap.set_pixel(0, 1, led_level, 0, 0)   
-    ap.set_pixel(0, 2, led_level, 0, 0)   
-    ap.set_pixel(0, 3, led_level, 0, 0)
-    ap.set_pixel(1, 0, led_level, 0, 0)   
-    ap.set_pixel(1, 1, 0, 0, 0)   
-    ap.set_pixel(1, 2, 0, 0, 0)   
-    ap.set_pixel(1, 3, led_level, 0, 0)
-    ap.set_pixel(2, 0, led_level, 0, 0)   
-    ap.set_pixel(2, 1, led_level, 0, 0)   
-    ap.set_pixel(2, 2, led_level, 0, 0)   
-    ap.set_pixel(2, 3, led_level, 0, 0)
-    ap.set_pixel(3, 0, 0, 0, 0)   
-    ap.set_pixel(3, 1, 0, 0, 0)   
-    ap.set_pixel(3, 2, 0, 0, 0)   
-    ap.set_pixel(3, 3, 0, 0, 0)
+    sense.set_pixel(0, 0, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(0, 1, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(0, 2, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(0, 3, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 0, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 1, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 2, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 3, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(2, 0, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(2, 1, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(2, 2, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(2, 3, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 0, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 1, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 2, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 3, 0, 0, 0)     ## CHANGED 18/09/2015 
 
-  if num == '1':
+  if num == '1':    ## CHANGED 13/09/2015
         # number 1_top_left - TEMPERATURE
-    ap.set_pixel(0, 0, 0, 0, 0)   
-    ap.set_pixel(0, 1, led_level, 0, 0)   
-    ap.set_pixel(0, 2, 0, 0, 0)   
-    ap.set_pixel(0, 3, led_level, 0, 0)
-    ap.set_pixel(1, 0, led_level, 0, 0)   
-    ap.set_pixel(1, 1, led_level, 0, 0)   
-    ap.set_pixel(1, 2, led_level, 0, 0)   
-    ap.set_pixel(1, 3, led_level, 0, 0)
-    ap.set_pixel(2, 0, 0, 0, 0)   
-    ap.set_pixel(2, 1, 0, 0, 0)   
-    ap.set_pixel(2, 2, 0, 0, 0)   
-    ap.set_pixel(2, 3, led_level, 0, 0)
-    ap.set_pixel(3, 0, 0, 0, 0)   
-    ap.set_pixel(3, 1, 0, 0, 0)   
-    ap.set_pixel(3, 2, 0, 0, 0)   
-    ap.set_pixel(3, 3, 0, 0, 0)
+    sense.set_pixel(0, 0, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(0, 1, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(0, 2, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(0, 3, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 0, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 1, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 2, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 3, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(2, 0, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(2, 1, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(2, 2, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(2, 3, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 0, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 1, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 2, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 3, 0, 0, 0)     ## CHANGED 18/09/2015 
 
-  if num == '2':
+  if num == '2':    ## CHANGED 13/09/2015
         # number 2_top_left - TEMPERATURE
-    ap.set_pixel(0, 0, led_level, 0, 0)   
-    ap.set_pixel(0, 1, 0, 0, 0)   
-    ap.set_pixel(0, 2, 0, 0, 0)   
-    ap.set_pixel(0, 3, led_level, 0, 0)
-    ap.set_pixel(1, 0, led_level, 0, 0)   
-    ap.set_pixel(1, 1, 0, 0, 0)   
-    ap.set_pixel(1, 2, led_level, 0, 0)   
-    ap.set_pixel(1, 3, led_level, 0, 0)
-    ap.set_pixel(2, 0, led_level, 0, 0)   
-    ap.set_pixel(2, 1, led_level, 0, 0)   
-    ap.set_pixel(2, 2, 0, 0, 0)   
-    ap.set_pixel(2, 3, led_level, 0, 0)
-    ap.set_pixel(3, 0, 0, 0, 0)   
-    ap.set_pixel(3, 1, 0, 0, 0)   
-    ap.set_pixel(3, 2, 0, 0, 0)   
-    ap.set_pixel(3, 3, 0, 0, 0)
+    sense.set_pixel(0, 0, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(0, 1, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(0, 2, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(0, 3, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 0, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 1, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 2, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 3, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(2, 0, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(2, 1, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(2, 2, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(2, 3, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 0, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 1, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 2, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 3, 0, 0, 0)     ## CHANGED 18/09/2015 
 
-  if num == '3':
+  if num == '3':    ## CHANGED 13/09/2015
         # number 3_top_left - TEMPERATURE
-    ap.set_pixel(0, 0, led_level, 0, 0)   
-    ap.set_pixel(0, 1, 0, 0, 0)   
-    ap.set_pixel(0, 2, 0, 0, 0)   
-    ap.set_pixel(0, 3, led_level, 0, 0)
-    ap.set_pixel(1, 0, led_level, 0, 0)   
-    ap.set_pixel(1, 1, led_level, 0, 0)   
-    ap.set_pixel(1, 2, 0, 0, 0)   
-    ap.set_pixel(1, 3, led_level, 0, 0)
-    ap.set_pixel(2, 0, led_level, 0, 0)   
-    ap.set_pixel(2, 1, led_level, 0, 0)   
-    ap.set_pixel(2, 2, led_level, 0, 0)   
-    ap.set_pixel(2, 3, led_level, 0, 0)
-    ap.set_pixel(3, 0, 0, 0, 0)   
-    ap.set_pixel(3, 1, 0, 0, 0)   
-    ap.set_pixel(3, 2, 0, 0, 0)   
-    ap.set_pixel(3, 3, 0, 0, 0)
+    sense.set_pixel(0, 0, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(0, 1, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(0, 2, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(0, 3, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 0, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 1, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 2, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 3, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(2, 0, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(2, 1, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(2, 2, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(2, 3, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 0, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 1, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 2, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 3, 0, 0, 0)     ## CHANGED 18/09/2015 
 
-  if num == '4':
+  if num == '4':    ## CHANGED 13/09/2015
         # number 4_top_left - TEMPERATURE
-    ap.set_pixel(0, 0, led_level, 0, 0)   
-    ap.set_pixel(0, 1, led_level, 0, 0)   
-    ap.set_pixel(0, 2, led_level, 0, 0)   
-    ap.set_pixel(0, 3, 0, 0, 0)
-    ap.set_pixel(1, 0, 0, 0, 0)   
-    ap.set_pixel(1, 1, 0, 0, 0)   
-    ap.set_pixel(1, 2, led_level, 0, 0)   
-    ap.set_pixel(1, 3, 0, 0, 0)
-    ap.set_pixel(2, 0, 0, 0, 0)   
-    ap.set_pixel(2, 1, led_level, 0, 0)   
-    ap.set_pixel(2, 2, led_level, 0, 0)   
-    ap.set_pixel(2, 3, led_level, 0, 0)
-    ap.set_pixel(3, 0, 0, 0, 0)   
-    ap.set_pixel(3, 1, 0, 0, 0)   
-    ap.set_pixel(3, 2, 0, 0, 0)   
-    ap.set_pixel(3, 3, 0, 0, 0)
+    sense.set_pixel(0, 0, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(0, 1, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(0, 2, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(0, 3, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 0, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 1, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 2, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 3, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(2, 0, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(2, 1, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(2, 2, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(2, 3, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 0, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 1, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 2, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 3, 0, 0, 0)     ## CHANGED 18/09/2015 
 
-  if num == '5':
+  if num == '5':    ## CHANGED 13/09/2015
         # number 5_top_left - TEMPERATURE
-    ap.set_pixel(0, 0, led_level, 0, 0)   
-    ap.set_pixel(0, 1, led_level, 0, 0)   
-    ap.set_pixel(0, 2, 0, 0, 0)   
-    ap.set_pixel(0, 3, led_level, 0, 0)
-    ap.set_pixel(1, 0, led_level, 0, 0)   
-    ap.set_pixel(1, 1, 0, 0, 0)   
-    ap.set_pixel(1, 2, led_level, 0, 0)   
-    ap.set_pixel(1, 3, led_level, 0, 0)
-    ap.set_pixel(2, 0, led_level, 0, 0)   
-    ap.set_pixel(2, 1, 0, 0, 0)   
-    ap.set_pixel(2, 2, 0, 0, 0)   
-    ap.set_pixel(2, 3, led_level, 0, 0)
-    ap.set_pixel(3, 0, 0, 0, 0)   
-    ap.set_pixel(3, 1, 0, 0, 0)   
-    ap.set_pixel(3, 2, 0, 0, 0)   
-    ap.set_pixel(3, 3, 0, 0, 0)
+    sense.set_pixel(0, 0, led_level, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(0, 1, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(0, 2, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(0, 3, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 0, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 1, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 2, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 3, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(2, 0, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(2, 1, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(2, 2, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(2, 3, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 0, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 1, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 2, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 3, 0, 0, 0)     ## CHANGED 18/09/2015 
 
-  if num == '6':
+  if num == '6':        ## CHANGED 18/09/2015 
         # number 6_top_left - TEMPERATURE
-    ap.set_pixel(0, 0, led_level, 0, 0)   
-    ap.set_pixel(0, 1, led_level, 0, 0)   
-    ap.set_pixel(0, 2, led_level, 0, 0)   
-    ap.set_pixel(0, 3, led_level, 0, 0)
-    ap.set_pixel(1, 0, 0, 0, 0)   
-    ap.set_pixel(1, 1, led_level, 0, 0)   
-    ap.set_pixel(1, 2, 0, 0, 0)   
-    ap.set_pixel(1, 3, led_level, 0, 0)
-    ap.set_pixel(2, 0, 0, 0, 0)   
-    ap.set_pixel(2, 1, led_level, 0, 0)   
-    ap.set_pixel(2, 2, led_level, 0, 0)   
-    ap.set_pixel(2, 3, led_level, 0, 0)
-    ap.set_pixel(3, 0, 0, 0, 0)   
-    ap.set_pixel(3, 1, 0, 0, 0)   
-    ap.set_pixel(3, 2, 0, 0, 0)   
-    ap.set_pixel(3, 3, 0, 0, 0)
+    sense.set_pixel(0, 0, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(0, 1, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(0, 2, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(0, 3, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 0, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 1, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 2, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 3, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(2, 0, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(2, 1, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(2, 2, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(2, 3, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 0, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 1, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 2, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 3, 0, 0, 0)     ## CHANGED 18/09/2015 
 
-  if num == '7':
+  if num == '7':    ## CHANGED 18/09/2015 
         # number 7_top_left - TEMPERATURE
-    ap.set_pixel(0, 0, led_level, 0, 0)   
-    ap.set_pixel(0, 1, led_level, 0, 0)   
-    ap.set_pixel(0, 2, 0, 0, 0)   
-    ap.set_pixel(0, 3, 0, 0, 0)
-    ap.set_pixel(1, 0, led_level, 0, 0)   
-    ap.set_pixel(1, 1, 0, 0, 0)   
-    ap.set_pixel(1, 2, 0, 0, 0)   
-    ap.set_pixel(1, 3, 0, 0, 0)
-    ap.set_pixel(2, 0, led_level, 0, 0)   
-    ap.set_pixel(2, 1, led_level, 0, 0)   
-    ap.set_pixel(2, 2, led_level, 0, 0)   
-    ap.set_pixel(2, 3, led_level, 0, 0)
-    ap.set_pixel(3, 0, 0, 0, 0)   
-    ap.set_pixel(3, 1, 0, 0, 0)   
-    ap.set_pixel(3, 2, 0, 0, 0)   
-    ap.set_pixel(3, 3, 0, 0, 0)
+    sense.set_pixel(0, 0, led_level, 0, 0)     ## CHANGED 18/09/2015    
+    sense.set_pixel(0, 1, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(0, 2, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(0, 3, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 0, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 1, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 2, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 3, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(2, 0, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(2, 1, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(2, 2, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(2, 3, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 0, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 1, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 2, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 3, 0, 0, 0)     ## CHANGED 18/09/2015 
   
-  if num == '8':
+  if num == '8':    ## CHANGED 18/09/2015 
         # number 8_top_left - TEMPERATURE
-    ap.set_pixel(0, 0, led_level, 0, 0)   
-    ap.set_pixel(0, 1, led_level, 0, 0)   
-    ap.set_pixel(0, 2, led_level, 0, 0)   
-    ap.set_pixel(0, 3, led_level, 0, 0)
-    ap.set_pixel(1, 0, led_level, 0, 0)   
-    ap.set_pixel(1, 1, 0, 0, 0)   
-    ap.set_pixel(1, 2, led_level, 0, 0)   
-    ap.set_pixel(1, 3, led_level, 0, 0)
-    ap.set_pixel(2, 0, led_level, 0, 0)   
-    ap.set_pixel(2, 1, led_level, 0, 0)   
-    ap.set_pixel(2, 2, led_level, 0, 0)   
-    ap.set_pixel(2, 3, led_level, 0, 0)
-    ap.set_pixel(3, 0, 0, 0, 0)   
-    ap.set_pixel(3, 1, 0, 0, 0)   
-    ap.set_pixel(3, 2, 0, 0, 0)   
-    ap.set_pixel(3, 3, 0, 0, 0)
+    sense.set_pixel(0, 0, led_level, 0, 0)     ## CHANGED 18/09/2015    
+    sense.set_pixel(0, 1, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(0, 2, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(0, 3, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 0, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 1, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 2, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 3, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(2, 0, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(2, 1, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(2, 2, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(2, 3, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 0, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 1, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 2, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 3, 0, 0, 0)     ## CHANGED 18/09/2015 
 
-  if num == '9':
-        # number 9_top_left - TEMPERATURE
-    ap.set_pixel(0, 0, led_level, 0, 0)   
-    ap.set_pixel(0, 1, led_level, 0, 0)   
-    ap.set_pixel(0, 2, led_level, 0, 0)   
-    ap.set_pixel(0, 3, 0, 0, 0)
-    ap.set_pixel(1, 0, led_level, 0, 0)   
-    ap.set_pixel(1, 1, 0, 0, 0)   
-    ap.set_pixel(1, 2, led_level, 0, 0)   
-    ap.set_pixel(1, 3, 0, 0, 0)
-    ap.set_pixel(2, 0, led_level, 0, 0)   
-    ap.set_pixel(2, 1, led_level, 0, 0)   
-    ap.set_pixel(2, 2, led_level, 0, 0)   
-    ap.set_pixel(2, 3, led_level, 0, 0)
-    ap.set_pixel(3, 0, 0, 0, 0)   
-    ap.set_pixel(3, 1, 0, 0, 0)   
-    ap.set_pixel(3, 2, 0, 0, 0)   
-    ap.set_pixel(3, 3, 0, 0, 0)
+  if num == '9':    ## CHANGED 18/09/2015 
+        # number 9_top_left - TEMPERATURE 
+    sense.set_pixel(0, 0, led_level, 0, 0)     ## CHANGED 18/09/2015    
+    sense.set_pixel(0, 1, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(0, 2, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(0, 3, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 0, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 1, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 2, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(1, 3, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(2, 0, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(2, 1, led_level, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(2, 2, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(2, 3, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 0, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 1, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 2, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(3, 3, 0, 0, 0)     ## CHANGED 18/09/2015 
 
-def temp_num_matrix_2(num):
+def temp_num_matrix_2(num):    ## CHANGED 18/09/2015 
     
-  if num == '0':
+  if num == '0':    ## CHANGED 18/09/2015 
         # number 0_top_right - TEMPERATURE
-    ap.set_pixel(4, 0, led_level, 0, 0)   
-    ap.set_pixel(4, 1, led_level, 0, 0)   
-    ap.set_pixel(4, 2, led_level, 0, 0)   
-    ap.set_pixel(4, 3, led_level, 0, 0)
-    ap.set_pixel(5, 0, led_level, 0, 0)   
-    ap.set_pixel(5, 1, 0, 0, 0)   
-    ap.set_pixel(5, 2, 0, 0, 0)   
-    ap.set_pixel(5, 3, led_level, 0, 0)
-    ap.set_pixel(6, 0, led_level, 0, 0)   
-    ap.set_pixel(6, 1, led_level, 0, 0)   
-    ap.set_pixel(6, 2, led_level, 0, 0)   
-    ap.set_pixel(6, 3, led_level, 0, 0)
-    ap.set_pixel(7, 0, 0, 0, 0)   
-    ap.set_pixel(7, 1, 0, 0, 0)   
-    ap.set_pixel(7, 2, 0, 0, 0)   
-    ap.set_pixel(7, 3, 0, 0, 0)
+    sense.set_pixel(4, 0, led_level, 0, 0)     ## CHANGED 18/09/2015    
+    sense.set_pixel(4, 1, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(4, 2, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(4, 3, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(5, 0, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(5, 1, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(5, 2, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(5, 3, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(6, 0, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(6, 1, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(6, 2, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(6, 3, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(7, 0, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(7, 1, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(7, 2, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(7, 3, 0, 0, 0)     ## CHANGED 18/09/2015 
 
-  if num == '1':
+  if num == '1':    ## CHANGED 18/09/2015 
         # number 1_top_right - TEMPERATURE
-    ap.set_pixel(4, 0, 0, 0, 0)   
-    ap.set_pixel(4, 1, led_level, 0, 0)   
-    ap.set_pixel(4, 2, 0, 0, 0)   
-    ap.set_pixel(4, 3, led_level, 0, 0)
-    ap.set_pixel(5, 0, led_level, 0, 0)   
-    ap.set_pixel(5, 1, led_level, 0, 0)   
-    ap.set_pixel(5, 2, led_level, 0, 0)   
-    ap.set_pixel(5, 3, led_level, 0, 0)
-    ap.set_pixel(6, 0, 0, 0, 0)   
-    ap.set_pixel(6, 1, 0, 0, 0)   
-    ap.set_pixel(6, 2, 0, 0, 0)   
-    ap.set_pixel(6, 3, led_level, 0, 0)
-    ap.set_pixel(7, 0, 0, 0, 0)   
-    ap.set_pixel(7, 1, 0, 0, 0)   
-    ap.set_pixel(7, 2, 0, 0, 0)   
-    ap.set_pixel(7, 3, 0, 0, 0)
+    sense.set_pixel(4, 0, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(4, 1, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(4, 2, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(4, 3, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(5, 0, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(5, 1, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(5, 2, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(5, 3, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(6, 0, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(6, 1, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(6, 2, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(6, 3, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(7, 0, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(7, 1, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(7, 2, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(7, 3, 0, 0, 0)     ## CHANGED 18/09/2015 
 
-  if num == '2':
+  if num == '2':    ## CHANGED 18/09/2015 
         # number 2_top_right - TEMPERATURE
-    ap.set_pixel(4, 0, led_level, 0, 0)   
-    ap.set_pixel(4, 1, 0, 0, 0)   
-    ap.set_pixel(4, 2, 0, 0, 0)   
-    ap.set_pixel(4, 3, led_level, 0, 0)
-    ap.set_pixel(5, 0, led_level, 0, 0)   
-    ap.set_pixel(5, 1, 0, 0, 0)   
-    ap.set_pixel(5, 2, led_level, 0, 0)   
-    ap.set_pixel(5, 3, led_level, 0, 0)
-    ap.set_pixel(6, 0, led_level, 0, 0)   
-    ap.set_pixel(6, 1, led_level, 0, 0)   
-    ap.set_pixel(6, 2, 0, 0, 0)   
-    ap.set_pixel(6, 3, led_level, 0, 0)
-    ap.set_pixel(7, 0, 0, 0, 0)   
-    ap.set_pixel(7, 1, 0, 0, 0)   
-    ap.set_pixel(7, 2, 0, 0, 0)   
-    ap.set_pixel(7, 3, 0, 0, 0)
+    sense.set_pixel(4, 0, led_level, 0, 0)     ## CHANGED 18/09/2015    
+    sense.set_pixel(4, 1, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(4, 2, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(4, 3, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(5, 0, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(5, 1, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(5, 2, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(5, 3, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(6, 0, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(6, 1, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(6, 2, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(6, 3, led_level, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(7, 0, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(7, 1, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(7, 2, 0, 0, 0)     ## CHANGED 18/09/2015 
+    sense.set_pixel(7, 3, 0, 0, 0)     ## CHANGED 18/09/2015 
 
-  if num == '3':
+  if num == '3':    ## CHANGED 18/09/2015
         # number 3_top_right - TEMPERATURE
-    ap.set_pixel(4, 0, led_level, 0, 0)   
-    ap.set_pixel(4, 1, 0, 0, 0)   
-    ap.set_pixel(4, 2, 0, 0, 0)   
-    ap.set_pixel(4, 3, led_level, 0, 0)
-    ap.set_pixel(5, 0, led_level, 0, 0)   
-    ap.set_pixel(5, 1, led_level, 0, 0)   
-    ap.set_pixel(5, 2, 0, 0, 0)   
-    ap.set_pixel(5, 3, led_level, 0, 0)
-    ap.set_pixel(6, 0, led_level, 0, 0)   
-    ap.set_pixel(6, 1, led_level, 0, 0)   
-    ap.set_pixel(6, 2, led_level, 0, 0)   
-    ap.set_pixel(6, 3, led_level, 0, 0)
-    ap.set_pixel(7, 0, 0, 0, 0)   
-    ap.set_pixel(7, 1, 0, 0, 0)   
-    ap.set_pixel(7, 2, 0, 0, 0)   
-    ap.set_pixel(7, 3, 0, 0, 0)
+    sense.set_pixel(4, 0, led_level, 0, 0)     ## CHANGED 18/09/2015  
+    sense.set_pixel(4, 1, 0, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(4, 2, 0, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(4, 3, led_level, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(5, 0, led_level, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(5, 1, led_level, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(5, 2, 0, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(5, 3, led_level, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(6, 0, led_level, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(6, 1, led_level, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(6, 2, led_level, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(6, 3, led_level, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(7, 0, 0, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(7, 1, 0, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(7, 2, 0, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(7, 3, 0, 0, 0)     ## CHANGED 18/09/2015
 
-  if num == '4':
+  if num == '4':    ## CHANGED 18/09/2015
         # number 4_top_right - TEMPERATURE
-    ap.set_pixel(4, 0, led_level, 0, 0)   
-    ap.set_pixel(4, 1, led_level, 0, 0)   
-    ap.set_pixel(4, 2, led_level, 0, 0)   
-    ap.set_pixel(4, 3, 0, 0, 0)
-    ap.set_pixel(5, 0, 0, 0, 0)   
-    ap.set_pixel(5, 1, 0, 0, 0)   
-    ap.set_pixel(5, 2, led_level, 0, 0)   
-    ap.set_pixel(5, 3, 0, 0, 0)
-    ap.set_pixel(6, 0, 0, 0, 0)   
-    ap.set_pixel(6, 1, led_level, 0, 0)   
-    ap.set_pixel(6, 2, led_level, 0, 0)   
-    ap.set_pixel(6, 3, led_level, 0, 0)
-    ap.set_pixel(7, 0, 0, 0, 0)   
-    ap.set_pixel(7, 1, 0, 0, 0)   
-    ap.set_pixel(7, 2, 0, 0, 0)   
-    ap.set_pixel(7, 3, 0, 0, 0)
+    sense.set_pixel(4, 0, led_level, 0, 0)     ## CHANGED 18/09/2015  
+    sense.set_pixel(4, 1, led_level, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(4, 2, led_level, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(4, 3, 0, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(5, 0, 0, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(5, 1, 0, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(5, 2, led_level, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(5, 3, 0, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(6, 0, 0, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(6, 1, led_level, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(6, 2, led_level, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(6, 3, led_level, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(7, 0, 0, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(7, 1, 0, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(7, 2, 0, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(7, 3, 0, 0, 0)     ## CHANGED 18/09/2015
 
-  if num == '5':
+  if num == '5':    ## CHANGED 18/09/2015
         # number 5_top_right - TEMPERATURE
-    ap.set_pixel(4, 0, led_level, 0, 0)   
-    ap.set_pixel(4, 1, led_level, 0, 0)   
-    ap.set_pixel(4, 2, 0, 0, 0)   
-    ap.set_pixel(4, 3, led_level, 0, 0)
-    ap.set_pixel(5, 0, led_level, 0, 0)   
-    ap.set_pixel(5, 1, 0, 0, 0)   
-    ap.set_pixel(5, 2, led_level, 0, 0)   
-    ap.set_pixel(5, 3, led_level, 0, 0)
-    ap.set_pixel(6, 0, led_level, 0, 0)   
-    ap.set_pixel(6, 1, 0, 0, 0)   
-    ap.set_pixel(6, 2, 0, 0, 0)   
-    ap.set_pixel(6, 3, led_level, 0, 0)
-    ap.set_pixel(7, 0, 0, 0, 0)   
-    ap.set_pixel(7, 1, 0, 0, 0)   
-    ap.set_pixel(7, 2, 0, 0, 0)   
-    ap.set_pixel(7, 3, 0, 0, 0)
+    sense.set_pixel(4, 0, led_level, 0, 0)     ## CHANGED 18/09/2015   
+    sense.set_pixel(4, 1, led_level, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(4, 2, 0, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(4, 3, led_level, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(5, 0, led_level, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(5, 1, 0, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(5, 2, led_level, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(5, 3, led_level, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(6, 0, led_level, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(6, 1, 0, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(6, 2, 0, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(6, 3, led_level, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(7, 0, 0, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(7, 1, 0, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(7, 2, 0, 0, 0)     ## CHANGED 18/09/2015
+    sense.set_pixel(7, 3, 0, 0, 0)     ## CHANGED 18/09/2015
 
-  if num == '6':
+  if num == '6':    ## CHANGED 19/09/2015
         # number 6_top_right - TEMPERATURE
-    ap.set_pixel(4, 0, led_level, 0, 0)   
-    ap.set_pixel(4, 1, led_level, 0, 0)   
-    ap.set_pixel(4, 2, led_level, 0, 0)   
-    ap.set_pixel(4, 3, led_level, 0, 0)
-    ap.set_pixel(5, 0, 0, 0, 0)   
-    ap.set_pixel(5, 1, led_level, 0, 0)   
-    ap.set_pixel(5, 2, 0, 0, 0)   
-    ap.set_pixel(5, 3, led_level, 0, 0)
-    ap.set_pixel(6, 0, 0, 0, 0)   
-    ap.set_pixel(6, 1, led_level, 0, 0)   
-    ap.set_pixel(6, 2, led_level, 0, 0)   
-    ap.set_pixel(6, 3, led_level, 0, 0)
-    ap.set_pixel(7, 0, 0, 0, 0)   
-    ap.set_pixel(7, 1, 0, 0, 0)   
-    ap.set_pixel(7, 2, 0, 0, 0)   
-    ap.set_pixel(7, 3, 0, 0, 0)
+    sense.set_pixel(4, 0, led_level, 0, 0)     ## CHANGED 19/09/2015   
+    sense.set_pixel(4, 1, led_level, 0, 0)     ## CHANGED 19/09/2015
+    sense.set_pixel(4, 2, led_level, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 3, led_level, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 0, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 1, led_level, 0, 0)     ## CHANGED 19/09/2015  
+    sense.set_pixel(5, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 3, led_level, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 0, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 1, led_level, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 2, led_level, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 3, led_level, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 0, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '7':
+  if num == '7':    ## CHANGED 19/09/2015 
         # number 7_top_right - TEMPERATURE
-    ap.set_pixel(4, 0, led_level, 0, 0)   
-    ap.set_pixel(4, 1, led_level, 0, 0)   
-    ap.set_pixel(4, 2, 0, 0, 0)   
-    ap.set_pixel(4, 3, 0, 0, 0)
-    ap.set_pixel(5, 0, led_level, 0, 0)   
-    ap.set_pixel(5, 1, 0, 0, 0)   
-    ap.set_pixel(5, 2, 0, 0, 0)   
-    ap.set_pixel(5, 3, 0, 0, 0)
-    ap.set_pixel(6, 0, led_level, 0, 0)   
-    ap.set_pixel(6, 1, led_level, 0, 0)   
-    ap.set_pixel(6, 2, led_level, 0, 0)   
-    ap.set_pixel(6, 3, led_level, 0, 0)
-    ap.set_pixel(7, 0, 0, 0, 0)   
-    ap.set_pixel(7, 1, 0, 0, 0)   
-    ap.set_pixel(7, 2, 0, 0, 0)   
-    ap.set_pixel(7, 3, 0, 0, 0)
+    sense.set_pixel(4, 0, led_level, 0, 0)     ## CHANGED 19/09/2015    
+    sense.set_pixel(4, 1, led_level, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 0, led_level, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 0, led_level, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 1, led_level, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 2, led_level, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 3, led_level, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 0, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 1, 0, 0, 0)     ## CHANGED 19/09/2015
+    sense.set_pixel(7, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '8':
+  if num == '8':    ## CHANGED 19/09/2015 
         # number 8_top_right - TEMPERATURE
-    ap.set_pixel(4, 0, led_level, 0, 0)   
-    ap.set_pixel(4, 1, led_level, 0, 0)   
-    ap.set_pixel(4, 2, led_level, 0, 0)   
-    ap.set_pixel(4, 3, led_level, 0, 0)
-    ap.set_pixel(5, 0, led_level, 0, 0)   
-    ap.set_pixel(5, 1, 0, 0, 0)   
-    ap.set_pixel(5, 2, led_level, 0, 0)   
-    ap.set_pixel(5, 3, led_level, 0, 0)
-    ap.set_pixel(6, 0, led_level, 0, 0)   
-    ap.set_pixel(6, 1, led_level, 0, 0)   
-    ap.set_pixel(6, 2, led_level, 0, 0)   
-    ap.set_pixel(6, 3, led_level, 0, 0)
-    ap.set_pixel(7, 0, 0, 0, 0)   
-    ap.set_pixel(7, 1, 0, 0, 0)   
-    ap.set_pixel(7, 2, 0, 0, 0)   
-    ap.set_pixel(7, 3, 0, 0, 0)
+    sense.set_pixel(4, 0, led_level, 0, 0)     ## CHANGED 19/09/2015    
+    sense.set_pixel(4, 1, led_level, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 2, led_level, 0, 0)     ## CHANGED 19/09/2015
+    sense.set_pixel(4, 3, led_level, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 0, led_level, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 2, led_level, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 3, led_level, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 0, led_level, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 1, led_level, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 2, led_level, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 3, led_level, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 0, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 2, 0, 0, 0)     ## CHANGED 19/09/2015
+    sense.set_pixel(7, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '9':
+  if num == '9':    ## CHANGED 19/09/2015 
         # number 9_top_right - TEMPERATURE
-    ap.set_pixel(4, 0, led_level, 0, 0)   
-    ap.set_pixel(4, 1, led_level, 0, 0)   
-    ap.set_pixel(4, 2, led_level, 0, 0)   
-    ap.set_pixel(4, 3, 0, 0, 0)
-    ap.set_pixel(5, 0, led_level, 0, 0)   
-    ap.set_pixel(5, 1, 0, 0, 0)   
-    ap.set_pixel(5, 2, led_level, 0, 0)   
-    ap.set_pixel(5, 3, 0, 0, 0)
-    ap.set_pixel(6, 0, led_level, 0, 0)   
-    ap.set_pixel(6, 1, led_level, 0, 0)   
-    ap.set_pixel(6, 2, led_level, 0, 0)   
-    ap.set_pixel(6, 3, led_level, 0, 0)
-    ap.set_pixel(7, 0, 0, 0, 0)   
-    ap.set_pixel(7, 1, 0, 0, 0)   
-    ap.set_pixel(7, 2, 0, 0, 0)   
-    ap.set_pixel(7, 3, 0, 0, 0)
-    
+    sense.set_pixel(4, 0, led_level, 0, 0)     ## CHANGED 19/09/2015    
+    sense.set_pixel(4, 1, led_level, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 2, led_level, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 0, led_level, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 2, led_level, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 0, led_level, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 1, led_level, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 2, led_level, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 3, led_level, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 0, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
+
         # TEMPERATURE ERROR STATES BELOW 
 
-def temp_num_error_high():
+def temp_num_error_high():    ## CHANGED 19/09/2015 
         # error state warning for - HIGH TEMPERATURE
-    ap.set_pixel(0, 0, red, 0, 0)   
-    ap.set_pixel(0, 1, red, 0, 0)   
-    ap.set_pixel(0, 2, red, 0, 0)   
-    ap.set_pixel(0, 3, red, 0, 0)
-    ap.set_pixel(1, 0, red, 0, 0)   
-    ap.set_pixel(1, 1, red, 0, 0)   
-    ap.set_pixel(1, 2, red, 0, 0)   
-    ap.set_pixel(1, 3, red, 0, 0)
-    ap.set_pixel(2, 0, red, 0, 0)   
-    ap.set_pixel(2, 1, red, 0, 0)   
-    ap.set_pixel(2, 2, red, 0, 0)   
-    ap.set_pixel(2, 3, red, 0, 0)
-    ap.set_pixel(3, 0, red, 0, 0)   
-    ap.set_pixel(3, 1, red, 0, 0)   
-    ap.set_pixel(3, 2, red, 0, 0)   
-    ap.set_pixel(3, 3, red, 0, 0)
-    ap.set_pixel(4, 0, red, 0, 0)   
-    ap.set_pixel(4, 1, red, 0, 0)   
-    ap.set_pixel(4, 2, red, 0, 0)   
-    ap.set_pixel(4, 3, red, 0, 0)
-    ap.set_pixel(5, 0, red, 0, 0)   
-    ap.set_pixel(5, 1, red, 0, 0)   
-    ap.set_pixel(5, 2, red, 0, 0)   
-    ap.set_pixel(5, 3, red, 0, 0)
-    ap.set_pixel(6, 0, red, 0, 0)   
-    ap.set_pixel(6, 1, red, 0, 0)   
-    ap.set_pixel(6, 2, red, 0, 0)   
-    ap.set_pixel(6, 3, red, 0, 0)
-    ap.set_pixel(7, 0, red, 0, 0)   
-    ap.set_pixel(7, 1, red, 0, 0)   
-    ap.set_pixel(7, 2, red, 0, 0)   
-    ap.set_pixel(7, 3, red, 0, 0)
+    sense.set_pixel(0, 0, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 1, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 2, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 3, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 0, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 1, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 2, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 3, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 0, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 1, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 2, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 3, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 0, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 1, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 2, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 3, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 0, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 1, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 2, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 3, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 0, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 1, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 2, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 3, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 0, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 1, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 2, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 3, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 0, red, 0, 0)     ## CHANGED 19/09/2015
+    sense.set_pixel(7, 1, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 2, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 3, red, 0, 0)     ## CHANGED 19/09/2015 
     
-def temp_num_error_low():
+def temp_num_error_low():    ## CHANGED 19/09/2015 
         # error state warning for - LOW TEMPERATURE
-    ap.set_pixel(0, 0, 0, 0, blue)   
-    ap.set_pixel(0, 1, 0, 0, blue)   
-    ap.set_pixel(0, 2, 0, 0, blue)   
-    ap.set_pixel(0, 3, 0, 0, blue)
-    ap.set_pixel(1, 0, 0, 0, blue)   
-    ap.set_pixel(1, 1, 0, 0, blue)   
-    ap.set_pixel(1, 2, 0, 0, blue)   
-    ap.set_pixel(1, 3, 0, 0, blue)
-    ap.set_pixel(2, 0, 0, 0, blue)   
-    ap.set_pixel(2, 1, 0, 0, blue)   
-    ap.set_pixel(2, 2, 0, 0, blue)   
-    ap.set_pixel(2, 3, 0, 0, blue)
-    ap.set_pixel(3, 0, 0, 0, blue)   
-    ap.set_pixel(3, 1, 0, 0, blue)   
-    ap.set_pixel(3, 2, 0, 0, blue)   
-    ap.set_pixel(3, 3, 0, 0, blue)
-    ap.set_pixel(4, 0, 0, 0, blue)   
-    ap.set_pixel(4, 1, 0, 0, blue)   
-    ap.set_pixel(4, 2, 0, 0, blue)   
-    ap.set_pixel(4, 3, 0, 0, blue)
-    ap.set_pixel(5, 0, 0, 0, blue)   
-    ap.set_pixel(5, 1, 0, 0, blue)   
-    ap.set_pixel(5, 2, 0, 0, blue)   
-    ap.set_pixel(5, 3, 0, 0, blue)
-    ap.set_pixel(6, 0, 0, 0, blue)   
-    ap.set_pixel(6, 1, 0, 0, blue)   
-    ap.set_pixel(6, 2, 0, 0, blue)   
-    ap.set_pixel(6, 3, 0, 0, blue)
-    ap.set_pixel(7, 0, 0, 0, blue)   
-    ap.set_pixel(7, 1, 0, 0, blue)   
-    ap.set_pixel(7, 2, 0, 0, blue)   
-    ap.set_pixel(7, 3, 0, 0, blue)
+    sense.set_pixel(0, 0, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 1, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 2, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 3, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 0, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 1, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 2, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 3, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 0, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 1, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 2, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 3, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 0, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 1, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 2, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 3, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 0, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 1, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 2, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 3, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 0, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 1, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 2, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 3, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 0, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 1, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 2, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 3, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 0, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 1, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 2, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 3, 0, 0, blue)     ## CHANGED 19/09/2015 
  
- 
+
 # 9 #    HUMIDITY LED MATRIX INCLUDING WARNINGS
  
-        # HUMIDITY NUMBERS MATRIX BELOW    
+        # HUMIDITY NUMBERS MATRIX BELOW   
 
-def hum_num_matrix_1(num):
+def hum_num_matrix_1(num):    ## CHANGED 19/09/2015 
 
-  if num == '0':
+  if num == '0':    ## CHANGED 19/09/2015 
         # number 0_bot_left - HUMIDITY
-    ap.set_pixel(0, 4, 0, led_level, 0)   
-    ap.set_pixel(0, 5, 0, led_level, 0)   
-    ap.set_pixel(0, 6, 0, led_level, 0)   
-    ap.set_pixel(0, 7, 0, led_level, 0)
-    ap.set_pixel(1, 4, 0, led_level, 0)   
-    ap.set_pixel(1, 5, 0, 0, 0)   
-    ap.set_pixel(1, 6, 0, 0, 0)   
-    ap.set_pixel(1, 7, 0, led_level, 0)
-    ap.set_pixel(2, 4, 0, led_level, 0)   
-    ap.set_pixel(2, 5, 0, led_level, 0)   
-    ap.set_pixel(2, 6, 0, led_level, 0)   
-    ap.set_pixel(2, 7, 0, led_level, 0)
-    ap.set_pixel(3, 4, 0, 0, 0)   
-    ap.set_pixel(3, 5, 0, 0, 0)   
-    ap.set_pixel(3, 6, 0, 0, 0)   
-    ap.set_pixel(3, 7, 0, 0, 0)
+    sense.set_pixel(0, 4, 0, led_level, 0)     ## CHANGED 19/09/2015    
+    sense.set_pixel(0, 5, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 6, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 4, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 4, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 5, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 6, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '1':
+  if num == '1':    ## CHANGED 19/09/2015 
         # number 1_bot_left - HUMIDITY
-    ap.set_pixel(0, 4, 0, 0, 0)   
-    ap.set_pixel(0, 5, 0, led_level, 0)   
-    ap.set_pixel(0, 6, 0, 0, 0)   
-    ap.set_pixel(0, 7, 0, led_level, 0)
-    ap.set_pixel(1, 4, 0, led_level, 0)   
-    ap.set_pixel(1, 5, 0, led_level, 0)   
-    ap.set_pixel(1, 6, 0, led_level, 0)   
-    ap.set_pixel(1, 7, 0, led_level, 0)
-    ap.set_pixel(2, 4, 0, 0, 0)   
-    ap.set_pixel(2, 5, 0, 0, 0)   
-    ap.set_pixel(2, 6, 0, 0, 0)   
-    ap.set_pixel(2, 7, 0, led_level, 0)
-    ap.set_pixel(3, 4, 0, 0, 0)   
-    ap.set_pixel(3, 5, 0, 0, 0)   
-    ap.set_pixel(3, 6, 0, 0, 0)   
-    ap.set_pixel(3, 7, 0, 0, 0)
+    sense.set_pixel(0, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 5, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 4, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 5, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 6, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '2':
+  if num == '2':    ## CHANGED 19/09/2015 
         # number 2_bot_left - HUMIDITY
-    ap.set_pixel(0, 4, 0, led_level, 0)   
-    ap.set_pixel(0, 5, 0, 0, 0)   
-    ap.set_pixel(0, 6, 0, 0, 0)   
-    ap.set_pixel(0, 7, 0, led_level, 0)
-    ap.set_pixel(1, 4, 0, led_level, 0)   
-    ap.set_pixel(1, 5, 0, 0, 0)   
-    ap.set_pixel(1, 6, 0, led_level, 0)   
-    ap.set_pixel(1, 7, 0, led_level, 0)
-    ap.set_pixel(2, 4, 0, led_level, 0)   
-    ap.set_pixel(2, 5, 0, led_level, 0)   
-    ap.set_pixel(2, 6, 0, 0, 0)   
-    ap.set_pixel(2, 7, 0, led_level, 0)
-    ap.set_pixel(3, 4, 0, 0, 0)   
-    ap.set_pixel(3, 5, 0, 0, 0)   
-    ap.set_pixel(3, 6, 0, 0, 0)   
-    ap.set_pixel(3, 7, 0, 0, 0)
+    sense.set_pixel(0, 4, 0, led_level, 0)     ## CHANGED 19/09/2015    
+    sense.set_pixel(0, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 4, 0, led_level, 0)     ## CHANGED 19/09/2015
+    sense.set_pixel(1, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 6, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 4, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 5, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '3':
+  if num == '3':    ## CHANGED 19/09/2015 
         # number 3_bot_left - HUMIDITY
-    ap.set_pixel(0, 4, 0, led_level, 0)   
-    ap.set_pixel(0, 5, 0, 0, 0)   
-    ap.set_pixel(0, 6, 0, 0, 0)   
-    ap.set_pixel(0, 7, 0, led_level, 0)
-    ap.set_pixel(1, 4, 0, led_level, 0)   
-    ap.set_pixel(1, 5, 0, led_level, 0)   
-    ap.set_pixel(1, 6, 0, 0, 0)   
-    ap.set_pixel(1, 7, 0, led_level, 0)
-    ap.set_pixel(2, 4, 0, led_level, 0)   
-    ap.set_pixel(2, 5, 0, led_level, 0)   
-    ap.set_pixel(2, 6, 0, led_level, 0)   
-    ap.set_pixel(2, 7, 0, led_level, 0)
-    ap.set_pixel(3, 4, 0, 0, 0)   
-    ap.set_pixel(3, 5, 0, 0, 0)   
-    ap.set_pixel(3, 6, 0, 0, 0)   
-    ap.set_pixel(3, 7, 0, 0, 0)
+    sense.set_pixel(0, 4, 0, led_level, 0)     ## CHANGED 19/09/2015    
+    sense.set_pixel(0, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 4, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 5, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 4, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 5, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 6, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '4':
+  if num == '4':    ## CHANGED 19/09/2015 
         # number 4_bot_left - HUMIDITY
-    ap.set_pixel(0, 4, 0, led_level, 0)   
-    ap.set_pixel(0, 5, 0, led_level, 0)   
-    ap.set_pixel(0, 6, 0, led_level, 0)   
-    ap.set_pixel(0, 7, 0, 0, 0)
-    ap.set_pixel(1, 4, 0, 0, 0)   
-    ap.set_pixel(1, 5, 0, 0, 0)   
-    ap.set_pixel(1, 6, 0, led_level, 0)   
-    ap.set_pixel(1, 7, 0, 0, 0)
-    ap.set_pixel(2, 4, 0, 0, 0)   
-    ap.set_pixel(2, 5, 0, led_level, 0)   
-    ap.set_pixel(2, 6, 0, led_level, 0)   
-    ap.set_pixel(2, 7, 0, led_level, 0)
-    ap.set_pixel(3, 4, 0, 0, 0)   
-    ap.set_pixel(3, 5, 0, 0, 0)   
-    ap.set_pixel(3, 6, 0, 0, 0)   
-    ap.set_pixel(3, 7, 0, 0, 0)
+    sense.set_pixel(0, 4, 0, led_level, 0)     ## CHANGED 19/09/2015    
+    sense.set_pixel(0, 5, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 6, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 6, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 5, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 6, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '5':
+  if num == '5':    ## CHANGED 19/09/2015 
         # number 5_bot_left - HUMIDITY
-    ap.set_pixel(0, 4, 0, led_level, 0)   
-    ap.set_pixel(0, 5, 0, led_level, 0)   
-    ap.set_pixel(0, 6, 0, 0, 0)   
-    ap.set_pixel(0, 7, 0, led_level, 0)
-    ap.set_pixel(1, 4, 0, led_level, 0)   
-    ap.set_pixel(1, 5, 0, 0, 0)   
-    ap.set_pixel(1, 6, 0, led_level, 0)   
-    ap.set_pixel(1, 7, 0, led_level, 0)
-    ap.set_pixel(2, 4, 0, led_level, 0)   
-    ap.set_pixel(2, 5, 0, 0, 0)   
-    ap.set_pixel(2, 6, 0, 0, 0)   
-    ap.set_pixel(2, 7, 0, led_level, 0)
-    ap.set_pixel(3, 4, 0, 0, 0)   
-    ap.set_pixel(3, 5, 0, 0, 0)   
-    ap.set_pixel(3, 6, 0, 0, 0)   
-    ap.set_pixel(3, 7, 0, 0, 0)
+    sense.set_pixel(0, 4, 0, led_level, 0)     ## CHANGED 19/09/2015   
+    sense.set_pixel(0, 5, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 4, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 6, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 4, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '6':
+  if num == '6':    ## CHANGED 19/09/2015 
         # number 6_bot_left - HUMIDITY
-    ap.set_pixel(0, 4, 0, led_level, 0)   
-    ap.set_pixel(0, 5, 0, led_level, 0)   
-    ap.set_pixel(0, 6, 0, led_level, 0)   
-    ap.set_pixel(0, 7, 0, led_level, 0)
-    ap.set_pixel(1, 4, 0, 0, 0)   
-    ap.set_pixel(1, 5, 0, led_level, 0)   
-    ap.set_pixel(1, 6, 0, 0, 0)   
-    ap.set_pixel(1, 7, 0, led_level, 0)
-    ap.set_pixel(2, 4, 0, 0, 0)   
-    ap.set_pixel(2, 5, 0, led_level, 0)   
-    ap.set_pixel(2, 6, 0, led_level, 0)   
-    ap.set_pixel(2, 7, 0, led_level, 0)
-    ap.set_pixel(3, 4, 0, 0, 0)   
-    ap.set_pixel(3, 5, 0, 0, 0)   
-    ap.set_pixel(3, 6, 0, 0, 0)   
-    ap.set_pixel(3, 7, 0, 0, 0)
+    sense.set_pixel(0, 4, 0, led_level, 0)     ## CHANGED 19/09/2015    
+    sense.set_pixel(0, 5, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 6, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 5, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 5, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 6, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '7':
+  if num == '7':    ## CHANGED 19/09/2015 
         # number 7_bot_left - HUMIDITY
-    ap.set_pixel(0, 4, 0, led_level, 0)   
-    ap.set_pixel(0, 5, 0, led_level, 0)   
-    ap.set_pixel(0, 6, 0, 0, 0)   
-    ap.set_pixel(0, 7, 0, 0, 0)
-    ap.set_pixel(1, 4, 0, led_level, 0)   
-    ap.set_pixel(1, 5, 0, 0, 0)   
-    ap.set_pixel(1, 6, 0, 0, 0)   
-    ap.set_pixel(1, 7, 0, 0, 0)
-    ap.set_pixel(2, 4, 0, led_level, 0)   
-    ap.set_pixel(2, 5, 0, led_level, 0)   
-    ap.set_pixel(2, 6, 0, led_level, 0)   
-    ap.set_pixel(2, 7, 0, led_level, 0)
-    ap.set_pixel(3, 4, 0, 0, 0)   
-    ap.set_pixel(3, 5, 0, 0, 0)   
-    ap.set_pixel(3, 6, 0, 0, 0)   
-    ap.set_pixel(3, 7, 0, 0, 0)
+    sense.set_pixel(0, 4, 0, led_level, 0)     ## CHANGED 19/09/2015    
+    sense.set_pixel(0, 5, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 4, 0, led_level, 0)     ## CHANGED 19/09/2015
+    sense.set_pixel(1, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 4, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 5, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 6, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '8':
+  if num == '8':    ## CHANGED 19/09/2015 
         # number 8_bot_left - HUMIDITY
-    ap.set_pixel(0, 4, 0, led_level, 0)   
-    ap.set_pixel(0, 5, 0, led_level, 0)   
-    ap.set_pixel(0, 6, 0, led_level, 0)   
-    ap.set_pixel(0, 7, 0, led_level, 0)
-    ap.set_pixel(1, 4, 0, led_level, 0)   
-    ap.set_pixel(1, 5, 0, 0, 0)   
-    ap.set_pixel(1, 6, 0, led_level, 0)   
-    ap.set_pixel(1, 7, 0, led_level, 0)
-    ap.set_pixel(2, 4, 0, led_level, 0)   
-    ap.set_pixel(2, 5, 0, led_level, 0)   
-    ap.set_pixel(2, 6, 0, led_level, 0)   
-    ap.set_pixel(2, 7, 0, led_level, 0)
-    ap.set_pixel(3, 4, 0, 0, 0)   
-    ap.set_pixel(3, 5, 0, 0, 0)   
-    ap.set_pixel(3, 6, 0, 0, 0)   
-    ap.set_pixel(3, 7, 0, 0, 0)
+    sense.set_pixel(0, 4, 0, led_level, 0)     ## CHANGED 19/09/2015    
+    sense.set_pixel(0, 5, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 6, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 4, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 6, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 4, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 5, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 6, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '9':
+  if num == '9':    ## CHANGED 19/09/2015 
         # number 9_bot_left - HUMIDITY
-    ap.set_pixel(0, 4, 0, led_level, 0)   
-    ap.set_pixel(0, 5, 0, led_level, 0)   
-    ap.set_pixel(0, 6, 0, led_level, 0)   
-    ap.set_pixel(0, 7, 0, 0, 0)
-    ap.set_pixel(1, 4, 0, led_level, 0)   
-    ap.set_pixel(1, 5, 0, 0, 0)   
-    ap.set_pixel(1, 6, 0, led_level, 0)   
-    ap.set_pixel(1, 7, 0, 0, 0)
-    ap.set_pixel(2, 4, 0, led_level, 0)   
-    ap.set_pixel(2, 5, 0, led_level, 0)   
-    ap.set_pixel(2, 6, 0, led_level, 0)   
-    ap.set_pixel(2, 7, 0, led_level, 0)
-    ap.set_pixel(3, 4, 0, 0, 0)   
-    ap.set_pixel(3, 5, 0, 0, 0)   
-    ap.set_pixel(3, 6, 0, 0, 0)   
-    ap.set_pixel(3, 7, 0, 0, 0)
+    sense.set_pixel(0, 4, 0, led_level, 0)     ## CHANGED 19/09/2015    
+    sense.set_pixel(0, 5, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 6, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 4, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 6, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 4, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 5, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 6, 0, led_level, 0)     ## CHANGED 19/09/2015
+    sense.set_pixel(2, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-def hum_num_matrix_2(num):
+def hum_num_matrix_2(num):    ## CHANGED 19/09/2015 
 
-  if num == '0':
-        # number 0_bottom_left - HUMIDITY
-    ap.set_pixel(4, 4, 0, led_level, 0)   
-    ap.set_pixel(4, 5, 0, led_level, 0)   
-    ap.set_pixel(4, 6, 0, led_level, 0)   
-    ap.set_pixel(4, 7, 0, led_level, 0)
-    ap.set_pixel(5, 4, 0, led_level, 0)   
-    ap.set_pixel(5, 5, 0, 0, 0)   
-    ap.set_pixel(5, 6, 0, 0, 0)   
-    ap.set_pixel(5, 7, 0, led_level, 0)
-    ap.set_pixel(6, 4, 0, led_level, 0)   
-    ap.set_pixel(6, 5, 0, led_level, 0)   
-    ap.set_pixel(6, 6, 0, led_level, 0)   
-    ap.set_pixel(6, 7, 0, led_level, 0)
-    ap.set_pixel(7, 4, 0, 0, 0)   
-    ap.set_pixel(7, 5, 0, 0, 0)   
-    ap.set_pixel(7, 6, 0, 0, 0)   
-    ap.set_pixel(7, 7, 0, 0, 0)
+  if num == '0':    ## CHANGED 19/09/2015 
+        # number 0_bot_right - HUMIDITY
+    sense.set_pixel(4, 4, 0, led_level, 0)     ## CHANGED 19/09/2015    
+    sense.set_pixel(4, 5, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 6, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 4, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 4, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 5, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 6, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
     
-  if num == '1':
-        # number 1_bottom_left - HUMIDITY
-    ap.set_pixel(4, 4, 0, 0, 0)   
-    ap.set_pixel(4, 5, 0, led_level, 0)   
-    ap.set_pixel(4, 6, 0, 0, 0)   
-    ap.set_pixel(4, 7, 0, led_level, 0)
-    ap.set_pixel(5, 4, 0, led_level, 0)   
-    ap.set_pixel(5, 5, 0, led_level, 0)   
-    ap.set_pixel(5, 6, 0, led_level, 0)   
-    ap.set_pixel(5, 7, 0, led_level, 0)
-    ap.set_pixel(6, 4, 0, 0, 0)   
-    ap.set_pixel(6, 5, 0, 0, 0)   
-    ap.set_pixel(6, 6, 0, 0, 0)   
-    ap.set_pixel(6, 7, 0, led_level, 0)
-    ap.set_pixel(7, 4, 0, 0, 0)   
-    ap.set_pixel(7, 5, 0, 0, 0)   
-    ap.set_pixel(7, 6, 0, 0, 0)   
-    ap.set_pixel(7, 7, 0, 0, 0)
+  if num == '1':    ## CHANGED 19/09/2015 
+        # number 1_bot_right - HUMIDITY
+    sense.set_pixel(4, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 5, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 4, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 5, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 6, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
     
-  if num == '2':
-        # number 2_bot_left - HUMIDITY
-    ap.set_pixel(4, 4, 0, led_level, 0)   
-    ap.set_pixel(4, 5, 0, 0, 0)   
-    ap.set_pixel(4, 6, 0, 0, 0)   
-    ap.set_pixel(4, 7, 0, led_level, 0)
-    ap.set_pixel(5, 4, 0, led_level, 0)   
-    ap.set_pixel(5, 5, 0, 0, 0)   
-    ap.set_pixel(5, 6, 0, led_level, 0)   
-    ap.set_pixel(5, 7, 0, led_level, 0)
-    ap.set_pixel(6, 4, 0, led_level, 0)   
-    ap.set_pixel(6, 5, 0, led_level, 0)   
-    ap.set_pixel(6, 6, 0, 0, 0)   
-    ap.set_pixel(6, 7, 0, led_level, 0)
-    ap.set_pixel(7, 4, 0, 0, 0)   
-    ap.set_pixel(7, 5, 0, 0, 0)   
-    ap.set_pixel(7, 6, 0, 0, 0)   
-    ap.set_pixel(7, 7, 0, 0, 0)
+  if num == '2':    ## CHANGED 19/09/2015 
+        # number 2_bot_right - HUMIDITY
+    sense.set_pixel(4, 4, 0, led_level, 0)     ## CHANGED 19/09/2015    
+    sense.set_pixel(4, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 4, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 6, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 4, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 5, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '3':
-        # number 3_bot_left - HUMIDITY
-    ap.set_pixel(4, 4, 0, led_level, 0)   
-    ap.set_pixel(4, 5, 0, 0, 0)   
-    ap.set_pixel(4, 6, 0, 0, 0)   
-    ap.set_pixel(4, 7, 0, led_level, 0)
-    ap.set_pixel(5, 4, 0, led_level, 0)   
-    ap.set_pixel(5, 5, 0, led_level, 0)   
-    ap.set_pixel(5, 6, 0, 0, 0)   
-    ap.set_pixel(5, 7, 0, led_level, 0)
-    ap.set_pixel(6, 4, 0, led_level, 0)   
-    ap.set_pixel(6, 5, 0, led_level, 0)   
-    ap.set_pixel(6, 6, 0, led_level, 0)   
-    ap.set_pixel(6, 7, 0, led_level, 0)
-    ap.set_pixel(7, 4, 0, 0, 0)   
-    ap.set_pixel(7, 5, 0, 0, 0)   
-    ap.set_pixel(7, 6, 0, 0, 0)   
-    ap.set_pixel(7, 7, 0, 0, 0)
+  if num == '3':    ## CHANGED 19/09/2015 
+        # number 3_bot_right - HUMIDITY
+    sense.set_pixel(4, 4, 0, led_level, 0)     ## CHANGED 19/09/2015    
+    sense.set_pixel(4, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 4, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 5, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 4, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 5, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 6, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '4':
-        # number 4_bot_left - HUMIDITY
-    ap.set_pixel(4, 4, 0, led_level, 0)   
-    ap.set_pixel(4, 5, 0, led_level, 0)   
-    ap.set_pixel(4, 6, 0, led_level, 0)   
-    ap.set_pixel(4, 7, 0, 0, 0)
-    ap.set_pixel(5, 4, 0, 0, 0)   
-    ap.set_pixel(5, 5, 0, 0, 0)   
-    ap.set_pixel(5, 6, 0, led_level, 0)   
-    ap.set_pixel(5, 7, 0, 0, 0)
-    ap.set_pixel(6, 4, 0, 0, 0)   
-    ap.set_pixel(6, 5, 0, led_level, 0)   
-    ap.set_pixel(6, 6, 0, led_level, 0)   
-    ap.set_pixel(6, 7, 0, led_level, 0)
-    ap.set_pixel(7, 4, 0, 0, 0)   
-    ap.set_pixel(7, 5, 0, 0, 0)   
-    ap.set_pixel(7, 6, 0, 0, 0)   
-    ap.set_pixel(7, 7, 0, 0, 0)
+  if num == '4':    ## CHANGED 19/09/2015 
+        # number 4_bot_right - HUMIDITY
+    sense.set_pixel(4, 4, 0, led_level, 0)     ## CHANGED 19/09/2015    
+    sense.set_pixel(4, 5, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 6, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 6, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 5, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 6, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '5':
-        # number 5_bot_left - HUMIDITY
-    ap.set_pixel(4, 4, 0, led_level, 0)   
-    ap.set_pixel(4, 5, 0, led_level, 0)   
-    ap.set_pixel(4, 6, 0, 0, 0)   
-    ap.set_pixel(4, 7, 0, led_level, 0)
-    ap.set_pixel(5, 4, 0, led_level, 0)   
-    ap.set_pixel(5, 5, 0, 0, 0)   
-    ap.set_pixel(5, 6, 0, led_level, 0)   
-    ap.set_pixel(5, 7, 0, led_level, 0)
-    ap.set_pixel(6, 4, 0, led_level, 0)   
-    ap.set_pixel(6, 5, 0, 0, 0)   
-    ap.set_pixel(6, 6, 0, 0, 0)   
-    ap.set_pixel(6, 7, 0, led_level, 0)
-    ap.set_pixel(7, 4, 0, 0, 0)   
-    ap.set_pixel(7, 5, 0, 0, 0)   
-    ap.set_pixel(7, 6, 0, 0, 0)   
-    ap.set_pixel(7, 7, 0, 0, 0)
+  if num == '5':    ## CHANGED 19/09/2015 
+        # number 5_bot_right - HUMIDITY
+    sense.set_pixel(4, 4, 0, led_level, 0)     ## CHANGED 19/09/2015    
+    sense.set_pixel(4, 5, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 4, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 6, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 4, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '6':
-        # number 6_bot_left - HUMIDITY
-    ap.set_pixel(4, 4, 0, led_level, 0)   
-    ap.set_pixel(4, 5, 0, led_level, 0)   
-    ap.set_pixel(4, 6, 0, led_level, 0)   
-    ap.set_pixel(4, 7, 0, led_level, 0)
-    ap.set_pixel(5, 4, 0, 0, 0)   
-    ap.set_pixel(5, 5, 0, led_level, 0)   
-    ap.set_pixel(5, 6, 0, 0, 0)   
-    ap.set_pixel(5, 7, 0, led_level, 0)
-    ap.set_pixel(6, 4, 0, 0, 0)   
-    ap.set_pixel(6, 5, 0, led_level, 0)   
-    ap.set_pixel(6, 6, 0, led_level, 0)   
-    ap.set_pixel(6, 7, 0, led_level, 0)
-    ap.set_pixel(7, 4, 0, 0, 0)   
-    ap.set_pixel(7, 5, 0, 0, 0)   
-    ap.set_pixel(7, 6, 0, 0, 0)   
-    ap.set_pixel(7, 7, 0, 0, 0)
+  if num == '6':    ## CHANGED 19/09/2015 
+        # number 6_bot_right - HUMIDITY
+    sense.set_pixel(4, 4, 0, led_level, 0)     ## CHANGED 19/09/2015    
+    sense.set_pixel(4, 5, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 6, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 5, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 5, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 6, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '7':
-        # number 7_bot_left - HUMIDITY
-    ap.set_pixel(4, 4, 0, led_level, 0)   
-    ap.set_pixel(4, 5, 0, led_level, 0)   
-    ap.set_pixel(4, 6, 0, 0, 0)   
-    ap.set_pixel(4, 7, 0, 0, 0)
-    ap.set_pixel(5, 4, 0, led_level, 0)   
-    ap.set_pixel(5, 5, 0, 0, 0)
-    ap.set_pixel(5, 6, 0, 0, 0)   
-    ap.set_pixel(5, 7, 0, 0, 0)
-    ap.set_pixel(6, 4, 0, led_level, 0)   
-    ap.set_pixel(6, 5, 0, led_level, 0)   
-    ap.set_pixel(6, 6, 0, led_level, 0)   
-    ap.set_pixel(6, 7, 0, led_level, 0)
-    ap.set_pixel(7, 4, 0, 0, 0)   
-    ap.set_pixel(7, 5, 0, 0, 0)   
-    ap.set_pixel(7, 6, 0, 0, 0)   
-    ap.set_pixel(7, 7, 0, 0, 0)
+  if num == '7':    ## CHANGED 19/09/2015 
+        # number 7_bot_right - HUMIDITY
+    sense.set_pixel(4, 4, 0, led_level, 0)     ## CHANGED 19/09/2015    
+    sense.set_pixel(4, 5, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 4, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 4, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 5, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 6, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '8':
-        # number 8_bot_left - HUMIDITY
-    ap.set_pixel(4, 4, 0, led_level, 0)   
-    ap.set_pixel(4, 5, 0, led_level, 0)   
-    ap.set_pixel(4, 6, 0, led_level, 0)   
-    ap.set_pixel(4, 7, 0, led_level, 0)
-    ap.set_pixel(5, 4, 0, led_level, 0)   
-    ap.set_pixel(5, 5, 0, 0, 0)   
-    ap.set_pixel(5, 6, 0, led_level, 0)   
-    ap.set_pixel(5, 7, 0, led_level, 0)
-    ap.set_pixel(6, 4, 0, led_level, 0)   
-    ap.set_pixel(6, 5, 0, led_level, 0)   
-    ap.set_pixel(6, 6, 0, led_level, 0)   
-    ap.set_pixel(6, 7, 0, led_level, 0)
-    ap.set_pixel(7, 4, 0, 0, 0)   
-    ap.set_pixel(7, 5, 0, 0, 0)   
-    ap.set_pixel(7, 6, 0, 0, 0)   
-    ap.set_pixel(7, 7, 0, 0, 0)
+  if num == '8':    ## CHANGED 19/09/2015 
+        # number 8_bot_right - HUMIDITY
+    sense.set_pixel(4, 4, 0, led_level, 0)     ## CHANGED 19/09/2015    
+    sense.set_pixel(4, 5, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 6, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 4, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 6, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 4, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 5, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 6, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '9':
-        # number 9_bot_left - HUMIDITY
-    ap.set_pixel(4, 4, 0, led_level, 0)   
-    ap.set_pixel(4, 5, 0, led_level, 0)   
-    ap.set_pixel(4, 6, 0, led_level, 0)   
-    ap.set_pixel(4, 7, 0, 0, 0)
-    ap.set_pixel(5, 4, 0, led_level, 0)   
-    ap.set_pixel(5, 5, 0, 0, 0)   
-    ap.set_pixel(5, 6, 0, led_level, 0)   
-    ap.set_pixel(5, 7, 0, 0, 0)
-    ap.set_pixel(6, 4, 0, led_level, 0)   
-    ap.set_pixel(6, 5, 0, led_level, 0)   
-    ap.set_pixel(6, 6, 0, led_level, 0)   
-    ap.set_pixel(6, 7, 0, led_level, 0)
-    ap.set_pixel(7, 4, 0, 0, 0)   
-    ap.set_pixel(7, 5, 0, 0, 0)   
-    ap.set_pixel(7, 6, 0, 0, 0)   
-    ap.set_pixel(7, 7, 0, 0, 0)
+  if num == '9':    ## CHANGED 19/09/2015 
+        # number 9_bot_right - HUMIDITY
+    sense.set_pixel(4, 4, 0, led_level, 0)     ## CHANGED 19/09/2015    
+    sense.set_pixel(4, 5, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 6, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 4, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 6, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 4, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 5, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 6, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 7, 0, led_level, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
 	
         # HUMIDITY ERROR STATES 
-	
-def hum_num_error_high():
-        # error state warning for - HIGH HUMIDITY
-    ap.set_pixel(0, 4, red, 0, 0)   
-    ap.set_pixel(0, 5, red, 0, 0)   
-    ap.set_pixel(0, 6, red, 0, 0)   
-    ap.set_pixel(0, 7, red, 0, 0)
-    ap.set_pixel(1, 4, red, 0, 0)   
-    ap.set_pixel(1, 5, red, 0, 0)   
-    ap.set_pixel(1, 6, red, 0, 0)   
-    ap.set_pixel(1, 7, red, 0, 0)
-    ap.set_pixel(2, 4, red, 0, 0)   
-    ap.set_pixel(2, 5, red, 0, 0)   
-    ap.set_pixel(2, 6, red, 0, 0)   
-    ap.set_pixel(2, 7, red, 0, 0)
-    ap.set_pixel(3, 4, red, 0, 0)   
-    ap.set_pixel(3, 5, red, 0, 0)   
-    ap.set_pixel(3, 6, red, 0, 0)   
-    ap.set_pixel(3, 7, red, 0, 0)
-    ap.set_pixel(4, 4, red, 0, 0)   
-    ap.set_pixel(4, 5, red, 0, 0)   
-    ap.set_pixel(4, 6, red, 0, 0)   
-    ap.set_pixel(4, 7, red, 0, 0)
-    ap.set_pixel(5, 4, red, 0, 0)   
-    ap.set_pixel(5, 5, red, 0, 0)   
-    ap.set_pixel(5, 6, red, 0, 0)   
-    ap.set_pixel(5, 7, red, 0, 0)
-    ap.set_pixel(6, 4, red, 0, 0)   
-    ap.set_pixel(6, 5, red, 0, 0)   
-    ap.set_pixel(6, 6, red, 0, 0)   
-    ap.set_pixel(6, 7, red, 0, 0)
-    ap.set_pixel(7, 4, red, 0, 0)   
-    ap.set_pixel(7, 5, red, 0, 0)   
-    ap.set_pixel(7, 6, red, 0, 0)   
-    ap.set_pixel(7, 7, red, 0, 0)
-   	
-def hum_num_error_low():
-        # error state warning for - LOW HUMIDITY
-    ap.set_pixel(0, 4, 0, 0, blue)   
-    ap.set_pixel(0, 5, 0, 0, blue)   
-    ap.set_pixel(0, 6, 0, 0, blue)   
-    ap.set_pixel(0, 7, 0, 0, blue)
-    ap.set_pixel(1, 4, 0, 0, blue)   
-    ap.set_pixel(1, 5, 0, 0, blue)   
-    ap.set_pixel(1, 6, 0, 0, blue)   
-    ap.set_pixel(1, 7, 0, 0, blue)
-    ap.set_pixel(2, 4, 0, 0, blue)   
-    ap.set_pixel(2, 5, 0, 0, blue)   
-    ap.set_pixel(2, 6, 0, 0, blue)   
-    ap.set_pixel(2, 7, 0, 0, blue)
-    ap.set_pixel(3, 4, 0, 0, blue)   
-    ap.set_pixel(3, 5, 0, 0, blue)   
-    ap.set_pixel(3, 6, 0, 0, blue)   
-    ap.set_pixel(3, 7, 0, 0, blue)
-    ap.set_pixel(4, 4, 0, 0, blue)   
-    ap.set_pixel(4, 5, 0, 0, blue)   
-    ap.set_pixel(4, 6, 0, 0, blue)   
-    ap.set_pixel(4, 7, 0, 0, blue)
-    ap.set_pixel(5, 4, 0, 0, blue)   
-    ap.set_pixel(5, 5, 0, 0, blue)   
-    ap.set_pixel(5, 6, 0, 0, blue)   
-    ap.set_pixel(5, 7, 0, 0, blue)
-    ap.set_pixel(6, 4, 0, 0, blue)   
-    ap.set_pixel(6, 5, 0, 0, blue)   
-    ap.set_pixel(6, 6, 0, 0, blue)   
-    ap.set_pixel(6, 7, 0, 0, blue)
-    ap.set_pixel(7, 4, 0, 0, blue)   
-    ap.set_pixel(7, 5, 0, 0, blue)   
-    ap.set_pixel(7, 6, 0, 0, blue)   
-    ap.set_pixel(7, 7, 0, 0, blue)
 
-    
+def hum_num_error_high():    ## CHANGED 19/09/2015 
+        # error state warning for - HIGH HUMIDITYv
+    sense.set_pixel(0, 4, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 5, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 6, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 7, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 4, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 5, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 6, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 7, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 4, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 5, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 6, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 7, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 4, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 5, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 6, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 7, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 4, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 5, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 6, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 7, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 4, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 5, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 6, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 7, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 4, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 5, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 6, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 7, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 4, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 5, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 6, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 7, red, 0, 0)     ## CHANGED 19/09/2015 
+   	
+def hum_num_error_low():    ## CHANGED 19/09/2015 
+        # error state warning for - LOW HUMIDITY
+    sense.set_pixel(0, 4, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 5, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 6, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 7, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 4, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 5, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 6, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 7, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 4, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 5, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 6, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 7, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 4, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 5, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 6, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 7, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 4, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 5, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 6, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 7, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 4, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 5, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 6, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 7, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 4, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 5, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 6, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 7, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 4, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 5, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 6, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 7, 0, 0, blue)     ## CHANGED 19/09/2015 
+
+
 # 10 #    PSI LED MATRIX INCLUDING WARNINGS
     
-        # PRESSURE NUMBERS MATRIX BELOW 
+        # PRESSURE NUMBERS MATRIX BELOW  
 
-def psi_num_matrix_1(num):
+def psi_num_matrix_1(num):    ## CHANGED 19/09/2015 
 
-  if num == '0':
+  if num == '0':    ## CHANGED 19/09/2015 
         # number 0_top_left - PRESSURE
-    ap.set_pixel(0, 0, 0, 0, led_level)   
-    ap.set_pixel(0, 1, 0, 0, led_level)   
-    ap.set_pixel(0, 2, 0, 0, led_level)   
-    ap.set_pixel(0, 3, 0, 0, led_level)
-    ap.set_pixel(1, 0, 0, 0, led_level)   
-    ap.set_pixel(1, 1, 0, 0, 0)   
-    ap.set_pixel(1, 2, 0, 0, 0)   
-    ap.set_pixel(1, 3, 0, 0, led_level)
-    ap.set_pixel(2, 0, 0, 0, led_level)   
-    ap.set_pixel(2, 1, 0, 0, led_level)   
-    ap.set_pixel(2, 2, 0, 0, led_level)   
-    ap.set_pixel(2, 3, 0, 0, led_level)
-    ap.set_pixel(3, 0, 0, 0, 0)   
-    ap.set_pixel(3, 1, 0, 0, 0)   
-    ap.set_pixel(3, 2, 0, 0, 0)   
-    ap.set_pixel(3, 3, 0, 0, 0)
+    sense.set_pixel(0, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 1, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 2, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 1, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 2, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 0, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '1':
+  if num == '1':    ## CHANGED 19/09/2015 
         # number 1_top_left - PRESSURE
-    ap.set_pixel(0, 0, 0, 0, 0)   
-    ap.set_pixel(0, 1, 0, 0, led_level)   
-    ap.set_pixel(0, 2, 0, 0, 0)   
-    ap.set_pixel(0, 3, 0, 0, led_level)
-    ap.set_pixel(1, 0, 0, 0, led_level)   
-    ap.set_pixel(1, 1, 0, 0, led_level)   
-    ap.set_pixel(1, 2, 0, 0, led_level)   
-    ap.set_pixel(1, 3, 0, 0, led_level)
-    ap.set_pixel(2, 0, 0, 0, 0)   
-    ap.set_pixel(2, 1, 0, 0, 0)   
-    ap.set_pixel(2, 2, 0, 0, 0)   
-    ap.set_pixel(2, 3, 0, 0, led_level)
-    ap.set_pixel(3, 0, 0, 0, 0)   
-    ap.set_pixel(3, 1, 0, 0, 0)   
-    ap.set_pixel(3, 2, 0, 0, 0)   
-    ap.set_pixel(3, 3, 0, 0, 0)
+    sense.set_pixel(0, 0, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 1, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 1, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 2, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 0, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 0, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '2':
+  if num == '2':    ## CHANGED 19/09/2015 
         # number 2_top_left - PRESSURE
-    ap.set_pixel(0, 0, 0, 0, led_level)   
-    ap.set_pixel(0, 1, 0, 0, 0)   
-    ap.set_pixel(0, 2, 0, 0, 0)   
-    ap.set_pixel(0, 3, 0, 0, led_level)
-    ap.set_pixel(1, 0, 0, 0, led_level)   
-    ap.set_pixel(1, 1, 0, 0, 0)   
-    ap.set_pixel(1, 2, 0, 0, led_level)   
-    ap.set_pixel(1, 3, 0, 0, led_level)
-    ap.set_pixel(2, 0, 0, 0, led_level)   
-    ap.set_pixel(2, 1, 0, 0, led_level)   
-    ap.set_pixel(2, 2, 0, 0, 0)   
-    ap.set_pixel(2, 3, 0, 0, led_level)
-    ap.set_pixel(3, 0, 0, 0, 0)   
-    ap.set_pixel(3, 1, 0, 0, 0)   
-    ap.set_pixel(3, 2, 0, 0, 0)   
-    ap.set_pixel(3, 3, 0, 0, 0)
+    sense.set_pixel(0, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 2, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 1, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 0, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '3':
+  if num == '3':    ## CHANGED 19/09/2015 
         # number 3_top_left - PRESSURE
-    ap.set_pixel(0, 0, 0, 0, led_level)   
-    ap.set_pixel(0, 1, 0, 0, 0)   
-    ap.set_pixel(0, 2, 0, 0, 0)   
-    ap.set_pixel(0, 3, 0, 0, led_level)
-    ap.set_pixel(1, 0, 0, 0, led_level)   
-    ap.set_pixel(1, 1, 0, 0, led_level)   
-    ap.set_pixel(1, 2, 0, 0, 0)   
-    ap.set_pixel(1, 3, 0, 0, led_level)
-    ap.set_pixel(2, 0, 0, 0, led_level)   
-    ap.set_pixel(2, 1, 0, 0, led_level)   
-    ap.set_pixel(2, 2, 0, 0, led_level)   
-    ap.set_pixel(2, 3, 0, 0, led_level)
-    ap.set_pixel(3, 0, 0, 0, 0)   
-    ap.set_pixel(3, 1, 0, 0, 0)   
-    ap.set_pixel(3, 2, 0, 0, 0)   
-    ap.set_pixel(3, 3, 0, 0, 0)
+    sense.set_pixel(0, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 1, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 1, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 2, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 0, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '4':
+  if num == '4':    ## CHANGED 19/09/2015 
         # number 4_top_left - PRESSURE
-    ap.set_pixel(0, 0, 0, 0, led_level)   
-    ap.set_pixel(0, 1, 0, 0, led_level)   
-    ap.set_pixel(0, 2, 0, 0, led_level)   
-    ap.set_pixel(0, 3, 0, 0, 0)
-    ap.set_pixel(1, 0, 0, 0, 0)   
-    ap.set_pixel(1, 1, 0, 0, 0)   
-    ap.set_pixel(1, 2, 0, 0, led_level)   
-    ap.set_pixel(1, 3, 0, 0, 0)
-    ap.set_pixel(2, 0, 0, 0, 0)   
-    ap.set_pixel(2, 1, 0, 0, led_level)   
-    ap.set_pixel(2, 2, 0, 0, led_level)   
-    ap.set_pixel(2, 3, 0, 0, led_level)
-    ap.set_pixel(3, 0, 0, 0, 0)   
-    ap.set_pixel(3, 1, 0, 0, 0)   
-    ap.set_pixel(3, 2, 0, 0, 0)   
-    ap.set_pixel(3, 3, 0, 0, 0)
+    sense.set_pixel(0, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 1, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 2, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 0, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 2, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 0, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 1, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 2, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 0, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '5':
+  if num == '5':    ## CHANGED 19/09/2015 
         # number 5_top_left - PRESSURE
-    ap.set_pixel(0, 0, 0, 0, led_level)   
-    ap.set_pixel(0, 1, 0, 0, led_level)   
-    ap.set_pixel(0, 2, 0, 0, 0)   
-    ap.set_pixel(0, 3, 0, 0, led_level)
-    ap.set_pixel(1, 0, 0, 0, led_level)   
-    ap.set_pixel(1, 1, 0, 0, 0)   
-    ap.set_pixel(1, 2, 0, 0, led_level)   
-    ap.set_pixel(1, 3, 0, 0, led_level)
-    ap.set_pixel(2, 0, 0, 0, led_level)   
-    ap.set_pixel(2, 1, 0, 0, 0)   
-    ap.set_pixel(2, 2, 0, 0, 0)   
-    ap.set_pixel(2, 3, 0, 0, led_level)
-    ap.set_pixel(3, 0, 0, 0, 0)   
-    ap.set_pixel(3, 1, 0, 0, 0)   
-    ap.set_pixel(3, 2, 0, 0, 0)   
-    ap.set_pixel(3, 3, 0, 0, 0)
+    sense.set_pixel(0, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 1, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 2, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 0, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '6':
+  if num == '6':    ## CHANGED 19/09/2015 
         # number 6_top_left - PRESSURE
-    ap.set_pixel(0, 0, 0, 0, led_level)   
-    ap.set_pixel(0, 1, 0, 0, led_level)   
-    ap.set_pixel(0, 2, 0, 0, led_level)   
-    ap.set_pixel(0, 3, 0, 0, led_level)
-    ap.set_pixel(1, 0, 0, 0, 0)   
-    ap.set_pixel(1, 1, 0, 0, led_level)   
-    ap.set_pixel(1, 2, 0, 0, 0)   
-    ap.set_pixel(1, 3, 0, 0, led_level)
-    ap.set_pixel(2, 0, 0, 0, 0)   
-    ap.set_pixel(2, 1, 0, 0, led_level)   
-    ap.set_pixel(2, 2, 0, 0, led_level)   
-    ap.set_pixel(2, 3, 0, 0, led_level)
-    ap.set_pixel(3, 0, 0, 0, 0)   
-    ap.set_pixel(3, 1, 0, 0, 0)   
-    ap.set_pixel(3, 2, 0, 0, 0)   
-    ap.set_pixel(3, 3, 0, 0, 0)
+    sense.set_pixel(0, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 1, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 2, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 0, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 1, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 0, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 1, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 2, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 0, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '7':
+  if num == '7':    ## CHANGED 19/09/2015 
         # number 7_top_left - PRESSURE
-    ap.set_pixel(0, 0, 0, 0, led_level)   
-    ap.set_pixel(0, 1, 0, 0, led_level)   
-    ap.set_pixel(0, 2, 0, 0, 0)   
-    ap.set_pixel(0, 3, 0, 0, 0)
-    ap.set_pixel(1, 0, 0, 0, led_level)   
-    ap.set_pixel(1, 1, 0, 0, 0)   
-    ap.set_pixel(1, 2, 0, 0, 0)   
-    ap.set_pixel(1, 3, 0, 0, 0)
-    ap.set_pixel(2, 0, 0, 0, led_level)   
-    ap.set_pixel(2, 1, 0, 0, led_level)   
-    ap.set_pixel(2, 2, 0, 0, led_level)   
-    ap.set_pixel(2, 3, 0, 0, led_level)
-    ap.set_pixel(3, 0, 0, 0, 0)   
-    ap.set_pixel(3, 1, 0, 0, 0)   
-    ap.set_pixel(3, 2, 0, 0, 0)   
-    ap.set_pixel(3, 3, 0, 0, 0)
+    sense.set_pixel(0, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 1, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 1, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 2, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 0, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '8':
+  if num == '8':    ## CHANGED 19/09/2015 
         # number 8_top_left - PRESSURE
-    ap.set_pixel(0, 0, 0, 0, led_level)   
-    ap.set_pixel(0, 1, 0, 0, led_level)   
-    ap.set_pixel(0, 2, 0, 0, led_level)   
-    ap.set_pixel(0, 3, 0, 0, led_level)
-    ap.set_pixel(1, 0, 0, 0, led_level)   
-    ap.set_pixel(1, 1, 0, 0, 0)   
-    ap.set_pixel(1, 2, 0, 0, led_level)   
-    ap.set_pixel(1, 3, 0, 0, led_level)
-    ap.set_pixel(2, 0, 0, 0, led_level)   
-    ap.set_pixel(2, 1, 0, 0, led_level)   
-    ap.set_pixel(2, 2, 0, 0, led_level)   
-    ap.set_pixel(2, 3, 0, 0, led_level)
-    ap.set_pixel(3, 0, 0, 0, 0)   
-    ap.set_pixel(3, 1, 0, 0, 0)   
-    ap.set_pixel(3, 2, 0, 0, 0)   
-    ap.set_pixel(3, 3, 0, 0, 0)
+    sense.set_pixel(0, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 1, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 2, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 2, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 1, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 2, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 0, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '9':
+  if num == '9':    ## CHANGED 19/09/2015 
         # number 9_top_left - PRESSURE
-    ap.set_pixel(0, 0, 0, 0, led_level)   
-    ap.set_pixel(0, 1, 0, 0, led_level)   
-    ap.set_pixel(0, 2, 0, 0, led_level)   
-    ap.set_pixel(0, 3, 0, 0, 0)
-    ap.set_pixel(1, 0, 0, 0, led_level)   
-    ap.set_pixel(1, 1, 0, 0, 0)   
-    ap.set_pixel(1, 2, 0, 0, led_level)   
-    ap.set_pixel(1, 3, 0, 0, 0)
-    ap.set_pixel(2, 0, 0, 0, led_level)   
-    ap.set_pixel(2, 1, 0, 0, led_level)   
-    ap.set_pixel(2, 2, 0, 0, led_level)   
-    ap.set_pixel(2, 3, 0, 0, led_level)
-    ap.set_pixel(3, 0, 0, 0, 0)   
-    ap.set_pixel(3, 1, 0, 0, 0)   
-    ap.set_pixel(3, 2, 0, 0, 0)   
-    ap.set_pixel(3, 3, 0, 0, 0)
+    sense.set_pixel(0, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 1, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 2, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 2, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 1, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 2, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 0, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-def psi_num_matrix_2(num):
+def psi_num_matrix_2(num):    ## CHANGED 19/09/2015 
 
-  if num == '0':
+  if num == '0':    ## CHANGED 19/09/2015 
         # number 0_top_right - PRESSURE
-    ap.set_pixel(4, 0, 0, 0, led_level)   
-    ap.set_pixel(4, 1, 0, 0, led_level)   
-    ap.set_pixel(4, 2, 0, 0, led_level)   
-    ap.set_pixel(4, 3, 0, 0, led_level)
-    ap.set_pixel(5, 0, 0, 0, led_level)   
-    ap.set_pixel(5, 1, 0, 0, 0)   
-    ap.set_pixel(5, 2, 0, 0, 0)   
-    ap.set_pixel(5, 3, 0, 0, led_level)
-    ap.set_pixel(6, 0, 0, 0, led_level)   
-    ap.set_pixel(6, 1, 0, 0, led_level)   
-    ap.set_pixel(6, 2, 0, 0, led_level)   
-    ap.set_pixel(6, 3, 0, 0, led_level)
-    ap.set_pixel(7, 0, 0, 0, 0)   
-    ap.set_pixel(7, 1, 0, 0, 0)   
-    ap.set_pixel(7, 2, 0, 0, 0)   
-    ap.set_pixel(7, 3, 0, 0, 0)
+    sense.set_pixel(4, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 1, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 2, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 1, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 2, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 0, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '1':
+  if num == '1':    ## CHANGED 19/09/2015 
         # number 1_top_right - PRESSURE
-    ap.set_pixel(4, 0, 0, 0, 0)   
-    ap.set_pixel(4, 1, 0, 0, led_level)   
-    ap.set_pixel(4, 2, 0, 0, 0)   
-    ap.set_pixel(4, 3, 0, 0, led_level)
-    ap.set_pixel(5, 0, 0, 0, led_level)   
-    ap.set_pixel(5, 1, 0, 0, led_level)   
-    ap.set_pixel(5, 2, 0, 0, led_level)   
-    ap.set_pixel(5, 3, 0, 0, led_level)
-    ap.set_pixel(6, 0, 0, 0, 0)   
-    ap.set_pixel(6, 1, 0, 0, 0)   
-    ap.set_pixel(6, 2, 0, 0, 0)   
-    ap.set_pixel(6, 3, 0, 0, led_level)
-    ap.set_pixel(7, 0, 0, 0, 0)   
-    ap.set_pixel(7, 1, 0, 0, 0)   
-    ap.set_pixel(7, 2, 0, 0, 0)   
-    ap.set_pixel(7, 3, 0, 0, 0)
+    sense.set_pixel(4, 0, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 1, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 1, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 2, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 0, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 0, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '2':
+  if num == '2':    ## CHANGED 19/09/2015 
         # number 2_top_right - PRESSURE
-    ap.set_pixel(4, 0, 0, 0, led_level)   
-    ap.set_pixel(4, 1, 0, 0, 0)   
-    ap.set_pixel(4, 2, 0, 0, 0)   
-    ap.set_pixel(4, 3, 0, 0, led_level)
-    ap.set_pixel(5, 0, 0, 0, led_level)   
-    ap.set_pixel(5, 1, 0, 0, 0)   
-    ap.set_pixel(5, 2, 0, 0, led_level)   
-    ap.set_pixel(5, 3, 0, 0, led_level)
-    ap.set_pixel(6, 0, 0, 0, led_level)   
-    ap.set_pixel(6, 1, 0, 0, led_level)   
-    ap.set_pixel(6, 2, 0, 0, 0)   
-    ap.set_pixel(6, 3, 0, 0, led_level)
-    ap.set_pixel(7, 0, 0, 0, 0)   
-    ap.set_pixel(7, 1, 0, 0, 0)   
-    ap.set_pixel(7, 2, 0, 0, 0)   
-    ap.set_pixel(7, 3, 0, 0, 0)
+    sense.set_pixel(4, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 2, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 1, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 0, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '3':
+  if num == '3':    ## CHANGED 19/09/2015 
         # number 3_top_right - PRESSURE
-    ap.set_pixel(4, 0, 0, 0, led_level)   
-    ap.set_pixel(4, 1, 0, 0, 0)   
-    ap.set_pixel(4, 2, 0, 0, 0)   
-    ap.set_pixel(4, 3, 0, 0, led_level)
-    ap.set_pixel(5, 0, 0, 0, led_level)   
-    ap.set_pixel(5, 1, 0, 0, led_level)   
-    ap.set_pixel(5, 2, 0, 0, 0)   
-    ap.set_pixel(5, 3, 0, 0, led_level)
-    ap.set_pixel(6, 0, 0, 0, led_level)   
-    ap.set_pixel(6, 1, 0, 0, led_level)   
-    ap.set_pixel(6, 2, 0, 0, led_level)   
-    ap.set_pixel(6, 3, 0, 0, led_level)
-    ap.set_pixel(7, 0, 0, 0, 0)   
-    ap.set_pixel(7, 1, 0, 0, 0)   
-    ap.set_pixel(7, 2, 0, 0, 0)   
-    ap.set_pixel(7, 3, 0, 0, 0)
+    sense.set_pixel(4, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 1, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 1, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 2, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 0, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '4':
+  if num == '4':    ## CHANGED 19/09/2015 
         # number 4_top_right - PRESSURE
-    ap.set_pixel(4, 0, 0, 0, led_level)   
-    ap.set_pixel(4, 1, 0, 0, led_level)   
-    ap.set_pixel(4, 2, 0, 0, led_level)   
-    ap.set_pixel(4, 3, 0, 0, 0)
-    ap.set_pixel(5, 0, 0, 0, 0)   
-    ap.set_pixel(5, 1, 0, 0, 0)   
-    ap.set_pixel(5, 2, 0, 0, led_level)   
-    ap.set_pixel(5, 3, 0, 0, 0)
-    ap.set_pixel(6, 0, 0, 0, 0)   
-    ap.set_pixel(6, 1, 0, 0, led_level)   
-    ap.set_pixel(6, 2, 0, 0, led_level)   
-    ap.set_pixel(6, 3, 0, 0, led_level)
-    ap.set_pixel(7, 0, 0, 0, 0)   
-    ap.set_pixel(7, 1, 0, 0, 0)   
-    ap.set_pixel(7, 2, 0, 0, 0)   
-    ap.set_pixel(7, 3, 0, 0, 0)
+    sense.set_pixel(4, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 1, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 2, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 0, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 2, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 0, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 1, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 2, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 0, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '5':
+  if num == '5':    ## CHANGED 19/09/2015 
         # number 5_top_right - PRESSURE
-    ap.set_pixel(4, 0, 0, 0, led_level)   
-    ap.set_pixel(4, 1, 0, 0, led_level)   
-    ap.set_pixel(4, 2, 0, 0, 0)   
-    ap.set_pixel(4, 3, 0, 0, led_level)
-    ap.set_pixel(5, 0, 0, 0, led_level)   
-    ap.set_pixel(5, 1, 0, 0, 0)   
-    ap.set_pixel(5, 2, 0, 0, led_level)   
-    ap.set_pixel(5, 3, 0, 0, led_level)
-    ap.set_pixel(6, 0, 0, 0, led_level)   
-    ap.set_pixel(6, 1, 0, 0, 0)   
-    ap.set_pixel(6, 2, 0, 0, 0)   
-    ap.set_pixel(6, 3, 0, 0, led_level)
-    ap.set_pixel(7, 0, 0, 0, 0)   
-    ap.set_pixel(7, 1, 0, 0, 0)   
-    ap.set_pixel(7, 2, 0, 0, 0)   
-    ap.set_pixel(7, 3, 0, 0, 0)
+    sense.set_pixel(4, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 1, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 2, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 0, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '6':
+  if num == '6':    ## CHANGED 19/09/2015 
         # number 6_top_right - PRESSURE
-    ap.set_pixel(4, 0, 0, 0, led_level)   
-    ap.set_pixel(4, 1, 0, 0, led_level)   
-    ap.set_pixel(4, 2, 0, 0, led_level)   
-    ap.set_pixel(4, 3, 0, 0, led_level)
-    ap.set_pixel(5, 0, 0, 0, 0)   
-    ap.set_pixel(5, 1, 0, 0, led_level)   
-    ap.set_pixel(5, 2, 0, 0, 0)   
-    ap.set_pixel(5, 3, 0, 0, led_level)
-    ap.set_pixel(6, 0, 0, 0, 0)   
-    ap.set_pixel(6, 1, 0, 0, led_level)   
-    ap.set_pixel(6, 2, 0, 0, led_level)   
-    ap.set_pixel(6, 3, 0, 0, led_level)
-    ap.set_pixel(7, 0, 0, 0, 0)   
-    ap.set_pixel(7, 1, 0, 0, 0)   
-    ap.set_pixel(7, 2, 0, 0, 0)   
-    ap.set_pixel(7, 3, 0, 0, 0)
+    sense.set_pixel(4, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 1, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 2, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 0, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 1, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 0, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 1, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 2, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 0, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '7':
+  if num == '7':    ## CHANGED 19/09/2015 
         # number 7_top_right - PRESSURE
-    ap.set_pixel(4, 0, 0, 0, led_level)   
-    ap.set_pixel(4, 1, 0, 0, led_level)   
-    ap.set_pixel(4, 2, 0, 0, 0)   
-    ap.set_pixel(4, 3, 0, 0, 0)
-    ap.set_pixel(5, 0, 0, 0, led_level)   
-    ap.set_pixel(5, 1, 0, 0, 0)   
-    ap.set_pixel(5, 2, 0, 0, 0)   
-    ap.set_pixel(5, 3, 0, 0, 0)
-    ap.set_pixel(6, 0, 0, 0, led_level)   
-    ap.set_pixel(6, 1, 0, 0, led_level)   
-    ap.set_pixel(6, 2, 0, 0, led_level)   
-    ap.set_pixel(6, 3, 0, 0, led_level)
-    ap.set_pixel(7, 0, 0, 0, 0)   
-    ap.set_pixel(7, 1, 0, 0, 0)   
-    ap.set_pixel(7, 2, 0, 0, 0)   
-    ap.set_pixel(7, 3, 0, 0, 0)
+    sense.set_pixel(4, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 1, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 1, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 2, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 0, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '8':
+  if num == '8':    ## CHANGED 19/09/2015 
         # number 8_top_right - PRESSURE
-    ap.set_pixel(4, 0, 0, 0, led_level)   
-    ap.set_pixel(4, 1, 0, 0, led_level)   
-    ap.set_pixel(4, 2, 0, 0, led_level)   
-    ap.set_pixel(4, 3, 0, 0, led_level)
-    ap.set_pixel(5, 0, 0, 0, led_level)   
-    ap.set_pixel(5, 1, 0, 0, 0)   
-    ap.set_pixel(5, 2, 0, 0, led_level)   
-    ap.set_pixel(5, 3, 0, 0, led_level)
-    ap.set_pixel(6, 0, 0, 0, led_level)   
-    ap.set_pixel(6, 1, 0, 0, led_level)   
-    ap.set_pixel(6, 2, 0, 0, led_level)   
-    ap.set_pixel(6, 3, 0, 0, led_level)
-    ap.set_pixel(7, 0, 0, 0, 0)   
-    ap.set_pixel(7, 1, 0, 0, 0)   
-    ap.set_pixel(7, 2, 0, 0, 0)   
-    ap.set_pixel(7, 3, 0, 0, 0)
+    sense.set_pixel(4, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 1, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 2, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 2, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 1, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 2, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 0, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '9':
+  if num == '9':    ## CHANGED 19/09/2015 
         # number 9_top_right - PRESSURE
-    ap.set_pixel(4, 0, 0, 0, led_level)   
-    ap.set_pixel(4, 1, 0, 0, led_level)   
-    ap.set_pixel(4, 2, 0, 0, led_level)   
-    ap.set_pixel(4, 3, 0, 0, 0)
-    ap.set_pixel(5, 0, 0, 0, led_level)   
-    ap.set_pixel(5, 1, 0, 0, 0)   
-    ap.set_pixel(5, 2, 0, 0, led_level)   
-    ap.set_pixel(5, 3, 0, 0, 0)
-    ap.set_pixel(6, 0, 0, 0, led_level)   
-    ap.set_pixel(6, 1, 0, 0, led_level)   
-    ap.set_pixel(6, 2, 0, 0, led_level)   
-    ap.set_pixel(6, 3, 0, 0, led_level)
-    ap.set_pixel(7, 0, 0, 0, 0)   
-    ap.set_pixel(7, 1, 0, 0, 0)   
-    ap.set_pixel(7, 2, 0, 0, 0)   
-    ap.set_pixel(7, 3, 0, 0, 0)
+    sense.set_pixel(4, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 1, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 2, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 2, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 0, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 1, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 2, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 3, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 0, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 1, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 2, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 3, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-def psi_num_matrix_3(num):
+def psi_num_matrix_3(num):    ## CHANGED 19/09/2015 
 
-  if num == '0':
+  if num == '0':    ## CHANGED 19/09/2015 
         # number 0_bot_left - PRESSURE
-    ap.set_pixel(0, 4, 0, 0, led_level)   
-    ap.set_pixel(0, 5, 0, 0, led_level)   
-    ap.set_pixel(0, 6, 0, 0, led_level)   
-    ap.set_pixel(0, 7, 0, 0, led_level)
-    ap.set_pixel(1, 4, 0, 0, led_level)   
-    ap.set_pixel(1, 5, 0, 0, 0)   
-    ap.set_pixel(1, 6, 0, 0, 0)   
-    ap.set_pixel(1, 7, 0, 0, led_level)
-    ap.set_pixel(2, 4, 0, 0, led_level)   
-    ap.set_pixel(2, 5, 0, 0, led_level)   
-    ap.set_pixel(2, 6, 0, 0, led_level)   
-    ap.set_pixel(2, 7, 0, 0, led_level)
-    ap.set_pixel(3, 4, 0, 0, 0)   
-    ap.set_pixel(3, 5, 0, 0, 0)   
-    ap.set_pixel(3, 6, 0, 0, 0)   
-    ap.set_pixel(3, 7, 0, 0, 0)
+    sense.set_pixel(0, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 5, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 6, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 5, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 6, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '1':
+  if num == '1':    ## CHANGED 19/09/2015 
         # number 1_bot_left - PRESSURE
-    ap.set_pixel(0, 4, 0, 0, 0)   
-    ap.set_pixel(0, 5, 0, 0, led_level)   
-    ap.set_pixel(0, 6, 0, 0, 0)   
-    ap.set_pixel(0, 7, 0, 0, led_level)
-    ap.set_pixel(1, 4, 0, 0, led_level)   
-    ap.set_pixel(1, 5, 0, 0, led_level)   
-    ap.set_pixel(1, 6, 0, 0, led_level)   
-    ap.set_pixel(1, 7, 0, 0, led_level)
-    ap.set_pixel(2, 4, 0, 0, 0)   
-    ap.set_pixel(2, 5, 0, 0, 0)   
-    ap.set_pixel(2, 6, 0, 0, 0)   
-    ap.set_pixel(2, 7, 0, 0, led_level)
-    ap.set_pixel(3, 4, 0, 0, 0)   
-    ap.set_pixel(3, 5, 0, 0, 0)   
-    ap.set_pixel(3, 6, 0, 0, 0)   
-    ap.set_pixel(3, 7, 0, 0, 0)
+    sense.set_pixel(0, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 5, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 5, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 6, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '2':
+  if num == '2':    ## CHANGED 19/09/2015 
         # number 2_bot_left - PRESSURE
-    ap.set_pixel(0, 4, 0, 0, led_level)   
-    ap.set_pixel(0, 5, 0, 0, 0)   
-    ap.set_pixel(0, 6, 0, 0, 0)   
-    ap.set_pixel(0, 7, 0, 0, led_level)
-    ap.set_pixel(1, 4, 0, 0, led_level)   
-    ap.set_pixel(1, 5, 0, 0, 0)   
-    ap.set_pixel(1, 6, 0, 0, led_level)   
-    ap.set_pixel(1, 7, 0, 0, led_level)
-    ap.set_pixel(2, 4, 0, 0, led_level)   
-    ap.set_pixel(2, 5, 0, 0, led_level)   
-    ap.set_pixel(2, 6, 0, 0, 0)   
-    ap.set_pixel(2, 7, 0, 0, led_level)
-    ap.set_pixel(3, 4, 0, 0, 0)   
-    ap.set_pixel(3, 5, 0, 0, 0)   
-    ap.set_pixel(3, 6, 0, 0, 0)   
-    ap.set_pixel(3, 7, 0, 0, 0)
+    sense.set_pixel(0, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 6, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 5, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '3':
+  if num == '3':    ## CHANGED 19/09/2015 
         # number 3_bot_left - PRESSURE
-    ap.set_pixel(0, 4, 0, 0, led_level)   
-    ap.set_pixel(0, 5, 0, 0, 0)   
-    ap.set_pixel(0, 6, 0, 0, 0)   
-    ap.set_pixel(0, 7, 0, 0, led_level)
-    ap.set_pixel(1, 4, 0, 0, led_level)   
-    ap.set_pixel(1, 5, 0, 0, led_level)   
-    ap.set_pixel(1, 6, 0, 0, 0)   
-    ap.set_pixel(1, 7, 0, 0, led_level)
-    ap.set_pixel(2, 4, 0, 0, led_level)   
-    ap.set_pixel(2, 5, 0, 0, led_level)   
-    ap.set_pixel(2, 6, 0, 0, led_level)   
-    ap.set_pixel(2, 7, 0, 0, led_level)
-    ap.set_pixel(3, 4, 0, 0, 0)   
-    ap.set_pixel(3, 5, 0, 0, 0)   
-    ap.set_pixel(3, 6, 0, 0, 0)   
-    ap.set_pixel(3, 7, 0, 0, 0)
+    sense.set_pixel(0, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 5, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 5, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 6, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '4':
+  if num == '4':    ## CHANGED 19/09/2015 
         # number 4_bot_left - PRESSURE
-    ap.set_pixel(0, 4, 0, 0, led_level)   
-    ap.set_pixel(0, 5, 0, 0, led_level)   
-    ap.set_pixel(0, 6, 0, 0, led_level)   
-    ap.set_pixel(0, 7, 0, 0, 0)
-    ap.set_pixel(1, 4, 0, 0, 0)   
-    ap.set_pixel(1, 5, 0, 0, 0)   
-    ap.set_pixel(1, 6, 0, 0, led_level)   
-    ap.set_pixel(1, 7, 0, 0, 0)
-    ap.set_pixel(2, 4, 0, 0, 0)   
-    ap.set_pixel(2, 5, 0, 0, led_level)   
-    ap.set_pixel(2, 6, 0, 0, led_level)   
-    ap.set_pixel(2, 7, 0, 0, led_level)
-    ap.set_pixel(3, 4, 0, 0, 0)   
-    ap.set_pixel(3, 5, 0, 0, 0)   
-    ap.set_pixel(3, 6, 0, 0, 0)   
-    ap.set_pixel(3, 7, 0, 0, 0)
+    sense.set_pixel(0, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 5, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 6, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 6, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 5, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 6, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '5':
+  if num == '5':    ## CHANGED 19/09/2015 
         # number 5_bot_left - PRESSURE
-    ap.set_pixel(0, 4, 0, 0, led_level)   
-    ap.set_pixel(0, 5, 0, 0, led_level)   
-    ap.set_pixel(0, 6, 0, 0, 0)   
-    ap.set_pixel(0, 7, 0, 0, led_level)
-    ap.set_pixel(1, 4, 0, 0, led_level)   
-    ap.set_pixel(1, 5, 0, 0, 0)   
-    ap.set_pixel(1, 6, 0, 0, led_level)   
-    ap.set_pixel(1, 7, 0, 0, led_level)
-    ap.set_pixel(2, 4, 0, 0, led_level)   
-    ap.set_pixel(2, 5, 0, 0, 0)   
-    ap.set_pixel(2, 6, 0, 0, 0)   
-    ap.set_pixel(2, 7, 0, 0, led_level)
-    ap.set_pixel(3, 4, 0, 0, 0)   
-    ap.set_pixel(3, 5, 0, 0, 0)   
-    ap.set_pixel(3, 6, 0, 0, 0)   
-    ap.set_pixel(3, 7, 0, 0, 0)
+    sense.set_pixel(0, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 5, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 6, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '6':
+  if num == '6':    ## CHANGED 19/09/2015 
         # number 6_bot_left - PRESSURE
-    ap.set_pixel(0, 4, 0, 0, led_level)   
-    ap.set_pixel(0, 5, 0, 0, led_level)   
-    ap.set_pixel(0, 6, 0, 0, led_level)   
-    ap.set_pixel(0, 7, 0, 0, led_level)
-    ap.set_pixel(1, 4, 0, 0, 0)   
-    ap.set_pixel(1, 5, 0, 0, led_level)   
-    ap.set_pixel(1, 6, 0, 0, 0)   
-    ap.set_pixel(1, 7, 0, 0, led_level)
-    ap.set_pixel(2, 4, 0, 0, 0)   
-    ap.set_pixel(2, 5, 0, 0, led_level)   
-    ap.set_pixel(2, 6, 0, 0, led_level)   
-    ap.set_pixel(2, 7, 0, 0, led_level)
-    ap.set_pixel(3, 4, 0, 0, 0)   
-    ap.set_pixel(3, 5, 0, 0, 0)   
-    ap.set_pixel(3, 6, 0, 0, 0)   
-    ap.set_pixel(3, 7, 0, 0, 0)
+    sense.set_pixel(0, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 5, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 6, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 5, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 5, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 6, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '7':
+  if num == '7':    ## CHANGED 19/09/2015 
         # number 7_bot_left - PRESSURE
-    ap.set_pixel(0, 4, 0, 0, led_level)   
-    ap.set_pixel(0, 5, 0, 0, led_level)   
-    ap.set_pixel(0, 6, 0, 0, 0)   
-    ap.set_pixel(0, 7, 0, 0, 0)
-    ap.set_pixel(1, 4, 0, 0, led_level)   
-    ap.set_pixel(1, 5, 0, 0, 0)   
-    ap.set_pixel(1, 6, 0, 0, 0)   
-    ap.set_pixel(1, 7, 0, 0, 0)
-    ap.set_pixel(2, 4, 0, 0, led_level)   
-    ap.set_pixel(2, 5, 0, 0, led_level)   
-    ap.set_pixel(2, 6, 0, 0, led_level)   
-    ap.set_pixel(2, 7, 0, 0, led_level)
-    ap.set_pixel(3, 4, 0, 0, 0)   
-    ap.set_pixel(3, 5, 0, 0, 0)   
-    ap.set_pixel(3, 6, 0, 0, 0)   
-    ap.set_pixel(3, 7, 0, 0, 0)
+    sense.set_pixel(0, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 5, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 5, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 6, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '8':
+  if num == '8':    ## CHANGED 19/09/2015 
         # number 8_bot_left - PRESSURE
-    ap.set_pixel(0, 4, 0, 0, led_level)   
-    ap.set_pixel(0, 5, 0, 0, led_level)   
-    ap.set_pixel(0, 6, 0, 0, led_level)   
-    ap.set_pixel(0, 7, 0, 0, led_level)
-    ap.set_pixel(1, 4, 0, 0, led_level)   
-    ap.set_pixel(1, 5, 0, 0, 0)   
-    ap.set_pixel(1, 6, 0, 0, led_level)   
-    ap.set_pixel(1, 7, 0, 0, led_level)
-    ap.set_pixel(2, 4, 0, 0, led_level)   
-    ap.set_pixel(2, 5, 0, 0, led_level)   
-    ap.set_pixel(2, 6, 0, 0, led_level)   
-    ap.set_pixel(2, 7, 0, 0, led_level)
-    ap.set_pixel(3, 4, 0, 0, 0)   
-    ap.set_pixel(3, 5, 0, 0, 0)   
-    ap.set_pixel(3, 6, 0, 0, 0)   
-    ap.set_pixel(3, 7, 0, 0, 0)
+    sense.set_pixel(0, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 5, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 6, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 6, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 5, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 6, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '9':
+  if num == '9':    ## CHANGED 19/09/2015 
         # number 9_bot_left - PRESSURE
-    ap.set_pixel(0, 4, 0, 0, led_level)   
-    ap.set_pixel(0, 5, 0, 0, led_level)   
-    ap.set_pixel(0, 6, 0, 0, led_level)   
-    ap.set_pixel(0, 7, 0, 0, 0)
-    ap.set_pixel(1, 4, 0, 0, led_level)   
-    ap.set_pixel(1, 5, 0, 0, 0)   
-    ap.set_pixel(1, 6, 0, 0, led_level)   
-    ap.set_pixel(1, 7, 0, 0, 0)
-    ap.set_pixel(2, 4, 0, 0, led_level)   
-    ap.set_pixel(2, 5, 0, 0, led_level)   
-    ap.set_pixel(2, 6, 0, 0, led_level)   
-    ap.set_pixel(2, 7, 0, 0, led_level)
-    ap.set_pixel(3, 4, 0, 0, 0)   
-    ap.set_pixel(3, 5, 0, 0, 0)   
-    ap.set_pixel(3, 6, 0, 0, 0)   
-    ap.set_pixel(3, 7, 0, 0, 0)
+    sense.set_pixel(0, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 5, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 6, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 6, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 5, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 6, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-def psi_num_matrix_4(num):
+def psi_num_matrix_4(num):    ## CHANGED 19/09/2015 
 
-  if num == '0':
+  if num == '0':    ## CHANGED 19/09/2015 
         # number 0_bottom_right - PRESSURE
-    ap.set_pixel(4, 4, 0, 0, led_level)   
-    ap.set_pixel(4, 5, 0, 0, led_level)   
-    ap.set_pixel(4, 6, 0, 0, led_level)   
-    ap.set_pixel(4, 7, 0, 0, led_level)
-    ap.set_pixel(5, 4, 0, 0, led_level)   
-    ap.set_pixel(5, 5, 0, 0, 0)   
-    ap.set_pixel(5, 6, 0, 0, 0)   
-    ap.set_pixel(5, 7, 0, 0, led_level)
-    ap.set_pixel(6, 4, 0, 0, led_level)   
-    ap.set_pixel(6, 5, 0, 0, led_level)   
-    ap.set_pixel(6, 6, 0, 0, led_level)   
-    ap.set_pixel(6, 7, 0, 0, led_level)
-    ap.set_pixel(7, 4, 0, 0, 0)   
-    ap.set_pixel(7, 5, 0, 0, 0)   
-    ap.set_pixel(7, 6, 0, 0, 0)   
-    ap.set_pixel(7, 7, 0, 0, 0)
+    sense.set_pixel(4, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 5, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 6, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 5, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 6, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '1':
-        # number 1_bottom_right - PRESSURE
-    ap.set_pixel(4, 4, 0, 0, 0)   
-    ap.set_pixel(4, 5, 0, 0, led_level)   
-    ap.set_pixel(4, 6, 0, 0, 0)   
-    ap.set_pixel(4, 7, 0, 0, led_level)
-    ap.set_pixel(5, 4, 0, 0, led_level)   
-    ap.set_pixel(5, 5, 0, 0, led_level)   
-    ap.set_pixel(5, 6, 0, 0, led_level)   
-    ap.set_pixel(5, 7, 0, 0, led_level)
-    ap.set_pixel(6, 4, 0, 0, 0)   
-    ap.set_pixel(6, 5, 0, 0, 0)   
-    ap.set_pixel(6, 6, 0, 0, 0)   
-    ap.set_pixel(6, 7, 0, 0, led_level)
-    ap.set_pixel(7, 4, 0, 0, 0)   
-    ap.set_pixel(7, 5, 0, 0, 0)   
-    ap.set_pixel(7, 6, 0, 0, 0)   
-    ap.set_pixel(7, 7, 0, 0, 0)
+  if num == '1':    ## CHANGED 19/09/2015 
+        # number 1_bot_right - PRESSURE
+    sense.set_pixel(4, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 5, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 5, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 6, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '2':
+  if num == '2':    ## CHANGED 19/09/2015 
         # number 2_bot_right - PRESSURE
-    ap.set_pixel(4, 4, 0, 0, led_level)   
-    ap.set_pixel(4, 5, 0, 0, 0)   
-    ap.set_pixel(4, 6, 0, 0, 0)   
-    ap.set_pixel(4, 7, 0, 0, led_level)
-    ap.set_pixel(5, 4, 0, 0, led_level)   
-    ap.set_pixel(5, 5, 0, 0, 0)   
-    ap.set_pixel(5, 6, 0, 0, led_level)   
-    ap.set_pixel(5, 7, 0, 0, led_level)
-    ap.set_pixel(6, 4, 0, 0, led_level)   
-    ap.set_pixel(6, 5, 0, 0, led_level)   
-    ap.set_pixel(6, 6, 0, 0, 0)   
-    ap.set_pixel(6, 7, 0, 0, led_level)
-    ap.set_pixel(7, 4, 0, 0, 0)   
-    ap.set_pixel(7, 5, 0, 0, 0)   
-    ap.set_pixel(7, 6, 0, 0, 0)   
-    ap.set_pixel(7, 7, 0, 0, 0)
+    sense.set_pixel(4, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 6, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 5, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '3':
+  if num == '3':    ## CHANGED 19/09/2015 
         # number 3_bot_right - PRESSURE
-    ap.set_pixel(4, 4, 0, 0, led_level)   
-    ap.set_pixel(4, 5, 0, 0, 0)   
-    ap.set_pixel(4, 6, 0, 0, 0)   
-    ap.set_pixel(4, 7, 0, 0, led_level)
-    ap.set_pixel(5, 4, 0, 0, led_level)   
-    ap.set_pixel(5, 5, 0, 0, led_level)   
-    ap.set_pixel(5, 6, 0, 0, 0)   
-    ap.set_pixel(5, 7, 0, 0, led_level)
-    ap.set_pixel(6, 4, 0, 0, led_level)   
-    ap.set_pixel(6, 5, 0, 0, led_level)   
-    ap.set_pixel(6, 6, 0, 0, led_level)   
-    ap.set_pixel(6, 7, 0, 0, led_level)
-    ap.set_pixel(7, 4, 0, 0, 0)   
-    ap.set_pixel(7, 5, 0, 0, 0)   
-    ap.set_pixel(7, 6, 0, 0, 0)   
-    ap.set_pixel(7, 7, 0, 0, 0)
+    sense.set_pixel(4, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 5, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 5, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 6, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '4':
+  if num == '4':    ## CHANGED 19/09/2015 
         # number 4_bot_right - PRESSURE
-    ap.set_pixel(4, 4, 0, 0, led_level)   
-    ap.set_pixel(4, 5, 0, 0, led_level)   
-    ap.set_pixel(4, 6, 0, 0, led_level)   
-    ap.set_pixel(4, 7, 0, 0, 0)
-    ap.set_pixel(5, 4, 0, 0, 0)   
-    ap.set_pixel(5, 5, 0, 0, 0)   
-    ap.set_pixel(5, 6, 0, 0, led_level)   
-    ap.set_pixel(5, 7, 0, 0, 0)
-    ap.set_pixel(6, 4, 0, 0, 0)   
-    ap.set_pixel(6, 5, 0, 0, led_level)   
-    ap.set_pixel(6, 6, 0, 0, led_level)   
-    ap.set_pixel(6, 7, 0, 0, led_level)
-    ap.set_pixel(7, 4, 0, 0, 0)   
-    ap.set_pixel(7, 5, 0, 0, 0)   
-    ap.set_pixel(7, 6, 0, 0, 0)   
-    ap.set_pixel(7, 7, 0, 0, 0)
+    sense.set_pixel(4, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 5, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 6, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 6, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 5, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 6, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '5':
+  if num == '5':    ## CHANGED 19/09/2015 
         # number 5_bot_right - PRESSURE
-    ap.set_pixel(4, 4, 0, 0, led_level)   
-    ap.set_pixel(4, 5, 0, 0, led_level)   
-    ap.set_pixel(4, 6, 0, 0, 0)   
-    ap.set_pixel(4, 7, 0, 0, led_level)
-    ap.set_pixel(5, 4, 0, 0, led_level)   
-    ap.set_pixel(5, 5, 0, 0, 0)   
-    ap.set_pixel(5, 6, 0, 0, led_level)   
-    ap.set_pixel(5, 7, 0, 0, led_level)
-    ap.set_pixel(6, 4, 0, 0, led_level)   
-    ap.set_pixel(6, 5, 0, 0, 0)   
-    ap.set_pixel(6, 6, 0, 0, 0)   
-    ap.set_pixel(6, 7, 0, 0, led_level)
-    ap.set_pixel(7, 4, 0, 0, 0)   
-    ap.set_pixel(7, 5, 0, 0, 0)   
-    ap.set_pixel(7, 6, 0, 0, 0)   
-    ap.set_pixel(7, 7, 0, 0, 0)
+    sense.set_pixel(4, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 5, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 6, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '6':
+  if num == '6':    ## CHANGED 19/09/2015 
         # number 6_bot_right - PRESSURE
-    ap.set_pixel(4, 4, 0, 0, led_level)   
-    ap.set_pixel(4, 5, 0, 0, led_level)   
-    ap.set_pixel(4, 6, 0, 0, led_level)   
-    ap.set_pixel(4, 7, 0, 0, led_level)
-    ap.set_pixel(5, 4, 0, 0, 0)   
-    ap.set_pixel(5, 5, 0, 0, led_level)   
-    ap.set_pixel(5, 6, 0, 0, 0)   
-    ap.set_pixel(5, 7, 0, 0, led_level)
-    ap.set_pixel(6, 4, 0, 0, 0)   
-    ap.set_pixel(6, 5, 0, 0, led_level)   
-    ap.set_pixel(6, 6, 0, 0, led_level)   
-    ap.set_pixel(6, 7, 0, 0, led_level)
-    ap.set_pixel(7, 4, 0, 0, 0)   
-    ap.set_pixel(7, 5, 0, 0, 0)   
-    ap.set_pixel(7, 6, 0, 0, 0)   
-    ap.set_pixel(7, 7, 0, 0, 0)
+    sense.set_pixel(4, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 5, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 6, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 5, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 5, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 6, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '7':
+  if num == '7':    ## CHANGED 19/09/2015 
         # number 7_bot_right - PRESSURE
-    ap.set_pixel(4, 4, 0, 0, led_level)   
-    ap.set_pixel(4, 5, 0, 0, led_level)   
-    ap.set_pixel(4, 6, 0, 0, 0)   
-    ap.set_pixel(4, 7, 0, 0, 0)
-    ap.set_pixel(5, 4, 0, 0, led_level)   
-    ap.set_pixel(5, 5, 0, 0, 0)
-    ap.set_pixel(5, 6, 0, 0, 0)   
-    ap.set_pixel(5, 7, 0, 0, 0)
-    ap.set_pixel(6, 4, 0, 0, led_level)   
-    ap.set_pixel(6, 5, 0, 0, led_level)   
-    ap.set_pixel(6, 6, 0, 0, led_level)   
-    ap.set_pixel(6, 7, 0, 0, led_level)
-    ap.set_pixel(7, 4, 0, 0, 0)   
-    ap.set_pixel(7, 5, 0, 0, 0)   
-    ap.set_pixel(7, 6, 0, 0, 0)   
-    ap.set_pixel(7, 7, 0, 0, 0)
+    sense.set_pixel(4, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 5, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 5, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 6, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '8':
+  if num == '8':    ## CHANGED 19/09/2015 
         # number 8_bot_right - PRESSURE
-    ap.set_pixel(4, 4, 0, 0, led_level)   
-    ap.set_pixel(4, 5, 0, 0, led_level)   
-    ap.set_pixel(4, 6, 0, 0, led_level)   
-    ap.set_pixel(4, 7, 0, 0, led_level)
-    ap.set_pixel(5, 4, 0, 0, led_level)   
-    ap.set_pixel(5, 5, 0, 0, 0)   
-    ap.set_pixel(5, 6, 0, 0, led_level)   
-    ap.set_pixel(5, 7, 0, 0, led_level)
-    ap.set_pixel(6, 4, 0, 0, led_level)   
-    ap.set_pixel(6, 5, 0, 0, led_level)   
-    ap.set_pixel(6, 6, 0, 0, led_level)   
-    ap.set_pixel(6, 7, 0, 0, led_level)
-    ap.set_pixel(7, 4, 0, 0, 0)   
-    ap.set_pixel(7, 5, 0, 0, 0)   
-    ap.set_pixel(7, 6, 0, 0, 0)   
-    ap.set_pixel(7, 7, 0, 0, 0)
+    sense.set_pixel(4, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 5, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 6, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 6, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 5, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 6, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
 
-  if num == '9':
+  if num == '9':    ## CHANGED 19/09/2015 
         # number 9_bot_right - PRESSURE
-    ap.set_pixel(4, 4, 0, 0, led_level)   
-    ap.set_pixel(4, 5, 0, 0, led_level)   
-    ap.set_pixel(4, 6, 0, 0, led_level)   
-    ap.set_pixel(4, 7, 0, 0, 0)
-    ap.set_pixel(5, 4, 0, 0, led_level)   
-    ap.set_pixel(5, 5, 0, 0, 0)   
-    ap.set_pixel(5, 6, 0, 0, led_level)   
-    ap.set_pixel(5, 7, 0, 0, 0)
-    ap.set_pixel(6, 4, 0, 0, led_level)   
-    ap.set_pixel(6, 5, 0, 0, led_level)   
-    ap.set_pixel(6, 6, 0, 0, led_level)   
-    ap.set_pixel(6, 7, 0, 0, led_level)
-    ap.set_pixel(7, 4, 0, 0, 0)   
-    ap.set_pixel(7, 5, 0, 0, 0)   
-    ap.set_pixel(7, 6, 0, 0, 0)   
-    ap.set_pixel(7, 7, 0, 0, 0)
+    sense.set_pixel(4, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 5, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 6, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 6, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 4, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 5, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 6, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 7, 0, 0, led_level)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 4, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 5, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 6, 0, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 7, 0, 0, 0)     ## CHANGED 19/09/2015 
 	
         # PRESSURE ERROR STATES 
-	
-def psi_num_error_high():
-        # error state warning for - HIGH PRESSURE
-    ap.set_pixel(0, 0, red, 0, 0)   
-    ap.set_pixel(0, 1, red, 0, 0)   
-    ap.set_pixel(0, 2, red, 0, 0)   
-    ap.set_pixel(0, 3, red, 0, 0)
-    ap.set_pixel(1, 0, red, 0, 0)   
-    ap.set_pixel(1, 1, red, 0, 0)   
-    ap.set_pixel(1, 2, red, 0, 0)   
-    ap.set_pixel(1, 3, red, 0, 0)
-    ap.set_pixel(2, 0, red, 0, 0)   
-    ap.set_pixel(2, 1, red, 0, 0)   
-    ap.set_pixel(2, 2, red, 0, 0)   
-    ap.set_pixel(2, 3, red, 0, 0)
-    ap.set_pixel(3, 0, red, 0, 0)   
-    ap.set_pixel(3, 1, red, 0, 0)   
-    ap.set_pixel(3, 2, red, 0, 0)   
-    ap.set_pixel(3, 3, red, 0, 0)
-    ap.set_pixel(4, 0, red, 0, 0)   
-    ap.set_pixel(4, 1, red, 0, 0)   
-    ap.set_pixel(4, 2, red, 0, 0)   
-    ap.set_pixel(4, 3, red, 0, 0)
-    ap.set_pixel(5, 0, red, 0, 0)   
-    ap.set_pixel(5, 1, red, 0, 0)   
-    ap.set_pixel(5, 2, red, 0, 0)   
-    ap.set_pixel(5, 3, red, 0, 0)
-    ap.set_pixel(6, 0, red, 0, 0)   
-    ap.set_pixel(6, 1, red, 0, 0)   
-    ap.set_pixel(6, 2, red, 0, 0)   
-    ap.set_pixel(6, 3, red, 0, 0)
-    ap.set_pixel(7, 0, red, 0, 0)   
-    ap.set_pixel(7, 1, red, 0, 0)   
-    ap.set_pixel(7, 2, red, 0, 0)   
-    ap.set_pixel(7, 3, red, 0, 0)
-    ap.set_pixel(0, 4, red, 0, 0)   
-    ap.set_pixel(0, 5, red, 0, 0)   
-    ap.set_pixel(0, 6, red, 0, 0)   
-    ap.set_pixel(0, 7, red, 0, 0)
-    ap.set_pixel(1, 4, red, 0, 0)   
-    ap.set_pixel(1, 5, red, 0, 0)   
-    ap.set_pixel(1, 6, red, 0, 0)   
-    ap.set_pixel(1, 7, red, 0, 0)
-    ap.set_pixel(2, 4, red, 0, 0)   
-    ap.set_pixel(2, 5, red, 0, 0)   
-    ap.set_pixel(2, 6, red, 0, 0)   
-    ap.set_pixel(2, 7, red, 0, 0)
-    ap.set_pixel(3, 4, red, 0, 0)   
-    ap.set_pixel(3, 5, red, 0, 0)   
-    ap.set_pixel(3, 6, red, 0, 0)   
-    ap.set_pixel(3, 7, red, 0, 0)
-    ap.set_pixel(4, 4, red, 0, 0)   
-    ap.set_pixel(4, 5, red, 0, 0)   
-    ap.set_pixel(4, 6, red, 0, 0)   
-    ap.set_pixel(4, 7, red, 0, 0)
-    ap.set_pixel(5, 4, red, 0, 0)   
-    ap.set_pixel(5, 5, red, 0, 0)   
-    ap.set_pixel(5, 6, red, 0, 0)   
-    ap.set_pixel(5, 7, red, 0, 0)
-    ap.set_pixel(6, 4, red, 0, 0)   
-    ap.set_pixel(6, 5, red, 0, 0)   
-    ap.set_pixel(6, 6, red, 0, 0)   
-    ap.set_pixel(6, 7, red, 0, 0)
-    ap.set_pixel(7, 4, red, 0, 0)   
-    ap.set_pixel(7, 5, red, 0, 0)   
-    ap.set_pixel(7, 6, red, 0, 0)   
-    ap.set_pixel(7, 7, red, 0, 0)
-	
-def psi_num_error_low():
-        # error state warning for - LOW PRESSURE
-    ap.set_pixel(0, 0, 0, 0, blue)   
-    ap.set_pixel(0, 1, 0, 0, blue)   
-    ap.set_pixel(0, 2, 0, 0, blue)   
-    ap.set_pixel(0, 3, 0, 0, blue)
-    ap.set_pixel(1, 0, 0, 0, blue)   
-    ap.set_pixel(1, 1, 0, 0, blue)   
-    ap.set_pixel(1, 2, 0, 0, blue)   
-    ap.set_pixel(1, 3, 0, 0, blue)
-    ap.set_pixel(2, 0, 0, 0, blue)   
-    ap.set_pixel(2, 1, 0, 0, blue)   
-    ap.set_pixel(2, 2, 0, 0, blue)   
-    ap.set_pixel(2, 3, 0, 0, blue)
-    ap.set_pixel(3, 0, 0, 0, blue)   
-    ap.set_pixel(3, 1, 0, 0, blue)   
-    ap.set_pixel(3, 2, 0, 0, blue)   
-    ap.set_pixel(3, 3, 0, 0, blue)
-    ap.set_pixel(4, 0, 0, 0, blue)   
-    ap.set_pixel(4, 1, 0, 0, blue)   
-    ap.set_pixel(4, 2, 0, 0, blue)   
-    ap.set_pixel(4, 3, 0, 0, blue)
-    ap.set_pixel(5, 0, 0, 0, blue)   
-    ap.set_pixel(5, 1, 0, 0, blue)   
-    ap.set_pixel(5, 2, 0, 0, blue)   
-    ap.set_pixel(5, 3, 0, 0, blue)
-    ap.set_pixel(6, 0, 0, 0, blue)   
-    ap.set_pixel(6, 1, 0, 0, blue)   
-    ap.set_pixel(6, 2, 0, 0, blue)   
-    ap.set_pixel(6, 3, 0, 0, blue)
-    ap.set_pixel(7, 0, 0, 0, blue)   
-    ap.set_pixel(7, 1, 0, 0, blue)   
-    ap.set_pixel(7, 2, 0, 0, blue)   
-    ap.set_pixel(7, 3, 0, 0, blue)
-    ap.set_pixel(0, 4, 0, 0, blue)   
-    ap.set_pixel(0, 5, 0, 0, blue)   
-    ap.set_pixel(0, 6, 0, 0, blue)   
-    ap.set_pixel(0, 7, 0, 0, blue)
-    ap.set_pixel(1, 4, 0, 0, blue)   
-    ap.set_pixel(1, 5, 0, 0, blue)   
-    ap.set_pixel(1, 6, 0, 0, blue)   
-    ap.set_pixel(1, 7, 0, 0, blue)
-    ap.set_pixel(2, 4, 0, 0, blue)   
-    ap.set_pixel(2, 5, 0, 0, blue)   
-    ap.set_pixel(2, 6, 0, 0, blue)   
-    ap.set_pixel(2, 7, 0, 0, blue)
-    ap.set_pixel(3, 4, 0, 0, blue)   
-    ap.set_pixel(3, 5, 0, 0, blue)   
-    ap.set_pixel(3, 6, 0, 0, blue)   
-    ap.set_pixel(3, 7, 0, 0, blue)
-    ap.set_pixel(4, 4, 0, 0, blue)   
-    ap.set_pixel(4, 5, 0, 0, blue)   
-    ap.set_pixel(4, 6, 0, 0, blue)   
-    ap.set_pixel(4, 7, 0, 0, blue)
-    ap.set_pixel(5, 4, 0, 0, blue)   
-    ap.set_pixel(5, 5, 0, 0, blue)   
-    ap.set_pixel(5, 6, 0, 0, blue)   
-    ap.set_pixel(5, 7, 0, 0, blue)
-    ap.set_pixel(6, 4, 0, 0, blue)   
-    ap.set_pixel(6, 5, 0, 0, blue)   
-    ap.set_pixel(6, 6, 0, 0, blue)   
-    ap.set_pixel(6, 7, 0, 0, blue)
-    ap.set_pixel(7, 4, 0, 0, blue)   
-    ap.set_pixel(7, 5, 0, 0, blue)   
-    ap.set_pixel(7, 6, 0, 0, blue)   
-    ap.set_pixel(7, 7, 0, 0, blue)
 
-   
+def psi_num_error_high():    ## CHANGED 19/09/2015 
+        # error state warning for - HIGH PRESSURE
+    sense.set_pixel(0, 0, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 1, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 2, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 3, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 0, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 1, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 2, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 3, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 0, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 1, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 2, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 3, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 0, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 1, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 2, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 3, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 0, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 1, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 2, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 3, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 0, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 1, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 2, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 3, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 0, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 1, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 2, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 3, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 0, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 1, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 2, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 3, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 4, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 5, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 6, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 7, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 4, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 5, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 6, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 7, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 4, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 5, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 6, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 7, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 4, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 5, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 6, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 7, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 4, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 5, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 6, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 7, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 4, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 5, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 6, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 7, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 4, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 5, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 6, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 7, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 4, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 5, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 6, red, 0, 0)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 7, red, 0, 0)     ## CHANGED 19/09/2015 
+	
+def psi_num_error_low():    ## CHANGED 19/09/2015 
+        # error state warning for - LOW PRESSURE
+    sense.set_pixel(0, 0, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 1, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 2, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 3, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 0, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 1, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 2, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 3, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 0, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 1, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 2, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 3, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 0, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 1, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 2, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 3, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 0, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 1, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 2, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 3, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 0, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 1, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 2, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 3, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 0, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 1, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 2, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 3, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 0, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 1, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 2, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 3, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 4, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 5, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 6, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(0, 7, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 4, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 5, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 6, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(1, 7, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 4, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 5, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 6, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(2, 7, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 4, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 5, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 6, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(3, 7, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 4, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 5, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 6, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(4, 7, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 4, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 5, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 6, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(5, 7, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 4, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 5, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 6, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(6, 7, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 4, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 5, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 6, 0, 0, blue)     ## CHANGED 19/09/2015 
+    sense.set_pixel(7, 7, 0, 0, blue)     ## CHANGED 19/09/2015 
+
+    
 # 11 #    SETTING UP FLIGHT BUTTONS FOR USE AND ASSIGNING COMMANDS
 
         # LOOKING FOR BUTTON PRESSES FROM FLIGHT BUTTONS
    
 def button_pressed(button):             ## CONTINUOUSLY MONITORS FOR BUTTON EVENTS
     global running
-    global ap
+    global sense    ## CHANGED 18/09/2015
     global led_level
     global temp_hum_on
     global psi_on
     global tmp_mute
     global hum_mute
+    global psi_mute
     global alarm_count
     
-        # UP BUTTON (BRIGHTNESS INCREASE)     
+        # UP BUTTON (BRIGHTNESS INCREASE) 
     if button == UP and led_level < 250:    ## ADJUST LED MATRIX BRIGHTNESS - UP
         led_level = led_level + 10
 
-        # DOWN BUTTON (BRIGHTNESS DECRASE)        
+        # DOWN BUTTON (BRIGHTNESS DECRASE) 
     if button == DOWN and led_level > 40:   ## ADJUST LED MATRIX BRIGHTNESS - DOWN
         led_level = led_level - 10
 
@@ -2123,7 +2126,7 @@ def button_pressed(button):             ## CONTINUOUSLY MONITORS FOR BUTTON EVEN
         
         tmp_mute = 0                    ## SHOWS THE WARNING FOR TEMPERATURE
         hum_mute = 0                    ## SHOWS THE WARNING FOR HUMIDITY
-     
+        
         # RIGHT BUTTON (PRESSURE PAGE ON) 
     if button == RIGHT:                 ## FORCE PRESSURE PAGE ON (5s)
         psi_on = 1                      
@@ -2136,16 +2139,16 @@ def button_pressed(button):             ## CONTINUOUSLY MONITORS FOR BUTTON EVEN
         time.sleep(5.0)                 ## WAIT 5 SECONDS TO ENSURE READING CAN BE RECORDED
         
         psi_on = 0                      ## FORCE PRESSURE PAGE OFF
-        
-        # A BUTTON (MUTES ALARMS)
+     
+        # A BUTTON (MUTES ALARMS)    
     if button == A:                     ## ALLOWS ASTRONAUT (Tim) TO MUTE ALARMS
         alarm_count = 0                 # RESETS 'alarm_count' TO ZERO TO START COUNTDOWN
         tmp_mute = 1                    # MUTES THE WARNING FOR TEMPERATURE
         hum_mute = 1                    # MUTES THE WARNING FOR HUMIDITY
         psi_mute = 1                    # MUTES THE WARNING FOR PRESSURE
-     
-        # B BUTTON (UN-MUTES ALARMS)     
-    if button == B:
+        
+        # B BUTTON (UN-MUTES ALARMS) 
+    if button == B:                     ## ALLOWS ASTRONAUT (Tim) TO UN-MUTE ALARMS
         alarm_count = 0                 # RESETS 'alarm_count' TO ZERO TO START COUNTDOWN
         tmp_mute = 0                    # SHOWS THE WARNING FOR TEMPERATURE
         hum_mute = 0                    # SHOWS THE WARNING FOR HUMIDITY
@@ -2158,7 +2161,7 @@ for pin in [UP, DOWN, LEFT, RIGHT, A, B]:## SETUP GPIP PIN VALUES
    
 # 12 #    RESETTING PREVIOUS READINGS TO START CLEAN
    
-        # SET PREVIOUS TEMPERATURE, HUMIDITY, & PRESSURE VALUES TO ZERO
+        # SET PREVIOUS TEMPERATURE, HUMIDITY, & PRESSURE VALUES TO ZERO  
 
 temp_prev = 0                           # PREVIOUS TEMPERATURE READING
 temp_int = 0                            # CURRENT TEMPERATURE READING
@@ -2176,67 +2179,68 @@ alarm_count = 0                         # TRIGGER FOR RE-ENABLING ALARM AFTER A 
 alarm_timer = 0
 
 
-# 13 #    NEW ASTROPI CLASS FILE TO ENSURE ORIENTATION READING IS DISPLAYED CORRECTLY
+# 13 #    NEW SENSE_HAT CLASS FILE TO ENSURE ORIENTATION READING IS DISPLAYED CORRECTLY   ## CHANGED 13/09/2015
 
-ap = AstroPi()
+sense = SenseHat() ## CHANGED 13/09/2015
 
-class AstroPiContinuous(AstroPi):       # NEW CLASS FILE WRITEN BY 'LetHopeItsSnowing' (ASTROPI FORUM)
-    """
-    A class which continuously reads orientation data from AstroPi as without
-    it the orientatin data looses sync
-    """
-    def __init__(self,
-            fb_device='/dev/fb1',
-            imu_settings_file='RTIMULib',
-            text_assets='astro_pi_text',
-            sample_rate = 0.1):
 
-        AstroPi.__init__(self, fb_device, imu_settings_file, text_assets)
-       
-        self.sample_rate = sample_rate
-        self.stopped = True
-        self.running = False
-           
-    def start(self):
-        """
-        starts the thread that continuously reads the astro pi orientation data
-        """
-        #initialise the IMU by getting the orientation
-        self.get_orientation()
-        #start the orientation thread
-        thread.start_new_thread(self._get_orientation_threaded, ())
-           
-    def _get_orientation_threaded(self):
-        """
-        reads the orientation data every sample rate to ensure astro pi is kept in sync
-        """
-        self.stopped = False
-        self.running = True
+#class AstroPiContinuous(AstroPi):   ## CHANGED 13/09/2015
+#    """
+#    A class which continuously reads orientation data from AstroPi as without
+#    it the orientation data looses sync
+#    """
+#    def __init__(self,
+#            fb_device='/dev/fb1',
+#            imu_settings_file='RTIMULib',
+#            text_assets='astro_pi_text',
+#            sample_rate = 0.1):
+#
+#        AstroPi.__init__(self, fb_device, imu_settings_file, text_assets)
+#       
+#        self.sample_rate = sample_rate
+#        self.stopped = True
+#        self.running = False
+#       
+#    def start(self):
+#        """
+#        starts the thread that continuously reads the astro pi orientation data
+#        """
+#       initialise the IMU by getting the orientation
+#        self.get_orientation()
+#        #start the orientation thread
+#        thread.start_new_thread(self._get_orientation_threaded, ())
+#       
+#    def _get_orientation_threaded(self):
+#        """
+#        reads the orientation data every sample rate to ensure astro pi is kept in sync
+#        """
+#        self.stopped = False
+#        self.running = True
+#
+#        #keep reading the orientation data, this keeps AstroPi in sync
+#        while(not self.stopped):
+#            self.get_orientation()
+#            sleep(self.sample_rate)
+#           
+#        self.running = False
+#   
+#    def stop(self):
+#        """
+#        stops the continuous read thread
+#        """
+#        self.stopped = True
+#        #wait for the thread to stop
+#        while(self.running):
+#            sleep(0.01)
+#           
+#    def __enter__(self):
+#        self.start()
+#        return self
+#
+#    def __exit__(self, type, value, traceback):
+#        self.stop() 
 
-        #keep reading the orientation data, this keeps AstroPi in sync
-        while(not self.stopped):
-            self.get_orientation()
-            sleep(self.sample_rate)
-               
-        self.running = False
-       
-    def stop(self):
-        """
-        stops the continous read thread
-        """
-        self.stopped = True
-        #wait for the thread to stop
-        while(self.running):
-            sleep(0.01)
-               
-    def __enter__(self):
-        self.start()
-        return self
-
-    def __exit__(self, type, value, traceback):
-        self.stop()
-
-        
+  
 # 14 #    NEW CLASS FILE TO ALLOW CPU_TEMP TO BE RECALLED AS NEEDED
         
 class CPUTemp:
@@ -2273,9 +2277,9 @@ class CPUTemp:
     def close(self):
         self.tempfile.close()
 
- 
- # 15 #    CAMERA SYSTEM FOR SNAPSHOTS
- 
+        
+# 15 #    CAMERA SYSTEM FOR SNAPSHOTS
+
 def snapshot_cam():
     list_ex = ['sports'] ## TURNS OFF AUTOMATIC EXPOSURE AND SETS IT TO 'sports' ##
     list_awb =['horizon'] ## TURNS OFF AUTOMATIC WHITE BALANCE AND SETS IT TO 'horizon' ##
@@ -2290,22 +2294,24 @@ def snapshot_cam():
         
         # Set camera resolution for small file size
         camera.resolution = (768, 432)
+  
 
-        
 # 16 #    MAIN PROGRAM LOOP
   
 try:  
+
+        # SETUP INITIAL MODULES FOR PROGRAM LOOP
   while running:                        ## ENSURES THAT THE SCRIPT IS ALWAYS RUNNING IN A LOOP
-    import thread                       ## ALLOWS THE SCRIPT TO IMPORT THE NEW CLASS FILE
-    with AstroPiContinuous() as ap:     ## FORCES SYSTEM TO USE NEW ORIENTATION CLASS FILE
-        while(True):                    ## SCRIPT LOOP FOR DISPLAYING READINGS AND RECORDING DATA
-            o = ap.get_orientation()
+    #import thread                       ## ALLOWS THE SCRIPT TO IMPORT THE NEW CLASS FILE {REMOVED AS NOT COMPATIBLE WITH RASPBERRYPI B+}
+    #with SenseHatContinuous() as sense:     ## FORCES SYSTEM TO USE NEW ORIENTATION CLASS FILE {REMOVED AS NOT COMPATIBLE WITH RASPBERRYPI B+}   ## CHANGED 13/09/2015
+    while(True):                    ## SCRIPT LOOP FOR DISPLAYING READINGS AND RECORDING DATA
+            o = sense.get_orientation()     ## CHANGED 19/09/2015 
             pitch = o["pitch"]          # SEPARATES OUT THE PITCH SECTION FROM ORIENTATION READINGS
             roll = o["roll"]            # SEPARATES OUT THE ROLL SECTION FROM ORIENTATION READING
             yaw = o["yaw"]              # SEPARATES OUT THE YAW SECTION FROM ORIENTATION READING
             
             
-            ## ALLOWS THE LOG SECTION TO RECALL INFORMATION FROM THE VARIOUS SECTIONS OF THIS SCRIPT
+        # ALLOWS THE LOG SECTION TO RECALL INFORMATION FROM THE VARIOUS SECTIONS OF THIS SCRIPT
             
             global display_f
             global temp_f
@@ -2322,7 +2328,7 @@ try:
             global snapshot_p
                    
         
-                # SET VALUES FOR LOGGING INFORMATION
+        # SET VALUES FOR LOGGING INFORMATION
    
             if sec_count == 13:          ## ONLY WRITES THE LOGGING INFORMATION EVERY 30 SECONDS(APPROX.) 
             
@@ -2334,9 +2340,9 @@ try:
    
         # SAME_TIME SWAPPED FROM ASCTIME() TO ALLOW FORMATTING WITHIN EXCEL IS CORRECT
                 # RECORDED AS dd/mm/yy hh:mm:ss (DAY/MONTH/YEAR HOURS:MINUTES:SECONDS)
-            
-            
-        # TAKE SNAPSHOT IF THE ASTROPI IS IN AN ERROR STATE - TEMPERATURE / HUMIDITY / PRESSURE   ## CHANGED 13/09/2015
+                
+        
+        # TAKE SNAPSHOT IF THE SENSE_HAT IS IN AN ERROR STATE - TEMPERATURE / HUMIDITY / PRESSURE   ## CHANGED 13/09/2015
                 
                 if snapshot_t == 1:
                 
@@ -2365,17 +2371,17 @@ try:
                     with picamera.PiCamera() as camera:
                         # Capture Image with file name to match log file
                         camera.capture('images/'+same_time+' image_psi.jpg')
+               
 
-                        
         # LOG ALL INFORMATION REQUIRED FOR ASTROPI
-        
-                print("Logged {}".format(count))  #KEEPS ASTRONAUT (Tim) UP TO DATE WITH READINGS RECORDED
-                file.write("\"{}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\"\n".format(asctime(),display_f,temp_f,tmp_reading_f,tmp_alarm_f,hum_f,hum_reading_f,hum_alarm_f,psi_f,psi_reading_f,psi_alarm_f,pitch,roll,yaw))
+                
+                print("Logged {}".format(count))  #KEEPS ASTRONAUT (Tim) UP TO DATE WITH READINGS RECORDED IF CONECTED TO A SCREEN
+                file.write("\"{}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\",\"{:0.2f}\"\n".format(same_time,display_f,temp_f,tmp_reading_f,tmp_alarm_f,snapshot_t,hum_f,hum_reading_f,hum_alarm_f,snapshot_h,psi_f,psi_reading_f,psi_alarm_f,snapshot_p,pitch,roll,yaw))
                 sec_count = 0 
                 count+=1
-                alarm_timer = alarm_timer + 1     # ADDS 1 TO THE 'alarm_timer' TRIGGER
-
+                alarm_timer+=1          # ADDS 1 TO THE 'alarm_timer' TRIGGER
                 
+                            
         # COUNTER TO RE-ENABLE ALARMS FOR THE TEMPERATURE, HUMIDITY AND PRESSURE READINGS 
                 
             if alarm_timer >= 2:        # ALARM_TIMER SET TO '2' 
@@ -2393,30 +2399,31 @@ try:
             
             
         # CALCULATIONS FOR TEMPERATURE TO COMPENSATE FOR CPU_TEMP AFFECTING TEMPERATURE READINGS
-            
-            t = ap.get_temperature()
-            p = ap.get_temperature_from_pressure()
-            h = ap.get_temperature_from_humidity()
+                    
+            t = sense.get_temperature()     ## CHANGED 18/09/2015 
+            p = sense.get_temperature_from_pressure()     ## CHANGED 18/09/2015 
+            h = sense.get_temperature_from_humidity()     ## CHANGED 18/09/2015 
             with CPUTemp() as cpu_temp:
                 c = cpu_temp.get_temperature()
     
-            temp_calc = ((t+p+h)/3) - (c/5)
+            temp_calc = ((t+p+h)/3) - (c/5)     # CALCULATION FOR CORRECTING FOR THE CPU TEMPERATURE AFFECT ON TEMPERATURE SENSORS
+                                                # VERIFIED AGAINST A STANDALONE TEMPERATURE GAUGE FOR RASPBERRYPI B+ 
     
   
-        ## GET TEMPERATURE, HUMIDITY, & PRESSURE READINGS FROM ASTROPI SENSORS ##
-        ## also CREATES INTERGAR FOR LOGGING INFORMATION CORRECTLY ON A TABLE ##
+        # GET TEMPERATURE, HUMIDITY, & PRESSURE READINGS FROM SENSE_HAT SENSORS   ## CHANGED 13/09/2015
+        # also CREATES INTERGAR FOR LOGGING INFORMATION CORRECTLY ON A TABLE
  
             temp_f = temp_calc              ## STORES TEMPERATURE READING WITHIN temp_f
             temp_int = int(temp_f)          ## CREATES INTERGAR FROM TEMPERATURE READING
  
-            hum_f = ap.get_humidity()       ## STORES TEMPERATURE READING WITHIN hum_f                
+            hum_f = sense.get_humidity()       ## STORES TEMPERATURE READING WITHIN hum_f    ## CHANGED 19/09/2015 
             hum_int = int(hum_f)            ## CREATES INTERGAR FROM HUMIDITY READING
  
-            psi_f = ap.get_pressure()       ## STORES TEMPERATURE READING WITHIN psi_f
-            psi = str(psi_int).zfill(4)     # CONVERT PRESSURE READING TO STRING ## - FIXED TO SOLVE <1000 PRESSURE LOCKUPS (fixed by Dave Honess 24th Aug 2015)
+            psi_f = sense.get_pressure()       ## STORES TEMPERATURE READING WITHIN psi_f    ## CHANGED 19/09/2015 
+            psi_int = int(psi_f)            ##CREATES INTERGAR FROM PRESSURE READING
         
     
-        ## LOG IF THE DISPLAY HAS BEEN MUTED (BLACK BOX STYLE) ##
+        # LOG IF THE DISPLAY HAS BEEN MUTED (BLACK BOX STYLE)   # MOVED TO TIDY UP THE CODE
     
             if led_level < 50:              # DOUBLE CHECK LED LIGHT LEVELS TO CONFIRM DISPLAY ACTIVE
                 display_mute = 1
@@ -2429,7 +2436,7 @@ try:
                 display_f = 1
     
     
-        ## LOG IF THE TEMPERATURE ALARM READING AND IF IT HAS BEEN MUTED (BLACK BOX STYLE) ##
+        # LOG THE TEMPERATURE ALARM READING AND IF IT HAS BEEN MUTED (BLACK BOX STYLE) 
     
             if tmp_mute == 1:               # TRANSLATES THE ALARM MUTE INTO ON AND OFF FOR LOG FILE
                 tmp_alarm_f = 0
@@ -2442,8 +2449,8 @@ try:
                 tmp_reading_f = -1
             elif tmp_alarm == 0:
                 tmp_reading_f = 0 
-                
-                
+
+                    
         # TAKE A SNAPSHOT (IMAGE) IF THE TEMPERATURE IS IN ALARM STATE (BLACK BOX STYLE)
     
             if tmp_reading_f == 1:
@@ -2452,9 +2459,9 @@ try:
                 snapshot_t = 1
             elif tmp_alarm == 0:
                 snapshot_t = 0
-
-                    
-        ## LOG IF THE HUMIDITY ALARM READING AND IF IT HAS BEEN MUTED (BLACK BOX STYLE)  ##
+                
+                
+        # LOG THE HUMIDITY ALARM READING AND IF IT HAS BEEN MUTED (BLACK BOX STYLE)  
     
             if hum_mute == 1:               # TRANSLATES THE ALARM MUTE INTO ON AND OFF FOR LOG FILE
                 hum_alarm_f = 0
@@ -2467,8 +2474,8 @@ try:
                 hum_reading_f = -1
             elif hum_alarm == 0:
                 hum_reading_f = 0
-                
-        
+    
+    
         # TAKE A SNAPSHOT (IMAGE) IF THE HUMIDITY IS IN ALARM STATE (BLACK BOX STYLE)
     
             if hum_reading_f == 1:
@@ -2476,10 +2483,10 @@ try:
             if hum_reading_f == -1:
                 snapshot_h = 1
             elif hum_alarm == 0:
-                snapshot_h = 0        
+                snapshot_h = 0
     
-    
-        ## LOG IF THE PRESSURE ALARM READING AND IF IT HAS BEEN MUTED (BLACK BOX STYLE)
+          
+        # LOG THE PRESSURE ALARM READING AND IF IT HAS BEEN MUTED (BLACK BOX STYLE) 
     
             if psi_mute == 1:               # TRANSLATES THE ALARM MUTE INTO ON AND OFF FOR LOG FILE
                 psi_alarm_f = 0
@@ -2492,7 +2499,7 @@ try:
                 psi_reading_f = -1
             elif psi_alarm == 0:
                 psi_reading_f = 0
-                
+                                
                 
         # TAKE A SNAPSHOT (IMAGE) IF THE PRESSURE IS IN ALARM STATE (BLACK BOX STYLE)
     
@@ -2501,25 +2508,25 @@ try:
             if psi_reading_f == -1:
                 snapshot_p = 1
             elif psi_alarm == 0:
-                snapshot_p = 0        
-                
+                snapshot_p = 0
 
-        ## CONVERTS TEMPERATURE, HUMIDITY, PRESSURE READINGS TO A STRING ## 
-        ## also OVERWRITES AND STORES SENSOR READINGS WITHIN PREVIOUS READINGS ##
+            
+        # CONVERTS TEMPERATURE, HUMIDITY, PRESSURE READINGS INTO A STRING 
+        # also OVERWRITES AND STORES SENSOR READINGS WITHIN PREVIOUS READINGS
 
             temp_prev = temp_int            # STORE READING IN temp_prev
             temp =  str(temp_int)           # CONVERT TEMPERATURE READING TO STRING ##
 
-            hum_prev = hum_int              # STORE READING IN temp_prev
+            hum_prev = hum_int              # STORE READING IN hum_prev
             hum =  str(hum_int)             # CONVERT HUMIDITY READING TO STRING ##
 
-            psi_prev = psi_int              # STORE READING IN temp_prev
-            psi =  str(psi_int)             # CONVERT PRESSURE READING TO STRING ##
+            psi_prev = psi_int              # STORE READING IN psi_prev
+            psi = str(psi_int).zfill(4)     # CONVERT PRESSURE READING TO STRING ## - FIXED TO SOLVE <1000 PRESSURE LOCKUPS (fixed by Dave Honess 24th Aug 2015)
  
  
-         # ROTATE THE LED MATRIX DISPLAY
+        # ROTATE THE LED MATRIX DISPLAY
     
-            ap.set_rotation(270)           ## ROTATION ENABLED TO WORK WITH ASTROPI NASA CASE
+            sense.set_rotation(270)           ## ROTATION ENABLED TO WORK WITH ASTROPI NASA CASE    ## CHANGED 18/09/2015 
  
  
         # WRITES VALUES ONTO THE LED MATRIX FOR THE TEMPERATURE AND HUMIDITY 
@@ -2536,7 +2543,7 @@ try:
             hum_num_matrix_2(hum[1])            # SECOND DIGIT - HUMIDITY
  
     
-         # TEMPERATURE - ERROR STATE CHECKING   
+        # TEMPERATURE - ERROR STATE CHECKING     
     
             if temp_hum_on == 1:                # IF TEMP+HUMIDITY PAGE ACTIVE DISPLAY PREVIOUS READING FOR 5s
                 time.sleep(5.0)
@@ -2544,22 +2551,22 @@ try:
                 time.sleep(0.5)                 # IF NOT ONLY WAIT FOR 0.5s
       
             if tmp_mute == 0:                   # ONLY WORKOUT ALARM STATES FOR READINGS WITHIN TEMPERATURE IF NOT MUTED
-                if temp_int - 5 > temp_prev:    # IF RISE OF 5 DEGREES BETWEEN READING - ALARM STATE
+                if temp_int - 3 > temp_prev:    # IF RISE OF 3 DEGREES BETWEEN READINGS - ALARM STATE
                     temp_num_error_high()
                     t_h_wait = 1
                     tmp_alarm = 2
         
-                elif temp_int + 5 < temp_prev:  # IF FALL OF 5 DEGREES BETWEEN READING - ALARM STATE
+                elif temp_int + 3 < temp_prev:  # IF FALL OF 3 DEGREES BETWEEN READING - ALARM STATE
                     temp_num_error_low()
                     t_h_wait = 1
                     tmp_alarm = 1
         
-                elif temp_int > 36:             ## CHECKED AGAINST ISS REQUIREMENTS INC CPU READING
+                elif temp_int > 36:             ## CHECKED AGAINST ISS REQUIREMENTS INCLUDING CPU READING
                     temp_num_error_high()
                     t_h_wait = 1
                     tmp_alarm = 2
         
-                elif temp_int < 18:             ## CHECKED AGAINST ISS REQUIREMENTS INC CPU READING
+                elif temp_int < 18:             ## CHECKED AGAINST ISS REQUIREMENTS INCLUDING CPU READING
                     temp_num_error_low()
                     t_h_wait = 1
                     tmp_alarm = 1
@@ -2572,22 +2579,22 @@ try:
         # HUMIDITY - ERROR STATE CHECKING
     
             if hum_mute == 0:                   # ONLY WORKOUT ALARM STATES FOR READINGS WITHIN HUMIDITY IF NOT MUTED
-                if hum_int - 5 > hum_prev:      # IF RISE OF 5 BETWEEN READING - ALARM STATE
+                if hum_int - 3 > hum_prev:      # IF RISE OF 3 BETWEEN READINGS - ALARM STATE
                     hum_num_error_high()
                     t_h_wait = 1
                     hum_alarm = 2
         
-                elif hum_int + 5 < hum_prev:    # IF FALL OF 5 BETWEEN READING - ALARM STATE
+                elif hum_int + 3 < hum_prev:    # IF FALL OF 3 BETWEEN READINGS - ALARM STATE
                     hum_num_error_low()
                     t_h_wait = 1
                     hum_alarm = 1
         
-                elif hum_int > 60:              ## MUST BE CHECKED AGAINST ISS REQUIREMENTS
+                elif hum_int > 78:              ## CHECKED AGAINST ISS REQUIREMENTS
                     hum_num_error_high()
                     t_h_wait = 1
                     hum_alarm = 2
         
-                elif hum_int < 40:              ## MUST BE CHECKED AGAINST ISS REQUIREMENTS
+                elif hum_int < 42:              ## CHECKED AGAINST ISS REQUIREMENTS
                     hum_num_error_low()
                     t_h_wait = 1
                     hum_alarm = 1
@@ -2605,13 +2612,13 @@ try:
                 time.sleep(0.5)
 
 
-        # WRITE TO BOTH TOP_LINE & BOTTOM_LINE - PRESSURE (4 DIGITS)
+        # WRITE TO BOTH TOP_LINE & BOTTOM_LINE - PRESSURE (4 DIGITS) 
     
             psi_num_matrix_1(psi[0])            # FIRST DIGIT - PRESSURE
             psi_num_matrix_2(psi[1])            # SECOND DIGIT - PRESSURE
             psi_num_matrix_3(psi[2])            # THIRD DIGIT - PRESSURE
             psi_num_matrix_4(psi[3])            # FOURTH DIGIT - PRESSURE
-
+            
     
         # PRESSURE - ERROR STATE CHECKING 
     
@@ -2620,23 +2627,23 @@ try:
             elif psi_on == 0:
                 time.sleep(0.5)                 # IF NOT ONLY WAIT FOR 0.5s
         
-            if psi_mute == 0:                       # ADDED TO FIX MUTING ISSUES
+            if psi_mute == 0:
                 if psi_int - 5 > psi_prev:          # ONLY WORKOUT ALARM STATES FOR READINGS WITHIN PRESSURE IF NOT MUTED
-                    psi_num_error_high()            # IF RISE OF 5 BETWEEN READING - ALARM STATE
+                    psi_num_error_high()            # IF RISE OF 5 BETWEEN READINGS - ALARM STATE
                     psi_wait = 1
                     psi_alarm = 2
         
-                elif psi_int + 5 < psi_prev:        # IF FALL OF 5 BETWEEN READING - ALARM STATE
+                elif psi_int + 5 < psi_prev:        # IF FALL OF 5 BETWEEN READINGS - ALARM STATE
                     psi_num_error_low()
                     psi_wait = 1
                     psi_alarm = 1
         
-                elif psi_int > 1040:                ## MUST BE CHECKED AGAINST ISS REQUIREMENTS
+                elif psi_int > 1040:                ## CHECKED AGAINST ISS REQUIREMENTS
                     psi_num_error_high()
                     psi_wait = 1
                     psi_alarm = 2
         
-                elif psi_int < 1000:                ## MUST BE CHECKED AGAINST ISS REQUIREMENTS
+                elif psi_int < 1000:                ## CHECKED AGAINST ISS REQUIREMENTS
                     psi_num_error_low()
                     psi_wait = 1
                     psi_alarm = 1
@@ -2652,24 +2659,24 @@ try:
                 time.sleep(0.5)
             else:
                 time.sleep(0.5)
-
-        
+            
+            
         # RESETS THE LOGGING COUNTER & START LOOP AGAIN 
 
             sec_count+=1                    ## ADD 1 TO SEC_COUNT FOR LOGGING
-    
-	
+  
+
 # 17 #    PROGRAMMING TO CLEANLY EXIT THE PYTHON PROGRAM AND STOP RECORDING READINGS (if required)
     
 finally:
 
-    ## CLEARS THE LED MATRIX ON ASTROPI ##
+        # CLEARS THE LED MATRIX ON ASTROPI 
     
     file.close()                    ## CLOSE CSV FILE TO ENSURE READINGS ARE RECORDED
     
-    ap.show_letter(    " ", back_colour = [0, 0, 0])    ## SETS BACKGROUND COLOUR TO BLACK (off)
+    sense.show_letter(    " ", back_colour = [0, 0, 0])    ## SETS BACKGROUND COLOUR TO BLACK (off)     ## CHANGED 19/09/2015 
     
-    ap.clear                        ## CLEARS LED MATRIX
+    sense.clear                        ## CLEARS LED MATRIX    ## CHANGED 19/09/2015 
 
     os.system("clear")              ## CLEARS THE SSH DISPLAY
 
